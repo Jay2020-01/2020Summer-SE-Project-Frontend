@@ -10,58 +10,62 @@
         <!-- 清空回收站图标与弹出框 -->
         <div style="text-align:right">
           <el-popconfirm
-          confirmButtonText='好的'
-          cancelButtonText='不用了'
-          icon="el-icon-info"
-          iconColor="red"
-          title="确定删除所有文件吗？"
-          @onConfirm="confirm"
+            confirmButtonText="好的"
+            cancelButtonText="不用了"
+            icon="el-icon-info"
+            iconColor="red"
+            title="确定删除所有文件吗？"
+            @onConfirm="confirm"
           >
-            <el-button slot="reference" title="清空回收站"><i class="el-icon-delete"></i></el-button>
+            <el-button slot="reference" title="清空回收站">
+              <i class="el-icon-delete"></i>
+            </el-button>
           </el-popconfirm>
-            <!-- <el-button type="primary" title="清空回收站" icon="el-icon-delete"></el-button> -->
+          <!-- <el-button type="primary" title="清空回收站" icon="el-icon-delete"></el-button> -->
         </div>
 
         <!-- 测试新卡片 -->
-        <el-row >
+        <el-row>
           <el-col v-for="o in 8" :key="o" style="width:200px">
             <!-- span是说col标签能够影响的列数 -->
             <el-card :body-style="{ padding: '0px' }" shadow="hover">
               <div class="bottom clearfix" style="text-align:right">
-                <el-dropdown>
-                <!-- 操作图标 -->
-                <div class="card-pic">
-                  <span class="el-dropdown-link">
-                    <i class="el-icon-setting el-icon--right"></i>
-                    
-                    <!-- 下拉图标 -->
-                  </span>
-                </div>
+                <el-dropdown placement="bottom">
+                  <!-- 操作图标 -->
+                  <div class="card-pic">
+                    <span class="el-dropdown-link">
+                      <i class="el-icon-setting el-icon--right"></i>
+
+                      <!-- 下拉图标 -->
+                    </span>
+                  </div>
                   <el-dropdown-menu slot="dropdown">
                     <!-- 选项 -->
-                    <el-dropdown-item><i class="el-icon-magic-stick"></i>新标签页打开</el-dropdown-item>
-                    <el-dropdown-item><i class="el-icon-delete"></i>删除</el-dropdown-item>
+                    <el-dropdown-item>
+                      <i class="el-icon-magic-stick"></i>新标签页打开
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <i class="el-icon-delete"></i>删除
+                    </el-dropdown-item>
                     <el-dropdown-item>其他操作请补充</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </div>
-            <!-- <center>
+              <!-- <center>
               图标
                 <div class="picture inline-div">
                   <span class="fa fa-file-text-o" style="font-size:50px"></span>
                 </div>
-            </center> -->
-            <i class="el-icon-document" style="font-size:50px"></i>
+              </center>-->
+              <i class="el-icon-document" style="font-size:50px"></i>
 
-            <div style="padding: 14px;">
-              <span>钻石文档</span>
-            </div>
+              <div style="padding: 14px;">
+                <span>钻石文档</span>
+              </div>
             </el-card>
           </el-col>
         </el-row>
-
       </el-tab-pane>
-
     </el-tabs>
   </div>
 </template>
@@ -71,15 +75,15 @@ export default {
   data() {
     return {
       activeName: "first",
-      qingkong:"还没点",
+      qingkong: "还没点",
     };
   },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
     },
-    confirm(){
-      this.qingkong="确定";
+    confirm() {
+      this.qingkong = "确定";
     },
   },
 };
@@ -102,19 +106,19 @@ export default {
   width: 100px;
   height: auto;
 }
-.el-card .card-pic{
+.el-card .card-pic {
   visibility: hidden;
 }
-.el-card:hover{
+.el-card:hover {
   cursor: pointer;
-  border:1px solid #42b983;
+  border: 1px solid #42b983;
 }
-.el-card:hover .card-pic{
-  visibility:visible ;
+.el-card:hover .card-pic {
+  visibility: visible;
 }
 .el-dropdown-link {
-    cursor: pointer;
-    color: gray;
+  cursor: pointer;
+  color: gray;
 }
 
 .card-container {

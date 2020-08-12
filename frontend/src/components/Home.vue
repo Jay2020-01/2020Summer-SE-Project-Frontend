@@ -61,7 +61,8 @@
               <i class="fa fa-cube" style="padding: 0 10px 0 10px"></i>
               <!-- 文本 -->
               <span>团队空间</span>
-              <i class="	fa fa-plus-circle"></i>
+              <!-- 新增团队按钮 -->
+              <i class="add-team fa fa-plus-circle" @click="dialogFormVisible = true"></i>
             </template>
             <!-- 二级菜单 -->
             <el-menu-item class="second-menu" index="4-1">
@@ -69,7 +70,7 @@
                 <!-- 图标 -->
                 <!-- <i class="el-icon-location"></i> -->
                 <!-- 文本 -->
-                <span >团队名称1</span>
+                <span>团队名称1</span>
               </template>
             </el-menu-item>
             <el-menu-item index="4-2">
@@ -90,6 +91,24 @@
       </el-aside>
       <!-- 右侧内容主体 -->
       <el-main>
+        <!-- 隐藏的新建团队表单 -->
+        <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+          <el-form :model="form">
+            <el-form-item label="活动名称" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="活动区域" :label-width="formLabelWidth">
+              <el-select v-model="form.region" placeholder="请选择活动区域">
+                <el-option label="区域一" value="shanghai"></el-option>
+                <el-option label="区域二" value="beijing"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+          </div>
+        </el-dialog>
         <!-- 路由占位符 -->
         <router-view></router-view>
       </el-main>
@@ -112,6 +131,22 @@ export default {
       window.sessionStorage.clear();
       this.$router.push("/editor");
     },
+  },
+  data() {
+    return {
+      dialogFormVisible: false,
+      form: {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
+      },
+      formLabelWidth: "120px",
+    };
   },
 };
 </script>
@@ -194,5 +229,9 @@ body > .el-container {
   padding-left: 50px !important;
   color: #7a7d81 !important;
   font-size: 12px !important;
+}
+// 新增团队按钮
+.add-team {
+  padding: 0 10px;
 }
 </style>

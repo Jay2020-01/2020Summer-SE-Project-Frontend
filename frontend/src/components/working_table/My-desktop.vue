@@ -4,77 +4,63 @@
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <!-- 标签内容 -->
       <el-tab-pane label="我的桌面" name="first">
-            <!-- 下面这个是选择“平铺”还是“列表”的两个按钮 -->
-            <div style="text-align:right">
-                <i class="el-icon-menu" value="平铺" @click="topingpu"></i>
-                <i class="el-icon-s-operation" value="列表" @click="toliebiao"></i>
-            </div>
+        <!-- 下面这个是选择“平铺”还是“列表”的两个按钮 -->
+        <div style="text-align:right">
+          <i class="el-icon-menu" value="平铺" @click="topingpu"></i>
+          <i class="el-icon-s-operation" value="列表" @click="toliebiao"></i>
+        </div>
 
         <!-- 如果是平铺就是下面这些 -->
         <!-- 测试新卡片 -->
         <el-row v-if="pingpu">
-          <el-col v-for="o in 8" :key="o" style="width:200px">
+          <el-col v-for="o in 8" :key="o" :span="5" style="width:200px">
             <!-- span是说col标签能够影响的列数 -->
             <el-card :body-style="{ padding: '0px' }" shadow="hover">
               <div class="bottom clearfix" style="text-align:right">
-                <el-dropdown>
-                <!-- 操作图标 -->
-                <div class="card-pic">
-                  <span class="el-dropdown-link">
-                    <i class="el-icon-setting el-icon--right"></i>
-                    
-                    <!-- 下拉图标 -->
-                  </span>
-                </div>
-                  <el-dropdown-menu slot="dropdown">
+                <el-dropdown placement="bottom">
+                  <!-- 操作图标 -->
+                  <div class="card-pic">
+                    <span class="el-dropdown-link">
+                      <i class="el-icon-setting el-icon--right"></i>
+
+                      <!-- 下拉图标 -->
+                    </span>
+                  </div>
+                  <el-dropdown-menu placement="bottom" slot="dropdown">
                     <!-- 选项 -->
-                    <el-dropdown-item><i class="el-icon-magic-stick"></i>新标签页打开</el-dropdown-item>
-                    <el-dropdown-item><i class="el-icon-delete"></i>删除</el-dropdown-item>
+                    <el-dropdown-item>
+                      <i class="el-icon-magic-stick"></i>新标签页打开
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <i class="el-icon-delete"></i>删除
+                    </el-dropdown-item>
                     <el-dropdown-item>其他操作请补充</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </div>
-            <!-- <center>
+              <!-- <center>
               图标
                 <div class="picture inline-div">
                   <span class="fa fa-file-text-o" style="font-size:50px"></span>
                 </div>
-            </center> -->
-            <i class="el-icon-document" style="font-size:50px"></i>
+              </center>-->
+              <i class="el-icon-document" style="font-size:50px"></i>
 
-            <div style="padding: 14px;">
-              <span>钻石文档</span>
-            </div>
+              <div style="padding: 14px;">
+                <span>钻石文档</span>
+              </div>
             </el-card>
           </el-col>
         </el-row>
 
-
         <!-- 如果是选择列表就展示下面这些 -->
-        <el-table
-            :data="tableData"
-            height="520"
-            border
-            style="width: 100%"
-            v-if="liebiao">
-            <el-table-column
-                prop="name"
-                label="文件名"
-                width="900">
-            </el-table-column>
-            <el-table-column
-                prop="author"
-                label="创建者"
-                width="180">
-            </el-table-column>
-            <el-table-column
-                prop="lasttime"
-                label="更新时间">
-            </el-table-column>
+        <el-table :data="tableData" height="520" border style="width: 100%" v-if="liebiao">
+          <el-table-column prop="name" label="文件名" width="900"></el-table-column>
+          <el-table-column prop="author" label="创建者" width="180"></el-table-column>
+          <el-table-column prop="lasttime" label="更新时间"></el-table-column>
         </el-table>
-
-        </el-tab-pane>
-        </el-tabs>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -83,50 +69,58 @@ export default {
   data() {
     return {
       activeName: "first",
-      pingpu:true,
-      liebiao:false,
-      tableData: [{
-          name:'一分钟，了解金刚石文档',
-          author:'921049836',
-          lasttime:'今天23：29'
-        }, {
-          name:'一分钟，了解金刚石文档',
-          author:'921049836',
-          lasttime:'今天23：29'
-        }, {
-          name:'一分钟，了解金刚石文档',
-          author:'921049836',
-          lasttime:'今天23：29'
-        }, {
-          name:'一分钟，了解金刚石文档',
-          author:'921049836',
-          lasttime:'今天23：29'
-        }, {
-          name:'一分钟，了解金刚石文档',
-          author:'921049836',
-          lasttime:'今天23：29'
-        }, {
-          name:'一分钟，了解金刚石文档',
-          author:'921049836',
-          lasttime:'今天23：29'
-        }, {
-          name:'一分钟，了解金刚石文档',
-          author:'921049836',
-          lasttime:'今天23：29'
-        }]
+      pingpu: true,
+      liebiao: false,
+      tableData: [
+        {
+          name: "一分钟，了解金刚石文档",
+          author: "921049836",
+          lasttime: "今天23：29",
+        },
+        {
+          name: "一分钟，了解金刚石文档",
+          author: "921049836",
+          lasttime: "今天23：29",
+        },
+        {
+          name: "一分钟，了解金刚石文档",
+          author: "921049836",
+          lasttime: "今天23：29",
+        },
+        {
+          name: "一分钟，了解金刚石文档",
+          author: "921049836",
+          lasttime: "今天23：29",
+        },
+        {
+          name: "一分钟，了解金刚石文档",
+          author: "921049836",
+          lasttime: "今天23：29",
+        },
+        {
+          name: "一分钟，了解金刚石文档",
+          author: "921049836",
+          lasttime: "今天23：29",
+        },
+        {
+          name: "一分钟，了解金刚石文档",
+          author: "921049836",
+          lasttime: "今天23：29",
+        },
+      ],
     };
   },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
     },
-    topingpu:function(){
-        this.pingpu=true;
-        this.liebiao=false;
+    topingpu: function () {
+      this.pingpu = true;
+      this.liebiao = false;
     },
-    toliebiao:function(){
-        this.pingpu=false;
-        this.liebiao=true;
+    toliebiao: function () {
+      this.pingpu = false;
+      this.liebiao = true;
     },
   },
 };
@@ -144,20 +138,21 @@ export default {
   // margin: 0px 20px 0px 20px;//左侧的边距
   width: 100px;
   height: auto;
+  margin: 20px;
 }
-.el-card .card-pic{
+.el-card .card-pic {
   visibility: hidden;
 }
-.el-card:hover{
+.el-card:hover {
   cursor: pointer;
-  border:1px solid #42b983;
+  border: 1px solid #42b983;
 }
-.el-card:hover .card-pic{
-  visibility:visible ;
+.el-card:hover .card-pic {
+  visibility: visible;
 }
 .el-dropdown-link {
-    cursor: pointer;
-    color: gray;
+  cursor: pointer;
+  color: gray;
 }
 // 卡片内容样式
 .card-container {
@@ -185,19 +180,19 @@ export default {
   color: #999;
 }
 
-  .el-icon-arrow-down {
-    font-size: 12px;
+.el-icon-arrow-down {
+  font-size: 12px;
 }
-.el-icon-menu{
-    cursor:pointer;
+.el-icon-menu {
+  cursor: pointer;
 }
-.el-icon-menu:hover{
-    transform:scale(1.3);
+.el-icon-menu:hover {
+  transform: scale(1.3);
 }
-.el-icon-s-operation{
-    cursor:pointer;
+.el-icon-s-operation {
+  cursor: pointer;
 }
-.el-icon-s-operation:hover{
-    transform:scale(1.3);
+.el-icon-s-operation:hover {
+  transform: scale(1.3);
 }
 </style>

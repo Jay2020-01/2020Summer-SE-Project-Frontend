@@ -22,12 +22,12 @@
           </div>
         
         <!-- 测试新卡片 -->
-        <el-row >
+        <el-row>
           <el-col v-for="o in 8" :key="o" style="width:200px">
             <!-- span是说col标签能够影响的列数 -->
             <el-card :body-style="{ padding: '0px' }" shadow="hover">
               <div class="bottom clearfix" style="text-align:right">
-                <el-dropdown>
+                <el-dropdown placement="bottom">
                 <!-- 操作图标 -->
                 <div class="card-pic">
                   <span class="el-dropdown-link">
@@ -91,6 +91,7 @@ export default {
   // margin: 0px 20px 0px 20px;//左侧的边距
   width: 100px;
   height: auto;
+  margin:20px;
 }
 .el-card .card-pic{
   visibility: hidden;

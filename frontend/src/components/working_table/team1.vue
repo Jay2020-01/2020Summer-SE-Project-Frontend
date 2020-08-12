@@ -5,7 +5,7 @@
       <!-- 标签内容 -->
       <el-tab-pane label="团队名称1" name="first">
           <div style="text-align:right">
-            <el-dropdown >
+            <el-dropdown placement="bottom">
             <!-- 团队的一些操作 -->
             <span class="el-dropdown-link">
                 <i class="el-icon-setting el-icon--right"></i>
@@ -91,6 +91,7 @@ export default {
   // margin: 0px 20px 0px 20px;//左侧的边距
   width: 100px;
   height: auto;
+  margin: 20px;
 }
 .el-card .card-pic{
   visibility: hidden;

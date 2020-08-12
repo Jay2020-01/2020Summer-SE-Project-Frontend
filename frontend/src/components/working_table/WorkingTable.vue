@@ -4,9 +4,9 @@
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <!-- 标签内容 -->
       <el-tab-pane label="最近浏览" name="first">
-        <!-- 一行两个 -->
+        <!-- 一行三个 -->
         <el-row :gutter="12">
-          <el-col v-for="(o) in 2" :key="o" :span="8">
+          <el-col v-for="(o) in 5" :key="o" :span="8">
             <!-- 文件卡片 -->
             <el-card shadow="hover">
               <div class="card-container">
