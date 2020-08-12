@@ -6,7 +6,7 @@
         <el-col :span="6" :offset="0">
           <div class="grid-content head-box1 bg-purple">
             <!-- 头像区域 -->
-            <el-avatar icon="fa fa-diamond" style="color: #409eff; background-color: #fff !important;" :size="40">logo</el-avatar> 
+            <el-avatar icon="fa fa-diamond" style="color: #409eff; background-color: #fff !important; cursor:pointer;" :size="40" @click.native="backtoHome">logo</el-avatar> 
             <span class="site-name">钻石文档</span>
           </div>
         </el-col>
@@ -126,6 +126,10 @@ export default {
       window.sessionStorage.clear();
       this.$router.push("/editor");
     },
+    backtoHome(){
+      window.sessionStorage.clear();
+      this.$router.push("/home");
+    }
   },
   data() {
     return {
