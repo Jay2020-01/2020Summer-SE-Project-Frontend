@@ -21,38 +21,45 @@
           </el-popconfirm>
             <!-- <el-button type="primary" title="清空回收站" icon="el-icon-delete"></el-button> -->
         </div>
-        <!-- 一行两个 -->
-        <el-row :gutter="12">
-          <el-col v-for="(o) in 5" :key="o" :span="8">
-            <!-- 文件卡片 -->
-            <el-card shadow="hover">
-              <div class="card-container">
-                <!-- 图标 -->
-                <div class="picture inline-div">
-                  <span class="fa fa-file-text-o" style="font-size:25px"></span>
-                </div>
-                <!-- 文字 -->
-                <div class="word inline-div">
-                  <div class="tile">钻石文档</div>
-                  <div class="details">今天 10:20 我 打开</div>
-                </div>
-                
+
+        <!-- 测试新卡片 -->
+        <el-row >
+          <el-col v-for="o in 8" :key="o" style="width:200px">
+            <!-- span是说col标签能够影响的列数 -->
+            <el-card :body-style="{ padding: '0px' }" shadow="hover">
+              <div class="bottom clearfix" style="text-align:right">
                 <el-dropdown>
-                <!-- 后面的操作图标 -->
+                <!-- 操作图标 -->
+                <div class="card-pic">
                   <span class="el-dropdown-link">
-                    <i class="el-icon-arrow-down el-icon--right"></i>
+                    <i class="el-icon-setting el-icon--right"></i>
+                    
                     <!-- 下拉图标 -->
                   </span>
+                </div>
                   <el-dropdown-menu slot="dropdown">
                     <!-- 选项 -->
-                    <el-dropdown-item><i class="el-icon-refresh-left"></i>恢复文件</el-dropdown-item>
-                    <el-dropdown-item><i class="el-icon-delete"></i>彻底删除</el-dropdown-item>
+                    <el-dropdown-item><i class="el-icon-magic-stick"></i>新标签页打开</el-dropdown-item>
+                    <el-dropdown-item><i class="el-icon-delete"></i>删除</el-dropdown-item>
+                    <el-dropdown-item>其他操作请补充</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </div>
+            <!-- <center>
+              图标
+                <div class="picture inline-div">
+                  <span class="fa fa-file-text-o" style="font-size:50px"></span>
+                </div>
+            </center> -->
+            <i class="el-icon-document" style="font-size:50px"></i>
+
+            <div style="padding: 14px;">
+              <span>钻石文档</span>
+            </div>
             </el-card>
           </el-col>
         </el-row>
+
       </el-tab-pane>
 
     </el-tabs>
@@ -90,6 +97,26 @@ export default {
   margin: 20px;
 }
 // 卡片内容样式
+.el-card {
+  // margin: 0px 20px 0px 20px;//左侧的边距
+  width: 100px;
+  height: auto;
+}
+.el-card .card-pic{
+  visibility: hidden;
+}
+.el-card:hover{
+  cursor: pointer;
+  border:1px solid #42b983;
+}
+.el-card:hover .card-pic{
+  visibility:visible ;
+}
+.el-dropdown-link {
+    cursor: pointer;
+    color: gray;
+}
+
 .card-container {
   align-items: center;
   display: flex;
@@ -114,11 +141,4 @@ export default {
   font-size: 11px;
   color: #999;
 }
-.el-dropdown-link {
-    cursor: pointer;
-    color: #409EFF;
-  }
-  .el-icon-arrow-down {
-    font-size: 12px;
-  }
 </style>
