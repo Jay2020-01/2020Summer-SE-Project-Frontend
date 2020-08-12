@@ -9,7 +9,7 @@
               <!-- 顶部工具栏区域 -->
               <!-- 返回按钮 -->
               <el-tooltip class="item" effect="dark" content="返回" placement="bottom">
-                <el-button size="big" icon="fa fa-angle-left" style="border: none;" @click="backtoHome"></el-button>
+                <el-button size="big" icon="fa fa-angle-left" style="border: none;"></el-button>
               </el-tooltip>
               <!-- 文件名 -->
               <span style="margin-left: 13px; font-size: 14px;">文件名</span>
@@ -62,9 +62,6 @@ export default {
       window.sessionStorage.clear();
       this.$router.push("/myinfo");
     },
-    backtoHome(){
-      this.$router.push("/home");
-    }
   },
   components: {
     editor,
