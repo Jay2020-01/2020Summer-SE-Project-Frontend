@@ -6,7 +6,7 @@
         <el-col :span="6" :offset="0">
           <div class="grid-content head-box1 bg-purple">
             <!-- 头像区域 -->
-            <el-avatar icon="fa fa-diamond" :size="40">logo</el-avatar>
+            <el-avatar icon="fa fa-diamond" :size="40" @click.native="backtoHome" style="cursor:pointer">logo</el-avatar>
             <span class="site-name">钻石文档</span>
           </div>
         </el-col>
@@ -33,7 +33,7 @@
         <!-- 侧边栏菜单区域  default-active="1"没写-->
         <el-menu background-color="#fff" text-color="#535353" active-text-color="#409eff" router>
           <!-- 新建按钮 -->
-          <el-menu-item index="0">
+          <el-menu-item style="cursor:auto;shadow:none" index="0">
             <el-button size="midium" @click="newFile" type="primary" plain>新建文档</el-button>
           </el-menu-item>
           <!-- 不分级菜单 -->
@@ -61,16 +61,14 @@
               <i class="fa fa-cube" style="padding: 0 10px 0 10px"></i>
               <!-- 文本 -->
               <span>团队空间</span>
-              <!-- 新增团队按钮 -->
-              <i class="add-team fa fa-plus-circle" @click="dialogFormVisible = true"></i>
             </template>
             <!-- 二级菜单 -->
-            <el-menu-item class="second-menu" index="4-1">
+            <el-menu-item index="4-1">
               <template slot="title">
                 <!-- 图标 -->
                 <!-- <i class="el-icon-location"></i> -->
                 <!-- 文本 -->
-                <span>团队名称1</span>
+                <span >团队名称1</span>
               </template>
             </el-menu-item>
             <el-menu-item index="4-2">
@@ -91,24 +89,6 @@
       </el-aside>
       <!-- 右侧内容主体 -->
       <el-main>
-        <!-- 隐藏的新建团队表单 -->
-        <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
-          <el-form :model="form">
-            <el-form-item label="活动名称" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="活动区域" :label-width="formLabelWidth">
-              <el-select v-model="form.region" placeholder="请选择活动区域">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-          </div>
-        </el-dialog>
         <!-- 路由占位符 -->
         <router-view></router-view>
       </el-main>
@@ -131,22 +111,10 @@ export default {
       window.sessionStorage.clear();
       this.$router.push("/editor");
     },
-  },
-  data() {
-    return {
-      dialogFormVisible: false,
-      form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
-      },
-      formLabelWidth: "120px",
-    };
+    backtoHome(){
+      window.sessionStorage.clear();
+      this.$router.push("/home");
+    }
   },
 };
 </script>
@@ -222,16 +190,5 @@ body > .el-container {
   align-items: center;
   // margin: 2.5px 0;
   // background-color: #f9fafc;
-}
-
-// 二级菜单样式
-.second-menu {
-  padding-left: 50px !important;
-  color: #7a7d81 !important;
-  font-size: 12px !important;
-}
-// 新增团队按钮
-.add-team {
-  padding: 0 10px;
 }
 </style>
