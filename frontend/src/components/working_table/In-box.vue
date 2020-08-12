@@ -20,7 +20,7 @@
                   <div class="details">今天 10:20 我 打开</div>
                 </div>
                 
-                <el-dropdown>
+                <el-dropdown placement="bottom">
                 <!-- 后面的操作图标 -->
                   <span class="el-dropdown-link">
                     <i class="el-icon-arrow-down el-icon--right"></i>

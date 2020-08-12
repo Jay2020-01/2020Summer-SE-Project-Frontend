@@ -6,7 +6,7 @@
         <el-col :span="6" :offset="0">
           <div class="grid-content head-box1 bg-purple">
             <!-- 头像区域 -->
-            <el-avatar icon="fa fa-diamond" :size="40">logo</el-avatar>
+            <el-avatar icon="fa fa-diamond" style="color: #409eff; background-color: #fff !important;" :size="40">logo</el-avatar>
             <span class="site-name">钻石文档</span>
           </div>
         </el-col>
@@ -73,7 +73,7 @@
                 <span>团队名称1</span>
               </template>
             </el-menu-item>
-            <el-menu-item index="4-2">
+            <el-menu-item class="second-menu" index="4-2">
               <template slot="title">
                 <!-- 图标 -->
                 <!-- <i class="el-icon-location"></i> -->
@@ -92,16 +92,11 @@
       <!-- 右侧内容主体 -->
       <el-main>
         <!-- 隐藏的新建团队表单 -->
-        <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+        <el-dialog title="新建团队空间" :visible.sync="dialogFormVisible">
           <el-form :model="form">
-            <el-form-item label="活动名称" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="活动区域" :label-width="formLabelWidth">
-              <el-select v-model="form.region" placeholder="请选择活动区域">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
-              </el-select>
+            <el-form-item>
+              <span style="float: left;">空间名称</span>
+              <el-input v-model="form.name" placeholder="请输入" autocomplete="off"></el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -198,7 +193,7 @@ body > .el-container {
   margin: 10px 15px 10px 30px;
 }
 .site-name {
-  font-size: 30px;
+  font-size: 20px;
   color: #409eff;
 }
 .head-box3 {
