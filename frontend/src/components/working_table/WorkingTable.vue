@@ -19,6 +19,21 @@
                   <div class="tile">钻石文档</div>
                   <div class="details">今天 10:20 我 打开</div>
                 </div>
+
+                <el-dropdown placement="bottom">
+                <!-- 后面的操作图标 -->
+                  <span class="el-dropdown-link">
+                    <i class="el-icon-arrow-down el-icon--right"></i>
+                    <!-- 下拉图标 -->
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <!-- 选项 -->
+                    <el-dropdown-item><i class="el-icon-magic-stick"></i>新标签页打开</el-dropdown-item>
+                    <el-dropdown-item><i class="el-icon-delete"></i>删除</el-dropdown-item>
+                    <el-dropdown-item>其他操作请补充</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+
               </div>
             </el-card>
           </el-col>
@@ -82,4 +97,11 @@ export default {
   font-size: 11px;
   color: #999;
 }
+.el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
 </style>
