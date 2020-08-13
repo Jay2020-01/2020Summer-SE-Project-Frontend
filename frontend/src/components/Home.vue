@@ -6,13 +6,24 @@
         <el-col :span="6" :offset="0">
           <div class="grid-content head-box1 bg-purple">
             <!-- 头像区域 -->
-            <el-avatar icon="fa fa-diamond" style="color: #409eff; background-color: #fff !important; cursor:pointer;" :size="40" @click.native="backtoHome">logo</el-avatar> 
+            <el-avatar
+              icon="fa fa-diamond"
+              style="color: #409eff; background-color: #fff !important; cursor:pointer;"
+              :size="40"
+              @click.native="backtoHome"
+            >logo</el-avatar>
             <span class="site-name">钻石文档</span>
           </div>
         </el-col>
         <el-col :span="5" :offset="7">
           <div class="grid-content head-box2 bg-purple-light">
-            <el-input prefix-icon="fa fa-search" placeholder="搜索文档" v-model="input" size="small" clearable></el-input>
+            <el-input
+              prefix-icon="fa fa-search"
+              placeholder="搜索文档"
+              v-model="input"
+              size="small"
+              clearable
+            ></el-input>
           </div>
         </el-col>
         <el-col :span="6">
@@ -33,12 +44,12 @@
         <!-- 侧边栏菜单区域  default-active="1"没写-->
         <el-menu background-color="#fff" text-color="#535353" active-text-color="#409eff" router>
           <!-- 新建按钮 -->
-            <!-- old-code -->
-            <!-- <el-menu-item class="ceshi">
+          <!-- old-code -->
+          <!-- <el-menu-item class="ceshi">
               <el-button size="midium" @click="newFile" type="primary" plain>新建文档</el-button>
-            </el-menu-item> -->
+          </el-menu-item>-->
           <div class="new-doc">
-           <el-button size="midium" @click="newFile" type="primary" plain>新建文档</el-button>
+            <el-button size="midium" @click="newFile" type="primary" plain>新建文档</el-button>
           </div>
           <!-- 不分级菜单 -->
           <el-menu-item index="1">
@@ -95,7 +106,7 @@
       </el-aside>
       <!-- 右侧内容主体 -->
       <el-main>
-       <!-- 隐藏的新建团队表单 -->
+        <!-- 隐藏的新建团队表单 -->
         <el-dialog title="新建团队空间" :visible.sync="dialogFormVisible">
           <el-form :model="form">
             <el-form-item>
@@ -130,13 +141,14 @@ export default {
       window.sessionStorage.clear();
       this.$router.push("/editor");
     },
-    backtoHome(){
+    backtoHome() {
       window.sessionStorage.clear();
       this.$router.push("/home");
-    }
+    },
   },
   data() {
     return {
+      input: "",
       dialogFormVisible: false,
       form: {
         name: "",
@@ -237,13 +249,13 @@ body > .el-container {
 .add-team {
   padding: 0 10px;
 }
-.new-doc{
-  width:199px;
-  height:56px;
+.new-doc {
+  width: 199px;
+  height: 56px;
   line-height: 56px;
   // background-color: blue;
-  text-align:center;
-  display:table-cell;
-  vertical-align:middle;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
 }
 </style>

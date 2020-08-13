@@ -1,8 +1,7 @@
 <template>
   <div class="editor-container">
-    {{editorContent}}
+    <!-- {{editorContent}} -->
     <div id="editorElem" style="text-align:left;"></div>
-    
   </div>
 </template>
 <script>
@@ -186,7 +185,7 @@ ol {
 
 /* 工具栏 */
 .w-e-toolbar {
-  background-color:#f7f7f7 !important;
+  background-color: #f7f7f7 !important;
   width: 826px !important;
   margin: 0 auto;
   /* box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1) !important; */
@@ -209,5 +208,13 @@ ol {
   border: 0 !important;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1) !important;
   background-color: #ffffff !important;
+
+  /* border-bottom: 0px solid !important;
+  border-left: 0px solid !important;
+  border-right: 0px solid !important;
+  border-top: 0px solid !important;
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+  border: 0 !important; */
 }
 </style>
