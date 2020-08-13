@@ -139,7 +139,7 @@ export default {
 // 新卡片样式
 
 .bottom {
-    margin-top: 13px;
+    // margin-top: 13px;
     line-height: 12px;
 }
 
