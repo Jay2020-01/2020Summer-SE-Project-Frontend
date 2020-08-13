@@ -68,6 +68,8 @@
             <i class="fa fa-desktop" style="padding: 0 10px 0 10px"></i>
             <span slot="title">我的桌面</span>
           </el-menu-item>
+
+
           <!-- 一级菜单 -->
           <el-submenu index="4">
             <!-- 一级菜单模板区域 -->
@@ -77,8 +79,11 @@
               <!-- 文本 -->
               <span>团队空间</span>
               <!-- 新增团队按钮 -->
-              <i class="add-team fa fa-plus-circle" @click="dialogFormVisible = true"></i>
+              <span>
+                <i class="add-team fa fa-plus-circle" @click.stop="dialogFormVisible = true"></i>
+              </span>
             </template>
+            
             <!-- 二级菜单 -->
             <el-menu-item class="second-menu" index="4-1">
               <template slot="title">
@@ -97,6 +102,7 @@
               </template>
             </el-menu-item>
           </el-submenu>
+
           <!-- 不分级菜单 -->
           <el-menu-item index="5">
             <i class="fa fa-trash-o" style="padding: 0 12px 0 11px"></i>
@@ -249,9 +255,12 @@ body > .el-container {
 .add-team {
   padding: 0 10px;
 }
-.new-doc {
-  width: 199px;
-  height: 56px;
+.add-team:hover{
+  transform: scale(1.4);
+}
+.new-doc{
+  width:199px;
+  height:56px;
   line-height: 56px;
   // background-color: blue;
   text-align: center;

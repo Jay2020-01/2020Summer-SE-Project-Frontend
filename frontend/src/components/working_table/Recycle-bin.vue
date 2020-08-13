@@ -8,8 +8,14 @@
         <h6>这里是为了显示清空回收站按钮选择的哪一个，并方便以绑定事件,之后请删除</h6>
         <h5>点击了"{{qingkong}}"</h5>
         <!-- 清空回收站图标与弹出框 -->
+
+        <div style="text-align:right">
+        <el-button type="danger" title="清空回收站" @click="open" ><i class="el-icon-delete"></i></el-button>
+        </div>
+        <!-- 以前的清空回收站
         <div style="text-align:right">
           <el-popconfirm
+            popper-class="ceshi2"
             confirmButtonText="好的"
             cancelButtonText="不用了"
             icon="el-icon-info"
@@ -21,8 +27,8 @@
               <i class="el-icon-delete"></i>
             </el-button>
           </el-popconfirm>
-          <!-- <el-button type="primary" title="清空回收站" icon="el-icon-delete"></el-button> -->
         </div>
+        over -->
 
         <!-- 测试新卡片 -->
         <el-row>
@@ -85,6 +91,27 @@ export default {
     confirm() {
       this.qingkong = "确定";
     },
+    // open
+    open() {
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.qingkong="清空回收站";
+          // 这里就是以后绑定事件写代码的地方
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+      },
+    // end
   },
 };
 </script>
@@ -144,5 +171,13 @@ export default {
   margin-top: 3px;
   font-size: 11px;
   color: #999;
+}
+.el-popconfirm{
+  background-color: blue;
+}
+.ceshi2{
+  background-color: blue;
+  border-width: 2px;
+  border-color: blue;
 }
 </style>
