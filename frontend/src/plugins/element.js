@@ -2,7 +2,7 @@ import Vue from 'vue'
 import { Button, Form, FormItem, Input, Container, Header, Aside, Main, 
     Menu, Submenu, MenuItemGroup, MenuItem, Row, Col, Avatar, Tabs, TabPane,
     Card, Dropdown, DropdownMenu,DropdownItem, Table, TableColumn, Popconfirm,
-    Upload, Tooltip, Dialog } from 'element-ui'
+    Upload, Tooltip, Dialog, MessageBox, Message } from 'element-ui'
 
 Vue.use(Button)
 Vue.use(Form)
@@ -31,3 +31,8 @@ Vue.use(Upload)
 Vue.use(Popconfirm)
 Vue.use(Tooltip)
 Vue.use(Dialog)
+
+//全局挂载
+Vue.prototype.$message=Message
+Vue.prototype.$confirm=MessageBox.confirm
+Vue.prototype.$alert=MessageBox.alert
