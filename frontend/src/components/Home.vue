@@ -12,7 +12,7 @@
         </el-col>
         <el-col :span="5" :offset="7">
           <div class="grid-content head-box2 bg-purple-light">
-            <el-input placeholder="搜索内容" v-model="input" size="small" clearable></el-input>
+            <el-input prefix-icon="fa fa-search" placeholder="搜索文档" v-model="input" size="small" clearable></el-input>
           </div>
         </el-col>
         <el-col :span="6">
