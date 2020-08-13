@@ -33,9 +33,13 @@
         <!-- 侧边栏菜单区域  default-active="1"没写-->
         <el-menu background-color="#fff" text-color="#535353" active-text-color="#409eff" router>
           <!-- 新建按钮 -->
-          <el-menu-item index="0">
-            <el-button size="midium" @click="newFile" type="primary" plain>新建文档</el-button>
-          </el-menu-item>
+            <!-- old-code -->
+            <!-- <el-menu-item class="ceshi">
+              <el-button size="midium" @click="newFile" type="primary" plain>新建文档</el-button>
+            </el-menu-item> -->
+          <div class="new-doc">
+           <el-button size="midium" @click="newFile" type="primary" plain>新建文档</el-button>
+          </div>
           <!-- 不分级菜单 -->
           <el-menu-item index="1">
             <i class="fa fa-archive" style="padding: 0 10px 0 10px"></i>
@@ -232,5 +236,14 @@ body > .el-container {
 // 新增团队按钮
 .add-team {
   padding: 0 10px;
+}
+.new-doc{
+  width:199px;
+  height:56px;
+  line-height: 56px;
+  // background-color: blue;
+  text-align:center;
+  display:table-cell;
+  vertical-align:middle;
 }
 </style>
