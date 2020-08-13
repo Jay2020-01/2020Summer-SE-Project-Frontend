@@ -1,18 +1,39 @@
 <template>
-  <div class="login_container" background>
+  <div
+    class="login_container"
+    background
+  >
     <div class="login_box">
       <!-- 头像区域 -->
       <div class="avatar_box">
-        <img src="../assets/logo.png" alt />
+        <img
+          src="../assets/logo.png"
+          alt
+        >
       </div>
       <!-- 登录表单区域 -->
-      <el-form ref="loginForm" :model="loginForm" class="login_form" label-width="0px">
+      <el-form
+        ref="loginForm"
+        :model="loginForm"
+        class="login_form"
+        label-width="0px"
+      >
         <!-- 用户名 -->
-        <el-form-item label prop="username">
-          <el-input v-model="loginForm.username" prefix-icon="fa fa-user" placeholder="用户名" />
+        <el-form-item
+          label
+          prop="username"
+        >
+          <el-input
+            v-model="loginForm.username"
+            prefix-icon="fa fa-user"
+            placeholder="用户名"
+          />
         </el-form-item>
         <!-- 密码 -->
-        <el-form-item label prop="password">
+        <el-form-item
+          label
+          prop="password"
+        >
           <el-input
             v-model="loginForm.password"
             show-password
@@ -21,10 +42,28 @@
           />
         </el-form-item>
         <!-- 按钮区域 -->
-        <el-form-item class="btns" label>
-          <el-button type="primary" @click="login('loginForm')">登录</el-button>
-          <el-button type="primary" @click="toregister">注册</el-button>
-          <el-button type="info" @click="reset">重置</el-button>
+        <el-form-item
+          class="btns"
+          label
+        >
+          <el-button
+            type="primary"
+            @click="login('loginForm')"
+          >
+            登录
+          </el-button>
+          <el-button
+            type="primary"
+            @click="toregister"
+          >
+            注册
+          </el-button>
+          <el-button
+            type="info"
+            @click="reset"
+          >
+            重置
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -32,52 +71,43 @@
 </template>
 
 <script>
-import axios from "axios";
-import Qs from "qs";
+import Qs from 'qs'
 export default {
-  data() {
+  data () {
     return {
       // 登录表单的数据绑定对象
       loginForm: {
-        username: "",
-        password: "",
-      },
-    };
+        username: '',
+        password: ''
+      }
+    }
   },
   methods: {
-    tohome() {
-      this.$router.push("/home");
+    tohome () {
+      this.$router.push('/home')
     },
-    toregister() {
-      this.$router.push("/register");
+    toregister () {
+      this.$router.push('/register')
     },
-    reset() {
-      this.$refs.loginForm.resetFields();
+    reset () {
+      this.$refs.loginForm.resetFields()
     },
     // 登录
-    login(formName) {
+    login (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          var data = Qs.stringify({
-            username: this.loginForm.username,
-            password: this.loginForm.password,
-          });
+          var data = Qs.stringify({ username: this.loginForm.username, password: this.loginForm.password })
           // 向后端发送请求
-          axios.post("ajax/login/", data).then((resp) => {
-            const flag = resp.data.request.flag;
-            if (flag === "yes") {
-              this.$router.push("/home");
-            } else {
-              alert(resp.data.request.msg);
-            }
-          });
+          this.$store.dispatch('login', data)
+            .then(() => this.$router.push('/home'))
+            .catch(err => console.log(err))
         } else {
-          alert("出现错误，请重试");
+          alert('提交表单出现错误')
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

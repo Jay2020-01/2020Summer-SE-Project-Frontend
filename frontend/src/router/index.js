@@ -12,30 +12,45 @@ import Recyclebin from '../components/working_table/Recycle-bin.vue'
 import Team1 from '../components/working_table/team1.vue'
 import Team2 from '../components/working_table/team2.vue'
 
+import store from '../store/index.js'
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', redirect: '/4-1' },
+  { path: '/', redirect: '/login' },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
-  { path: '/editor', component: Editor},
+  { path: '/editor', component: Editor, meta: { requiresAuth: true } },
   {
     path: '/home',
     component: Home,
     children: [
-      {path: '/1', component: WorkingTable},
-      {path: '/myinfo', component: MyInfo},
-      {path: '/2', component: Inbox},
-      {path: '/3', component: Mydesktop},
-      {path: '/4-1', component: Team1},
-      {path: '/4-2', component: Team2},
-      {path: '/5', component: Recyclebin}
-    ]
+      { path: '/1', component: WorkingTable, meta: { requiresAuth: true } },
+      { path: '/myinfo', component: MyInfo, meta: { requiresAuth: true } },
+      { path: '/2', component: Inbox, meta: { requiresAuth: true } },
+      { path: '/3', component: Mydesktop, meta: { requiresAuth: true } },
+      { path: '/4-1', component: Team1, meta: { requiresAuth: true } },
+      { path: '/4-2', component: Team2, meta: { requiresAuth: true } },
+      { path: '/5', component: Recyclebin, meta: { requiresAuth: true } }
+    ],
+    meta: { requiresAuth: true }
   }
 ]
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isLoggedIn) {
+      next()
+      return
+    }
+    console.log(2222)
+    next('/login')
+  } else {
+    next()
+  }
 })
 
 export default router
