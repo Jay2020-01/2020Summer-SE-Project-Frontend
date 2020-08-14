@@ -40,23 +40,42 @@
             />
           </div>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="6" style="height:60px">
           <div class="grid-content head-box3 bg-purple">
-            <div>
-              <el-button
-                size="small"
-                @click="changeInfo"
-              >
-                修改信息
-              </el-button>
-              <el-button
-                size="small"
-                @click="logout"
-              >
-                退出
-              </el-button>
-              <!-- <el-button size="samll" @click="logout">退出</el-button> -->
-            </div>
+            <!-- 通知图标 -->
+            <el-dropdown>
+              <span class="el-dropdown-link">
+                <i class="el-icon-bell" style="height:60px;font-size:25px;"></i>
+              </span>
+              <!-- 通知图标下面的下拉栏 -->
+              <el-dropdown-menu slot="dropdown">
+                <!-- 这里好像要用嵌套路由来写下面的内容 -->
+                <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+                  <el-menu-item>全部消息</el-menu-item>
+                  <el-menu-item>未读消息</el-menu-item>
+                  <el-menu-item><el-button>全部标为已读</el-button></el-menu-item>
+                </el-menu>
+              </el-dropdown-menu>
+            </el-dropdown>
+
+            <!-- 这里是右上角的头像 -->
+            <el-dropdown>
+              <span class="el-dropdown-link">
+                <div>
+                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                </div>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item disabled>{{username}}</el-dropdown-item>
+                <el-dropdown-item disabled>{{mail_address}}</el-dropdown-item>
+                <!-- <el-divider></el-divider> -->
+                <!-- <el-dropdown-item >个人信息</el-dropdown-item> -->
+                <el-divider><i class="el-icon-mobile-phone"></i></el-divider>
+                <el-dropdown-item @click.native="changeInfo">修改信息</el-dropdown-item>
+                <el-dropdown-item style="color:red;" @click.native="logout">退出登录</el-dropdown-item>
+                
+              </el-dropdown-menu>
+            </el-dropdown>
           </div>
         </el-col>
       </el-row>
@@ -222,7 +241,10 @@ export default {
       teamForm: {
         name: ''
       },
-      formLabelWidth: '120px'
+      formLabelWidth: '120px',
+      //改：根据登陆人员的的信息改(可能是表单形式)
+      username: '檠莲焰',
+      mail_address: '921049836@qq.com',
     }
   },
   methods: {
@@ -351,5 +373,12 @@ body > .el-container {
   text-align: center;
   display: table-cell;
   vertical-align: middle;
+}
+.el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+  }
+.el-icon-arrow-down {
+  font-size: 12px;
 }
 </style>
