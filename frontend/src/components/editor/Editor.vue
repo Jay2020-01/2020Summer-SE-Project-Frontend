@@ -20,13 +20,22 @@
               <span style="margin-left: 13px; font-size: 14px;">文件名</span>
               <!-- 收藏按钮 -->
               <el-tooltip class="item" effect="dark" content="收藏" placement="bottom">
-                <el-button
-                  size="big"
-                  style="border: none; margin-left: 13px;"
-                  @click="onlike"
-                ><i class="el-icon-collection-tag" :style="!islike?'':'color:red;font-weight:1000;'"></i></el-button>
+                <el-button size="big" style="border: none; margin-left: 13px;" @click="onlike">
+                  <i
+                    class="el-icon-collection-tag"
+                    :style="!islike?'':'color:red;font-weight:1000;'"
+                  ></i>
+                </el-button>
               </el-tooltip>
-              <span style="margin-left: 13px; color:#a5a5a5; font-size: 14px;">文档将自动保存</span>
+              <!-- 保存按钮 -->
+              <el-tooltip class="item" effect="dark" content="保存" placement="bottom">
+                <el-button size="big" style="border: none; margin-left: 13px;" @click="clickSave">
+                  <i class="fa fa-save"></i>
+                </el-button>
+              </el-tooltip>
+
+              <!-- 自动保存文字(已废请保留) -->
+              <!-- <span style="margin-left: 13px; color:#a5a5a5; font-size: 14px;">文档将自动保存</span> -->
             </div>
           </el-col>
           <el-col :span="5" :offset="7">
@@ -50,7 +59,8 @@
         <!-- 右侧内容主体 -->
         <el-main>
           <!-- <editor :content="content" @editorContent="getEditorContent"></editor> -->
-          <editor v-model="content"  @editorContent="getEditorContent"></editor>
+          <!-- 测试按钮 -->
+          <editor v-model="content" @editorContent="getEditorContent"></editor>
           <el-button size="small" @click="newdoc">测试</el-button>
         </el-main>
       </el-container>
@@ -84,11 +94,11 @@ export default {
     newdoc() {
       // alert(this.content);
       var data = Qs.stringify({
-        title: 'test',
+        title: "test",
         content: this.content,
       });
       axios.post("ajax/newdoc/", data).then((resp) => {
-        const flag = resp.data['flag'];
+        const flag = resp.data["flag"];
         if (flag == "yes") {
           alert("saved!");
         } else {
@@ -96,23 +106,30 @@ export default {
         }
       });
     },
-    onlike(){
-      this.islike=!this.islike;
-      if(this.islike){
+    // 点击收藏的提示信息
+    onlike() {
+      this.islike = !this.islike;
+      if (this.islike) {
         this.$message({
-        message:'收藏成功',
-        type:'success'
-        })
-      }
-      else{
+          message: "收藏成功",
+          type: "success",
+        });
+      } else {
         this.$message({
-        message:'取消收藏',
-        type:'warning'
-        })
+          message: "取消收藏",
+          type: "warning",
+        });
       }
-      
-    }
+    },
+    // 点击保存的提示信息
+    clickSave() {
+      this.$message({
+        message: "已保存",
+        type: "success",
+      });
+    },
   },
+
   components: {
     editor,
   },
@@ -122,7 +139,7 @@ export default {
       // 编辑器内容
       content: "",
       //收藏按钮
-      islike:false,
+      islike: false,
     };
   },
 };
