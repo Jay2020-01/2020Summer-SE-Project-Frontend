@@ -16,7 +16,7 @@ import store from '../store/index.js'
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', redirect: '/login' },
+  { path: '/', redirect: '/home' },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
   { path: '/editor', component: Editor, meta: { requiresAuth: true } },
@@ -40,17 +40,17 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (store.getters.isLoggedIn) {
-      next()
-      return
-    }
-    console.log(2222)
-    next('/login')
-  } else {
-    next()
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some(record => record.meta.requiresAuth)) {
+//     if (store.getters.isLoggedIn) {
+//       next()
+//       return
+//     }
+//     console.log(2222)
+//     next('/login')
+//   } else {
+//     next()
+//   }
+// })
 
 export default router
