@@ -12,7 +12,7 @@
         <el-button
           style="float: right; padding: 3px 0"
           type="text"
-          @click="confirmModify('registerForm')"
+          @click="confirm_modify('registerForm')"
         >
           确认修改
         </el-button>
@@ -119,7 +119,7 @@ export default {
     tologin () {
       this.$router.push('/login')
     },
-    confirmModify (formName) {
+    confirm_modify (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           var data = Qs.stringify(this.registerForm)

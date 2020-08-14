@@ -1,9 +1,18 @@
 <template>
   <el-container class="home-container">
     <!-- 头部区域 -->
-    <el-header height="60px" direction="horizontal">
-      <el-row type="flex" class="row-bg">
-        <el-col :span="6" :offset="0">
+    <el-header
+      height="60px"
+      direction="horizontal"
+    >
+      <el-row
+        type="flex"
+        class="row-bg"
+      >
+        <el-col
+          :span="6"
+          :offset="0"
+        >
           <div class="grid-content head-box1 bg-purple">
             <!-- 头像区域 -->
             <el-avatar
@@ -11,26 +20,41 @@
               style="color: #409eff; background-color: #fff !important; cursor:pointer;"
               :size="40"
               @click.native="backtoHome"
-            >logo</el-avatar>
+            >
+              logo
+            </el-avatar>
             <span class="site-name">钻石文档</span>
           </div>
         </el-col>
-        <el-col :span="5" :offset="7">
+        <el-col
+          :span="5"
+          :offset="7"
+        >
           <div class="grid-content head-box2 bg-purple-light">
             <el-input
+              v-model="input"
               prefix-icon="fa fa-search"
               placeholder="搜索文档"
-              v-model="input"
               size="small"
               clearable
-            ></el-input>
+            />
           </div>
         </el-col>
         <el-col :span="6">
           <div class="grid-content head-box3 bg-purple">
             <div>
-              <el-button size="small" @click="changeInfo">修改信息</el-button>
-              <el-button size="small" @click="logout">退出</el-button>
+              <el-button
+                size="small"
+                @click="changeInfo"
+              >
+                修改信息
+              </el-button>
+              <el-button
+                size="small"
+                @click="logout"
+              >
+                退出
+              </el-button>
               <!-- <el-button size="samll" @click="logout">退出</el-button> -->
             </div>
           </div>
@@ -42,50 +66,79 @@
       <!-- 侧边栏 -->
       <el-aside width="200px">
         <!-- 侧边栏菜单区域  default-active="1"没写-->
-        <el-menu background-color="#fff" text-color="#535353" active-text-color="#409eff" router>
+        <el-menu
+          background-color="#fff"
+          text-color="#535353"
+          active-text-color="#409eff"
+          router
+        >
           <!-- 新建按钮 -->
           <!-- old-code -->
           <!-- <el-menu-item class="ceshi">
               <el-button size="midium" @click="newFile" type="primary" plain>新建文档</el-button>
           </el-menu-item>-->
           <div class="new-doc">
-            <el-button size="midium" @click="newFile" type="primary" plain>新建文档</el-button>
+            <el-button
+              size="midium"
+              type="primary"
+              plain
+              @click="newFile"
+            >
+              新建文档
+            </el-button>
           </div>
           <!-- 不分级菜单 -->
           <el-menu-item index="1">
-            <i class="fa fa-archive" style="padding: 0 10px 0 10px"></i>
+            <i
+              class="fa fa-archive"
+              style="padding: 0 10px 0 10px"
+            />
             <span slot="title">工作台</span>
           </el-menu-item>
           <!-- 不分级菜单 -->
           <el-menu-item index="2">
-            <i class="fa fa-envelope-o" style="padding: 0 10px 0 10px"></i>
+            <i
+              class="fa fa-envelope-o"
+              style="padding: 0 10px 0 10px"
+            />
             <span slot="title">收件箱</span>
           </el-menu-item>
           <!-- 分割线 -->
-          <div style="margin: 8px 20px; height: 1.5px; background-color: rgb(230, 230, 230);"></div>
+          <div style="margin: 8px 20px; height: 1.5px; background-color: rgb(230, 230, 230);" />
           <!-- 不分级菜单 -->
           <el-menu-item index="3">
-            <i class="fa fa-desktop" style="padding: 0 10px 0 10px"></i>
+            <i
+              class="fa fa-desktop"
+              style="padding: 0 10px 0 10px"
+            />
             <span slot="title">我的桌面</span>
           </el-menu-item>
-
 
           <!-- 一级菜单 -->
           <el-submenu index="4">
             <!-- 一级菜单模板区域 -->
             <template slot="title">
               <!-- 图标 -->
-              <i class="fa fa-cube" style="padding: 0 10px 0 10px"></i>
+              <i
+                class="fa fa-cube"
+                style="padding: 0 10px 0 10px"
+              />
               <!-- 文本 -->
               <span>团队空间</span>
               <!-- 新增团队按钮 -->
               <span>
-                <i class="add-team fa fa-plus-circle" @click.stop="dialogFormVisible = true"></i>
+                <i
+                  class="add-team fa fa-plus-circle"
+                  @click.stop="dialogFormVisible = true"
+                />
               </span>
             </template>
-            
+
             <!-- 二级菜单 -->
-            <el-menu-item class="second-menu" index="4-1">
+            <el-menu-item
+              class="second-menu"
+              index="4-1"
+            >
               <template slot="title">
                 <!-- 图标 -->
                 <!-- <i class="el-icon-location"></i> -->
@@ -93,7 +146,10 @@
                 <span>团队名称1</span>
               </template>
             </el-menu-item>
-            <el-menu-item class="second-menu" index="4-2">
+            <el-menu-item
+              class="second-menu"
+              index="4-2"
+            >
               <template slot="title">
                 <!-- 图标 -->
                 <!-- <i class="el-icon-location"></i> -->
@@ -105,7 +161,10 @@
 
           <!-- 不分级菜单 -->
           <el-menu-item index="5">
-            <i class="fa fa-trash-o" style="padding: 0 12px 0 11px"></i>
+            <i
+              class="fa fa-trash-o"
+              style="padding: 0 12px 0 11px"
+            />
             <span slot="title">回收站</span>
           </el-menu-item>
         </el-menu>
@@ -113,63 +172,89 @@
       <!-- 右侧内容主体 -->
       <el-main>
         <!-- 隐藏的新建团队表单 -->
-        <el-dialog title="新建团队空间" :visible.sync="dialogFormVisible">
-          <el-form :model="form">
-            <el-form-item>
+        <el-dialog
+          title="新建团队空间"
+          :visible.sync="dialogFormVisible"
+        >
+          <el-form
+            ref="teamForm"
+            :model="teamForm"
+          >
+            <el-form-item prop="name">
               <span style="float: left;">空间名称</span>
-              <el-input v-model="form.name" placeholder="请输入" autocomplete="off"></el-input>
+              <el-input
+                v-model="teamForm.name"
+                placeholder="请输入"
+                autocomplete="off"
+              />
             </el-form-item>
           </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+          <div
+            slot="footer"
+            class="dialog-footer"
+          >
+            <el-button @click="dialogFormVisible = false">
+              取 消
+            </el-button>
+            <el-button
+              type="primary"
+              @click="dialogFormVisible = false; createTeam('teamForm') "
+            >
+              确 定
+            </el-button>
           </div>
         </el-dialog>
         <!-- 路由占位符 -->
-        <router-view></router-view>
+        <router-view />
       </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
+import axios from 'axios'
+import Qs from 'qs'
 export default {
-  methods: {
-    logout() {
-      window.sessionStorage.clear();
-      this.$router.push("/login");
-    },
-    changeInfo() {
-      window.sessionStorage.clear();
-      this.$router.push("/myinfo");
-    },
-    newFile() {
-      window.sessionStorage.clear();
-      this.$router.push("/editor");
-    },
-    backtoHome() {
-      window.sessionStorage.clear();
-      this.$router.push("/home");
-    },
-  },
-  data() {
+  data () {
     return {
-      input: "",
+      input: '',
       dialogFormVisible: false,
-      form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
+      teamForm: {
+        name: ''
       },
-      formLabelWidth: "120px",
-    };
+      formLabelWidth: '120px'
+    }
   },
-};
+  methods: {
+    createTeam (formName) {
+      // 验证表单
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          var data = Qs.stringify(this.teamForm) // 先用Qs对数据进行处理
+          axios.post('ajax/create_team/', data).then().catch(err => console.log(err))
+        } else {
+          alert('表格不能为空')
+        }
+      })
+    },
+    logout () {
+      window.sessionStorage.clear()
+      this.$router.push('/login')
+    },
+    changeInfo () {
+      window.sessionStorage.clear()
+      this.$router.push('/myinfo')
+    },
+    newFile () {
+      window.sessionStorage.clear()
+      this.$router.push('/editor')
+    },
+    backtoHome () {
+      window.sessionStorage.clear()
+      this.$router.push('/home')
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
