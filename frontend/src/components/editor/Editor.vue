@@ -22,9 +22,9 @@
               <el-tooltip class="item" effect="dark" content="收藏" placement="bottom">
                 <el-button
                   size="big"
-                  icon="	fa fa-bookmark-o"
                   style="border: none; margin-left: 13px;"
-                ></el-button>
+                  @click="onlike"
+                ><i class="el-icon-collection-tag" :style="!islike?'':'color:red;font-weight:1000;'"></i></el-button>
               </el-tooltip>
               <span style="margin-left: 13px; color:#a5a5a5; font-size: 14px;">文档将自动保存</span>
             </div>
@@ -96,6 +96,22 @@ export default {
         }
       });
     },
+    onlike(){
+      this.islike=!this.islike;
+      if(this.islike){
+        this.$message({
+        message:'收藏成功',
+        type:'success'
+        })
+      }
+      else{
+        this.$message({
+        message:'取消收藏',
+        type:'warning'
+        })
+      }
+      
+    }
   },
   components: {
     editor,
@@ -105,6 +121,8 @@ export default {
       input: "",
       // 编辑器内容
       content: "",
+      //收藏按钮
+      islike:false,
     };
   },
 };
@@ -185,4 +203,7 @@ body > .el-container {
   // margin: 2.5px 0;
   // background-color: #f9fafc;
 }
+// .el-icon-collection-tag{
+//   color: red;
+// }
 </style>
