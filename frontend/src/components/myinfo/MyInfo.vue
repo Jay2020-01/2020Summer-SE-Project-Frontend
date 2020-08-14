@@ -94,16 +94,28 @@ export default {
     return {
       // 注册表单的数据绑定对象
       registerForm: {
-        username: 'Tom',
-        password: '12345',
+        username: '',
+        password: '',
         confirm_password: '',
-        phone_number: '400-123-345',
-        mail_address: 'letmesee@gmail.com',
-        wechat: 'abaaba123'
+        phone_number: '',
+        mail_address: '',
+        wechat: ''
       }
     }
   },
+  created: function () {
+    this.getMyInfo()
+  },
   methods: {
+    getMyInfo () {
+      axios.get('ajax/user_info/').then(res => {
+        this.registerForm.username = res.data.username
+        this.registerForm.phone_number = res.data.phone_number
+        this.registerForm.wechat = res.data.wechat
+        this.registerForm.mail_address = res.data.mail_address
+        this.registerForm.password = res.data.password
+      })
+    },
     tologin () {
       this.$router.push('/login')
     },
