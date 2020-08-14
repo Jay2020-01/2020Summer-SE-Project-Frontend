@@ -1,12 +1,18 @@
 <template>
   <div class="editor-container">
     <!-- {{editorContent}} -->
-    <div id="editorElem" style="text-align:left;"></div>
+    <div id="editorElem" ref="editorForm" style="text-align:left;"></div>
   </div>
 </template>
 <script>
 import E from "wangeditor";
 export default {
+  prop: {
+    content: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       editorContent: "",
@@ -21,6 +27,8 @@ export default {
     var editor = new E("#editorElem");
     editor.customConfig.onchange = (html) => {
       this.editorContent = html;
+      // 通知父级控件方法，富组件可以通过 editorContent 事件去获取最新的编辑器内容
+      this.$emit("editorContent", html);
     };
     editor.customConfig.menus = [
       "head", // 标题

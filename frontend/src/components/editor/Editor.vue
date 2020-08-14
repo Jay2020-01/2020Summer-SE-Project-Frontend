@@ -9,13 +9,22 @@
               <!-- 顶部工具栏区域 -->
               <!-- 返回按钮 -->
               <el-tooltip class="item" effect="dark" content="返回" placement="bottom">
-                <el-button size="big" icon="fa fa-angle-left" style="border: none;" @click="backtoHome"></el-button>
+                <el-button
+                  size="big"
+                  icon="fa fa-angle-left"
+                  style="border: none;"
+                  @click="backtoHome"
+                ></el-button>
               </el-tooltip>
               <!-- 文件名 -->
               <span style="margin-left: 13px; font-size: 14px;">文件名</span>
               <!-- 收藏按钮 -->
               <el-tooltip class="item" effect="dark" content="收藏" placement="bottom">
-                <el-button size="big" icon="	fa fa-bookmark-o" style="border: none; margin-left: 13px;"></el-button>
+                <el-button
+                  size="big"
+                  icon="	fa fa-bookmark-o"
+                  style="border: none; margin-left: 13px;"
+                ></el-button>
               </el-tooltip>
               <span style="margin-left: 13px; color:#a5a5a5; font-size: 14px;">文档将自动保存</span>
             </div>
@@ -40,7 +49,9 @@
       <el-container>
         <!-- 右侧内容主体 -->
         <el-main>
-          <editor v-model="content"></editor>
+          <editor :content="content" @editorContent="getEditorContent"></editor>
+          <!-- <editor v-model="content"  @editorContent="getEditorContent"></editor> -->
+          <!-- <el-button size="small" @click="editortest">测试</el-button> -->
         </el-main>
       </el-container>
     </el-container>
@@ -52,6 +63,8 @@
 
 <script>
 import editor from "./EditorComponent";
+import axios from "axios";
+import Qs from "qs";
 export default {
   methods: {
     logout() {
@@ -62,9 +75,26 @@ export default {
       window.sessionStorage.clear();
       this.$router.push("/myinfo");
     },
-    backtoHome(){
+    backtoHome() {
       this.$router.push("/home");
-    }
+    },
+    getEditorContent(data) {
+      this.content = data;
+    },
+    newdoc() {
+      var data = Qs.stringify({
+        title: '',
+        content: this.content,
+      });
+      axios.post("ajax/newdoc/", data).then((resp) => {
+        const flag = resp.data.request.flag;
+        if (flag) {
+          alert("saved!");
+        } else {
+          alert("error!");
+        }
+      });
+    },
   },
   components: {
     editor,
@@ -72,6 +102,7 @@ export default {
   data() {
     return {
       input: "",
+      // 编辑器内容
       content: "",
     };
   },
