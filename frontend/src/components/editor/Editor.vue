@@ -49,9 +49,9 @@
       <el-container>
         <!-- 右侧内容主体 -->
         <el-main>
-          <editor :content="content" @editorContent="getEditorContent"></editor>
-          <!-- <editor v-model="content"  @editorContent="getEditorContent"></editor> -->
-          <!-- <el-button size="small" @click="editortest">测试</el-button> -->
+          <!-- <editor :content="content" @editorContent="getEditorContent"></editor> -->
+          <editor v-model="content"  @editorContent="getEditorContent"></editor>
+          <el-button size="small" @click="newdoc">测试</el-button>
         </el-main>
       </el-container>
     </el-container>
@@ -82,13 +82,14 @@ export default {
       this.content = data;
     },
     newdoc() {
+      // alert(this.content);
       var data = Qs.stringify({
-        title: '',
+        title: 'test',
         content: this.content,
       });
       axios.post("ajax/newdoc/", data).then((resp) => {
-        const flag = resp.data.request.flag;
-        if (flag) {
+        const flag = resp.data['flag'];
+        if (flag == "yes") {
           alert("saved!");
         } else {
           alert("error!");
