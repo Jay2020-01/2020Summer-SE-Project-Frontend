@@ -28,9 +28,11 @@
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <!-- 选项 -->
-                    <el-dropdown-item><i class="el-icon-magic-stick"></i>新标签页打开</el-dropdown-item>
-                    <el-dropdown-item><i class="el-icon-delete"></i>删除</el-dropdown-item>
-                    <el-dropdown-item>其他操作请补充</el-dropdown-item>
+                    <el-dropdown-item style="border-bottom:1px solid #e5e5e5"><i class="el-icon-magic-stick"></i>新标签页打开</el-dropdown-item>
+                    <el-dropdown-item><i class="el-icon-collection-tag"></i>收藏</el-dropdown-item>
+                    <el-dropdown-item style="border-bottom:1px solid #e5e5e5"><i class="el-icon-position"></i>分享</el-dropdown-item>
+                    <el-dropdown-item><i class="el-icon-delete"></i>重命名</el-dropdown-item>
+                    <el-dropdown-item style="color:red;"><i class="el-icon-delete"></i>删除</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
 
@@ -98,10 +100,11 @@ export default {
   color: #999;
 }
 .el-dropdown-link {
-    cursor: pointer;
-    color: #409EFF;
-  }
-  .el-icon-arrow-down {
-    font-size: 12px;
-  }
+  cursor: pointer;
+   color: #409EFF;
+ }
+ .el-icon-arrow-down {
+   font-size: 12px;
+ }
+
 </style>

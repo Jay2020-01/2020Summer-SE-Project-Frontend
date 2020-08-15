@@ -43,13 +43,26 @@
               <el-input placeholder="搜索内容" v-model="input" size="small" clearable></el-input>
             </div>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="6" style="height:60px;">
             <div class="grid-content head-box3 bg-purple">
-              <div>
-                <el-button size="small" @click="changeInfo">修改信息</el-button>
-                <el-button size="small" @click="logout">退出</el-button>
-                <!-- <el-button size="samll" @click="logout">退出</el-button> -->
-              </div>
+              <!-- 这里是右上角的头像 -->
+            <el-dropdown>
+              <span class="el-dropdown-link">
+                <div>
+                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                </div>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item disabled>{{username}}</el-dropdown-item>
+                <el-dropdown-item disabled>{{mail_address}}</el-dropdown-item>
+                <!-- <el-divider></el-divider> -->
+                <!-- <el-dropdown-item >个人信息</el-dropdown-item> -->
+                <el-divider><i class="el-icon-mobile-phone"></i></el-divider>
+                <el-dropdown-item @click.native="changeInfo">修改信息</el-dropdown-item>
+                <el-dropdown-item style="color:red;" @click.native="logout">退出登录</el-dropdown-item>
+                
+              </el-dropdown-menu>
+            </el-dropdown>
             </div>
           </el-col>
         </el-row>
@@ -140,6 +153,9 @@ export default {
       content: "",
       //收藏按钮
       islike: false,
+      //改：根据登陆人员的的信息改(可能是表单形式)
+      username: '檠莲焰',
+      mail_address: '921049836@qq.com',
     };
   },
 };
@@ -223,4 +239,8 @@ body > .el-container {
 // .el-icon-collection-tag{
 //   color: red;
 // }
+//编辑界面右上角的头像
+.el-dropdown-link{
+  cursor: pointer;
+}
 </style>
