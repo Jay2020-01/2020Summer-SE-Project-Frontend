@@ -23,6 +23,7 @@ const routes = [
   { path: '/editor', component: Editor, meta: { requiresAuth: true } },
   {
     path: '/home',
+    redirect: '1',
     component: Home,
     children: [
       { path: '/1', component: WorkingTable, meta: { requiresAuth: true } },

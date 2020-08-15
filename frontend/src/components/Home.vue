@@ -89,6 +89,7 @@
           background-color="#fff"
           text-color="#535353"
           active-text-color="#409eff"
+          default-active="1"
           router
         >
           <!-- 新建按钮 -->

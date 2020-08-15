@@ -100,15 +100,69 @@
           </div>
           <!-- 隐藏的邀请成员 -->
           <el-dialog class="invite-box" title="邀请成员" :visible.sync="showInvite">
-            <el-form :model="formInvite">
-              <el-form-item>
+            <el-form :model="formInvite" ref="formInvite">
+              <el-form-item prop="name">
                 <!-- <span style="float: left;">成员名称</span> -->
                 <el-input
                   v-model="formInvite.name"
                   prefix-icon="fa fa-search"
                   placeholder="输入 姓名/邮箱/手机号"
                   autocomplete="off"
+                  @change="serchPeople('formInvite')"
                 ></el-input>
+              </el-form-item>
+            </el-form>
+            <!-- 搜索结果展示 -->
+            <div>
+              <el-row>
+                <el-col>
+                  <div style="display: flex; align-items: center;">
+                    <span style="color: #8a8a8a;">搜索结果</span>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+            <!-- 分割线 -->
+            <el-divider></el-divider>
+            <!-- 列表展示搜索结果 -->
+            <div :key="index" v-for="(user, index) in userList">
+              <div style="margin-top: 10px;">
+                <el-row style="font-size: 14px; display: flex; align-items: center;">
+                  <!-- 头像和用户名 -->
+                  <el-col :span="8" style>
+                    <div style="display: flex; align-items: center;">
+                      <el-avatar :size="24">头像</el-avatar>
+                      <span style="margin-left: 15px;">{{ user.fields.username }}</span>
+                    </div>
+                  </el-col>
+                  <!-- 手机号 -->
+                  <el-col :span="11" style>
+                    <div style="display: flex; align-items: center; ">
+                      <span style="color: #8a8a8a;">{{ user.fields.phone_number }}</span>
+                    </div>
+                  </el-col>
+                  <!-- 发送邀请按钮 -->
+                  <el-col :span="5">
+                    <div style="display: flex; align-items: center;">
+                      <el-button type="primary" round plain size="mini">邀请</el-button>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="showInvite = false">取 消</el-button>
+              <el-button type="primary" @click="showInvite = false">确 定</el-button>
+            </div>
+          </el-dialog>
+
+          <!-- 隐藏的设置成员权限 -->
+          <el-dialog title="团队空间设置" :visible.sync="showSettings">
+            <!-- 设置团队空间名称 -->
+            <el-form :model="formSettings">
+              <el-form-item>
+                <span style="float: left;">空间名称</span>
+                <el-input v-model="formSettings.name" placeholder="请输入" autocomplete="off"></el-input>
               </el-form-item>
             </el-form>
             <!-- 空间成员展示 -->
@@ -123,83 +177,41 @@
             </div>
             <!-- 分割线 -->
             <el-divider></el-divider>
-            <!-- 团队成员1 -->
-            <div style="margin-top 10px;">
-              <el-row style="font-size: 14px; display: flex; align-items: center;">
-                <!-- 头像和用户名 -->
-                <el-col :span="8" style="">
-                  <div style="display: flex; align-items: center;">
-                    <el-avatar :size="24">头像</el-avatar>
-                    <span style="margin-left: 15px;">用户1</span>
-                  </div>
-                </el-col>
-                <!-- 手机号 -->
-                <el-col :span="11" style="">
-                  <div style="display: flex; align-items: center; ">
-                    <span style="color: #8a8a8a;">12345678910</span>
-                  </div>
-                </el-col>
-                <!-- 设置权限按钮 -->
-                <el-col :span="5">
-                  <div style="display: flex; align-items: center;">
-                    <!-- 可以多选权限 -->
-                    <el-select size="mini" v-model="value1" placeholder="权限选择">
-                      <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                      ></el-option>
-                    </el-select>
-                  </div>
-                </el-col>
-              </el-row>
+            <!-- 列表展示团队成员 -->
+            <div :key="index" v-for="(teamate, index) in teamateList">
+              <div style="margin-top: 10px;">
+                <el-row style="font-size: 14px; display: flex; align-items: center;">
+                  <!-- 头像和用户名 -->
+                  <el-col :span="8" style>
+                    <div style="display: flex; align-items: center;">
+                      <el-avatar :size="24">头像</el-avatar>
+                      <span style="margin-left: 15px;">{{ teamate.fields.username }}</span>
+                    </div>
+                  </el-col>
+                  <!-- 手机号 -->
+                  <el-col :span="11" style>
+                    <div style="display: flex; align-items: center; ">
+                      <span style="color: #8a8a8a;">{{ teamate.fields.phone_number }}</span>
+                    </div>
+                  </el-col>
+                  <!-- 设置权限按钮 -->
+                  <el-col :span="5">
+                    <div style="display: flex; align-items: center;">
+                      <!-- 可以多选权限 -->
+                      <el-select size="mini" v-model="value1" placeholder="权限选择">
+                        <el-option
+                          v-for="item in options"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value"
+                        ></el-option>
+                      </el-select>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
             </div>
-            <!-- 团队成员2 -->
-            <div style="margin-top: 10px;">
-              <el-row style="font-size: 14px; display: flex; align-items: center;">
-                <!-- 头像和用户名 -->
-                <el-col :span="8" style="">
-                  <div style="display: flex; align-items: center;">
-                    <el-avatar :size="24">头像</el-avatar>
-                    <span style="margin-left: 15px;">用户2</span>
-                  </div>
-                </el-col>
-                <!-- 手机号 -->
-                <el-col :span="11" style="">
-                  <div style="display: flex; align-items: center; ">
-                    <span style="color: #8a8a8a;">12345678910</span>
-                  </div>
-                </el-col>
-                <!-- 设置权限按钮 -->
-                <el-col :span="5">
-                  <div style="display: flex; align-items: center;">
-                    <!-- 可以多选权限 -->
-                    <el-select size="mini" v-model="value1" placeholder="权限选择">
-                      <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                      ></el-option>
-                    </el-select>
-                  </div>
-                </el-col>
-              </el-row>
-            </div>
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="showInvite = false">取 消</el-button>
-              <el-button type="primary" @click="showInvite = false">确 定</el-button>
-            </div>
-          </el-dialog>
-          <!-- 隐藏的设置成员权限 -->
-          <el-dialog title="团队空间设置" :visible.sync="showSettings">
-            <el-form :model="formSettings">
-              <el-form-item>
-                <span style="float: left;">空间名称</span>
-                <el-input v-model="formSettings.name" placeholder="请输入" autocomplete="off"></el-input>
-              </el-form-item>
-            </el-form>
+
             <div slot="footer" class="dialog-footer">
               <el-button @click="showSettings = false">取 消</el-button>
               <el-button type="primary" @click="showSettings = false">确 定</el-button>
@@ -212,37 +224,66 @@
 </template>
 
 <script>
+import axios from "axios";
+import Qs from "qs";
 export default {
   data() {
     return {
       activeName: "first",
       showInvite: false,
       showSettings: false,
+      // 搜索表单
       formInvite: {
         name: "",
       },
+      // 搜索用户列表,想要造列表数据，需要套一层fields
+      userList: [],
+      userNum: "0",
+      // 团队成员列表
+      teamateList: [],
+      teamateNum: "0",
+      // 空间名称表单
       formSettings: {
         name: "团队名称1",
       },
-      options: [{
-          value: '1',
-          label: '只能阅读'
-        }, {
-          value: '2',
-          label: '只能评论'
-        }, {
-          value: '3',
-          label: '可以编辑'
-        }, {
-          value: '4',
-          label: '禁止访问'
-        }],
-        value1: [],
+      options: [
+        {
+          value: "1",
+          label: "只能阅读",
+        },
+        {
+          value: "2",
+          label: "只能评论",
+        },
+        {
+          value: "3",
+          label: "可以编辑",
+        },
+        {
+          value: "4",
+          label: "禁止访问",
+        },
+      ],
+      value1: [],
     };
   },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
+    },
+    // 搜索方法
+    serchPeople(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          var data = Qs.stringify(this.formInvite);
+          axios.post("ajax/search_user/", data).then((res) => {
+            this.userList = JSON.parse(res.data.user_list);
+            this.userNum = this.userList.length;
+          });
+        } else {
+          alert("表格不能为空");
+        }
+      });
     },
   },
 };
