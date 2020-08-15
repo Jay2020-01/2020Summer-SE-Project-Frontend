@@ -89,7 +89,6 @@
           background-color="#fff"
           text-color="#535353"
           active-text-color="#409eff"
-          default-active="1"
           router
         >
           <!-- 新建按钮 -->
@@ -102,7 +101,7 @@
               size="midium"
               type="primary"
               plain
-              @click="newFile"
+              @click="newdocVisible=true"
             >
               新建文档
             </el-button>
@@ -224,6 +223,35 @@
             </el-button>
           </div>
         </el-dialog>
+
+        <!-- 隐藏的新建文件的表单 -->
+          <el-dialog
+          title="新建文档"
+          :visible.sync="newdocVisible"
+        >
+          <el-form ref="docForm" :model="docForm" label-width="80px">
+            <el-form-item label="文档名称">
+              <el-input v-model="docForm.name" placeholder="无标题"></el-input>
+              <!-- <el-button style="text-align: left;">使用模板</el-button> -->
+            </el-form-item>
+          </el-form>
+          <div
+            slot="footer"
+            class="dialog-footer"
+          >
+          <el-button style="text-align: left;" @click="newdocVisible=false;use_templates();">使用模板</el-button>
+            <el-button @click="newdocVisible = false">
+              取 消
+            </el-button>
+            <el-button
+              type="primary"
+              @click="newdocVisible = false; newFile()"
+            >
+              确 定
+            </el-button>
+          </div>
+        </el-dialog>
+
         <!-- 路由占位符 -->
         <router-view />
       </el-main>
@@ -239,8 +267,14 @@ export default {
     return {
       input: '',
       dialogFormVisible: false,
+      newdocVisible:false,
       teamForm: {
         name: ''
+      },
+      docForm:{
+        name:'',
+        authority:[],
+        // 如果不用在新建的时候设置权限就把上面这个删了
       },
       formLabelWidth: '120px',
       //改：根据登陆人员的的信息改(可能是表单形式)
@@ -275,6 +309,12 @@ export default {
     backtoHome () {
       window.sessionStorage.clear()
       this.$router.push('/home')
+    },
+    use_templates(){
+      this.$message({
+          message: "请跳转到选择模板页面",
+          type: "warning",
+        });
     }
   }
 }
