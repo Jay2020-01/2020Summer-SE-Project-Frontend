@@ -73,8 +73,8 @@
         <el-main>
           <!-- <editor :content="content" @editorContent="getEditorContent"></editor> -->
           <!-- 测试按钮 -->
+          <!-- <el-button size="small" @click="newdoc">测试</el-button> -->
           <editor v-model="content" @editorContent="getEditorContent"></editor>
-          <el-button size="small" @click="newdoc">测试</el-button>
         </el-main>
       </el-container>
     </el-container>
@@ -104,21 +104,6 @@ export default {
     getEditorContent(data) {
       this.content = data;
     },
-    newdoc() {
-      // alert(this.content);
-      var data = Qs.stringify({
-        title: "test",
-        content: this.content,
-      });
-      axios.post("ajax/newdoc/", data).then((resp) => {
-        const flag = resp.data["flag"];
-        if (flag == "yes") {
-          alert("saved!");
-        } else {
-          alert("error!");
-        }
-      });
-    },
     // 点击收藏的提示信息
     onlike() {
       this.islike = !this.islike;
@@ -136,9 +121,23 @@ export default {
     },
     // 点击保存的提示信息
     clickSave() {
-      this.$message({
-        message: "已保存",
-        type: "success",
+      var data = Qs.stringify({
+        title: this.name,
+        content: this.content,
+      });
+      axios.post("ajax/create_doc/", data).then((resp) => {
+        const flag = resp.data.flag;
+        if (flag == "yes") {
+          this.$message({
+            message: "已保存",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "保存出错",
+            type: "warning",
+          });
+        }
       });
     },
   },
@@ -154,6 +153,7 @@ export default {
       //收藏按钮
       islike: false,
       //改：根据登陆人员的的信息改(可能是表单形式)
+      doc_name: '',
       username: '檠莲焰',
       mail_address: '921049836@qq.com',
     };
