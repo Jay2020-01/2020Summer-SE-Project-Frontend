@@ -139,15 +139,15 @@
                   <el-col :span="8" style>
                     <div style="display: flex; align-items: center;">
                       <el-avatar :size="24">头像</el-avatar>
-                      <span style="margin-left: 15px;">{{ user.fields.username }}</span>
-                      <!-- <span style="margin-left: 15px;">{{ user.username }}</span> -->
+                      <!-- <span style="margin-left: 15px;">{{ user.fields.username }}</span> -->
+                      <span style="margin-left: 15px;">{{ user.username }}</span>
                     </div>
                   </el-col>
                   <!-- 手机号 -->
                   <el-col :span="11" style>
                     <div style="display: flex; align-items: center; ">
-                      <span style="color: #8a8a8a;">{{ user.fields.phone_number }}</span>
-                      <!-- <span style="color: #8a8a8a;">{{ user.phone_number }}</span> -->
+                      <!-- <span style="color: #8a8a8a;">{{ user.fields.phone_number }}</span> -->
+                      <span style="color: #8a8a8a;">{{ user.phone_number }}</span>
                     </div>
                   </el-col>
                   <!-- 发送邀请按钮 -->
@@ -158,7 +158,7 @@
                         round
                         plain
                         size="mini"
-                        @click="invitePeople(user.fields.id)"
+                        @click="invitePeople(user.id)"
                       >邀请</el-button>
                     </div>
                   </el-col>
@@ -227,7 +227,21 @@
               </div>
             </div>
 
+            <!-- 底栏 -->
             <div slot="footer" class="dialog-footer">
+              <el-popover placement="top" width="160" v-model="visible">
+                <p>确定删除团队吗？</p>
+                <div style="text-align: right; margin: 0">
+                  <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+                  <el-button
+                    type="primary"
+                    size="mini"
+                    @click="visible = false; deleteTeam(teamId);"
+                    plain
+                  >确定</el-button>
+                </div>
+                <el-button slot="reference" type="danger" plain style="margin-right: 10px;">删除</el-button>
+              </el-popover>
               <el-button @click="showSettings = false">取 消</el-button>
               <el-button type="primary" @click="showSettings = false">确 定</el-button>
             </div>
@@ -244,6 +258,8 @@ import Qs from "qs";
 export default {
   data() {
     return {
+      // “确认删除”显示
+      visible: false,
       activeName: "first",
       showInvite: false,
       showSettings: false,
@@ -256,8 +272,8 @@ export default {
       // 搜索用户列表,想要造列表数据，需要套一层fields
       user: {},
       userList: [
-        // { id: '001', username: 'n1', phone_number: '123456' },
-        // { id: '002', username: 'n2', phone_number: '123456' }
+        { id: '001', username: 'n1', phone_number: '123456' },
+        { id: '002', username: 'n2', phone_number: '123456' }
       ],
       userNum: "0",
       // 团队成员列表
@@ -298,7 +314,7 @@ export default {
         if (valid) {
           var data = Qs.stringify(this.formInvite);
           axios.post("ajax/search_user/", data).then((res) => {
-            this.userList = JSON.parse(res.data.user_list);
+            this.userList = res.data.user_list;
             this.userNum = this.userList.length;
           });
         } else {
@@ -310,6 +326,15 @@ export default {
     invitePeople(id) {
       var data = Qs.stringify({
         id: id,
+        team_id: this.$route.params.team_id,
+      });
+      console.log(data);
+      axios.post("ajax/invite_user/", data).then((res) => {});
+    },
+    // 删除团队方法
+    deleteTeam(teamId) {
+      var data = Qs.stringify({
+        team_id: this.$route.params.team_id,
       });
       console.log(data);
       axios.post("ajax/invite_user/", data).then((res) => {});
