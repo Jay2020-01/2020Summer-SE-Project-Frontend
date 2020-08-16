@@ -124,7 +124,7 @@ export default {
       console.log(tab, event);
     },
     getDocsInfo() {
-      axios.get("ajax/my_doc/").then((res) => {
+      axios.get("http://localhost:8000/ajax/my_doc/").then((res) => {
         const created_docs_length = res.data.created_docs.length
         const collected_docs_length = res.data.collected_docs.length
         for (let index = 0; index < created_docs_length; index++) {
@@ -148,7 +148,7 @@ export default {
       var data = Qs.stringify({
         doc_id: doc_id,
       });
-      axios.post("ajax/collect_doc/",data).then((res)=> {
+      axios.post("http://localhost:8000/ajax/collect_doc/",data).then((res)=> {
         const flag = res.data.flag;
         if (flag == "yes") {
           this.$message({
@@ -168,7 +168,7 @@ export default {
       var data = Qs.stringify({
         doc_id: doc_id,
       });
-      axios.post("ajax/uncollect_doc/",data).then((res)=> {
+      axios.post("http://localhost:8000/ajax/uncollect_doc/",data).then((res)=> {
         const flag = res.data.flag;
         if (flag == "yes") {
           this.$message({

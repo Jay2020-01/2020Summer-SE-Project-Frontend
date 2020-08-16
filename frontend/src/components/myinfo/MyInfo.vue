@@ -135,7 +135,7 @@ export default {
   },
   methods: {
     getMyInfo () {
-      axios.get('ajax/user_info/').then(res => {
+      axios.get('http://localhost:8000/ajax/user_info/').then(res => {
         this.registerForm.username = res.data.username
         this.registerForm.phone_number = res.data.phone_number
         this.registerForm.wechat = res.data.wechat
@@ -150,7 +150,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           var data = Qs.stringify(this.registerForm)
-          axios.post('ajax/change_info/', data).then(res => {
+          axios.post('http://localhost:8000/ajax/change_info/', data).then(res => {
             this.$router.push('/myinfo')
           })
         } else {

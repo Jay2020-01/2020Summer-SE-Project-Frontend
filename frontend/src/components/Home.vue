@@ -233,7 +233,7 @@ export default {
         if (valid) {
           var data = Qs.stringify(this.teamForm); // 先用Qs对数据进行处理
           axios
-            .post("ajax/create_team/", data)
+            .post("http://localhost:8000/ajax/create_team/", data)
             .then()
             .catch((err) => console.log(err));
         } else {
@@ -244,7 +244,7 @@ export default {
     },
     // 获取团队名列表
     getTeamList() {
-      axios.get("ajax/get_my_team/").then((res) => {
+      axios.get("http://localhost:8000/ajax/get_my_team/").then((res) => {
         this.teamList = res.data.team_list;
       });
     },
@@ -291,7 +291,7 @@ export default {
           // create_time: myDate.toLocaleString(),
         });
         axios
-          .post("ajax/create_doc/", data)
+          .post("http://localhost:8000/ajax/create_doc/", data)
           .then((resp) => {
             resolve(resp);
           })

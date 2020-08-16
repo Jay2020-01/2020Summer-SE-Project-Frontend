@@ -313,7 +313,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           var data = Qs.stringify(this.formInvite);
-          axios.post("ajax/search_user/", data).then((res) => {
+          axios.post("http://localhost:8000/ajax/search_user/", data).then((res) => {
             this.userList = res.data.user_list;
             this.userNum = this.userList.length;
           });
@@ -329,7 +329,7 @@ export default {
         team_id: this.$route.params.team_id,
       });
       console.log(data);
-      axios.post("ajax/invite_user/", data).then((res) => {});
+      axios.post("http://localhost:8000/ajax/invite_user/", data).then((res) => {});
     },
     // 删除团队方法
     deleteTeam() {
@@ -337,7 +337,7 @@ export default {
         team_id: this.$route.params.team_id,
       });
       console.log(data);
-      axios.post("ajax/get_teamate/", data).then((res) => {});
+      axios.post("http://localhost:8000/ajax/get_teamate/", data).then((res) => {});
       this.$router.push('/workingTable');
     },
     // 获取团队成员列表
@@ -346,7 +346,7 @@ export default {
         team_id: this.$route.params.team_id,
       });
       console.log(data);
-      axios.post("ajax/invite_user/", data).then((res) => {
+      axios.post("http://localhost:8000/ajax/invite_user/", data).then((res) => {
         this.teamateList = res.data.user_list;
         this.teamateNum = this.teamateList.length;
       });

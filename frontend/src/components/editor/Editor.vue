@@ -121,7 +121,7 @@ export default {
       var data = Qs.stringify({
         doc_id: this.$route.params.doc_id,
       });
-      axios.post("ajax/get_doc/", data).then((res) => {
+      axios.post("http://localhost:8000/ajax/get_doc/", data).then((res) => {
         this.content = res.data.content;
         this.doc_name = res.data.name;
       });
@@ -162,7 +162,7 @@ export default {
         content: this.content,
         doc_id: this.$route.params.doc_id,
       });
-      axios.post("ajax/save_doc/", data).then((resp) => {
+      axios.post("http://localhost:8000/ajax/save_doc/", data).then((resp) => {
         const flag = resp.data.flag;
         if (flag == "yes") {
           this.$message({
