@@ -40,17 +40,28 @@
             />
           </div>
         </el-col>
-        <el-col :span="6" style="height:60px">
+        <el-col
+          :span="6"
+          style="height:60px"
+        >
           <div class="grid-content head-box3 bg-purple">
             <!-- 通知图标 -->
             <el-dropdown>
               <span class="el-dropdown-link">
-                <i class="el-icon-bell" style="height:60px;font-size:25px;"></i>
+                <i
+                  class="el-icon-bell"
+                  style="height:60px;font-size:25px;"
+                />
               </span>
               <!-- 通知图标下面的下拉栏 -->
               <el-dropdown-menu slot="dropdown">
                 <!-- 这里好像要用嵌套路由来写下面的内容 -->
-                <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+                <el-menu
+                  :default-active="activeIndex"
+                  class="el-menu-demo"
+                  mode="horizontal"
+                  @select="handleSelect"
+                >
                   <el-menu-item>全部消息</el-menu-item>
                   <el-menu-item>未读消息</el-menu-item>
                   <el-menu-item><el-button>全部标为已读</el-button></el-menu-item>
@@ -62,18 +73,28 @@
             <el-dropdown>
               <span class="el-dropdown-link">
                 <div>
-                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
                 </div>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item disabled>{{username}}</el-dropdown-item>
-                <el-dropdown-item disabled>{{mail_address}}</el-dropdown-item>
+                <el-dropdown-item disabled>
+                  {{ username }}
+                </el-dropdown-item>
+                <el-dropdown-item disabled>
+                  {{ mail_address }}
+                </el-dropdown-item>
                 <!-- <el-divider></el-divider> -->
                 <!-- <el-dropdown-item >个人信息</el-dropdown-item> -->
-                <el-divider><i class="el-icon-mobile-phone"></i></el-divider>
-                <el-dropdown-item @click.native="changeInfo">修改信息</el-dropdown-item>
-                <el-dropdown-item style="color:red;" @click.native="logout">退出登录</el-dropdown-item>
-                
+                <el-divider><i class="el-icon-mobile-phone" /></el-divider>
+                <el-dropdown-item @click.native="changeInfo">
+                  修改信息
+                </el-dropdown-item>
+                <el-dropdown-item
+                  style="color:red;"
+                  @click.native="logout"
+                >
+                  退出登录
+                </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -225,13 +246,20 @@
         </el-dialog>
 
         <!-- 隐藏的新建文件的表单 -->
-          <el-dialog
+        <el-dialog
           title="新建文档"
           :visible.sync="newdocVisible"
         >
-          <el-form ref="docForm" :model="docForm" label-width="80px">
+          <el-form
+            ref="docForm"
+            :model="docForm"
+            label-width="80px"
+          >
             <el-form-item label="文档名称">
-              <el-input v-model="docForm.name" placeholder="无标题"></el-input>
+              <el-input
+                v-model="docForm.name"
+                placeholder="无标题"
+              />
               <!-- <el-button style="text-align: left;">使用模板</el-button> -->
             </el-form-item>
           </el-form>
@@ -239,7 +267,12 @@
             slot="footer"
             class="dialog-footer"
           >
-          <el-button style="text-align: left;" @click="newdocVisible=false;use_templates();">使用模板</el-button>
+            <el-button
+              style="text-align: left;"
+              @click="newdocVisible=false;use_templates();"
+            >
+              使用模板
+            </el-button>
             <el-button @click="newdocVisible = false">
               取 消
             </el-button>
@@ -267,20 +300,23 @@ export default {
     return {
       input: '',
       dialogFormVisible: false,
-      newdocVisible:false,
+      newdocVisible: false,
       teamForm: {
         name: ''
       },
-      docForm:{
-        name:'',
-        authority:[],
+      docForm: {
+        name: '',
+        authority: []
         // 如果不用在新建的时候设置权限就把上面这个删了
       },
       formLabelWidth: '120px',
-      //改：根据登陆人员的的信息改(可能是表单形式)
+      // 改：根据登陆人员的的信息改(可能是表单形式)
       username: '檠莲焰',
-      mail_address: '921049836@qq.com',
+      mail_address: '921049836@qq.com'
     }
+  },
+  created: function () {
+    this.getTeamList()
   },
   methods: {
     createTeam (formName) {
@@ -292,6 +328,12 @@ export default {
         } else {
           alert('表格不能为空')
         }
+      })
+    },
+    getTeamList () {
+      axios.get('ajax/get_my_team/').then((res) => {
+        this.teamNameList = JSON.parse(res.data.team_list)
+        console.log(this.teamNameList)
       })
     },
     logout () {
@@ -310,11 +352,11 @@ export default {
       window.sessionStorage.clear()
       this.$router.push('/home')
     },
-    use_templates(){
+    use_templates () {
       this.$message({
-          message: "请跳转到选择模板页面",
-          type: "warning",
-        });
+        message: '请跳转到选择模板页面',
+        type: 'warning'
+      })
     }
   }
 }
