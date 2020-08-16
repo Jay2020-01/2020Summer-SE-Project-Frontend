@@ -17,7 +17,7 @@
                 ></el-button>
               </el-tooltip>
               <!-- 文件名 -->
-              <span style="margin-left: 13px; font-size: 14px;">文件名</span>
+              <span style="margin-left: 13px; font-size: 14px;">{{doc_name}}</span>
               <!-- 收藏按钮 -->
               <el-tooltip class="item" effect="dark" content="收藏" placement="bottom">
                 <el-button size="big" style="border: none; margin-left: 13px;" @click="onlike">
@@ -74,7 +74,8 @@
           <!-- <editor :content="content" @editorContent="getEditorContent"></editor> -->
           <!-- 测试按钮 -->
           <!-- <el-button size="small" @click="newdoc">测试</el-button> -->
-          <editor v-model="content" @editorContent="getEditorContent"></editor>
+          <!-- <editor v-model="content" @editorContent="getEditorContent"></editor> -->
+          <editor :content="content" @editorContent="getEditorContent"></editor>
         </el-main>
       </el-container>
     </el-container>
@@ -89,7 +90,20 @@ import editor from "./EditorComponent";
 import axios from "axios";
 import Qs from "qs";
 export default {
+  created: function () {
+    this.getContent();
+  },
   methods: {
+    getContent: function () {
+      console.log(this.editorContent);
+      var data = Qs.stringify({
+        doc_id: this.$route.params.doc_id,
+      });
+      axios.post("ajax/get_doc/", data).then((res) => {
+        this.content = res.data.content
+        this.doc_name = res.data.name
+      });
+    },
     logout() {
       window.sessionStorage.clear();
       this.$router.push("/login");
@@ -102,7 +116,8 @@ export default {
       this.$router.push("/home");
     },
     getEditorContent(data) {
-      this.content = data;
+      this.content = data
+      console.log(this.content)
     },
     // 点击收藏的提示信息
     onlike() {
@@ -122,10 +137,10 @@ export default {
     // 点击保存的提示信息
     clickSave() {
       var data = Qs.stringify({
-        title: this.name,
         content: this.content,
+        doc_id: this.$route.params.doc_id,
       });
-      axios.post("ajax/create_doc/", data).then((resp) => {
+      axios.post("ajax/save_doc/", data).then((resp) => {
         const flag = resp.data.flag;
         if (flag == "yes") {
           this.$message({
@@ -141,15 +156,14 @@ export default {
       });
     },
   },
-
   components: {
     editor,
   },
   data() {
     return {
-      input: "",
+      input: '',
       // 编辑器内容
-      content: "",
+      content: '',
       //收藏按钮
       islike: false,
       //改：根据登陆人员的的信息改(可能是表单形式)

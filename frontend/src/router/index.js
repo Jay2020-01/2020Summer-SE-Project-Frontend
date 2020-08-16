@@ -20,7 +20,7 @@ const routes = [
     { path: '/login', component: Login },
     { path: '/register', component: Register },
     // { path: '/editor', component: Editor },
-    { path: '/editor', component: Editor, meta: { requiresAuth: true } },
+    { path: '/editor/:doc_id', component: Editor, meta: { requiresAuth: true } },
     {
         path: '/home',
         redirect: '1',

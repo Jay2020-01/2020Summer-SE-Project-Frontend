@@ -8,7 +8,7 @@
         配置管理
         <!-- 一行三个 -->
         <el-row :gutter="12">
-          <el-col v-for="docName in docNames" :key="docName" :span="8">
+          <el-col v-for="doc_info in doc_infos" :key="doc_info" :span="8">
             <!-- 文件卡片 -->
             <el-card shadow="hover">
               <div class="card-container">
@@ -18,7 +18,7 @@
                 </div>
                 <!-- 文字 -->
                 <div class="word inline-div">
-                  <div class="tile">{{docName}}</div>
+                  <div class="tile" @click="toDoc(doc_info.doc_id)">{{doc_info.doc_name}}</div>
                   <div class="details">今天 10:20 我 打开</div>
                 </div>
 
@@ -64,24 +64,30 @@ import Qs from "qs";
 export default {
   data() {
     return {
-      docNames: [],
+      doc_infos: [],
       activeName: "first",
     };
   },
   created: function () {
-    this.getDocsName();
+    this.getDocsInfo();
   },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
     },
-    getDocsName() {
+    getDocsInfo() {
       axios.get("ajax/my_doc/").then((res) => {
         for (let index = 0; index < res.data.data.length; index++) {
-          this.docNames.push(res.data.data[index].name);
+          this.doc_infos.push({
+            doc_id: res.data.data[index].doc_id,
+            doc_name: res.data.data[index].name,
+          });
         }
       });
     },
+    toDoc(doc_id) {
+      this.$router.push('/editor/' + doc_id)
+    }
   },
 };
 </script>
