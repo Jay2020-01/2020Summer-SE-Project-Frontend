@@ -43,26 +43,40 @@
               <el-input placeholder="搜索内容" v-model="input" size="small" clearable></el-input>
             </div>
           </el-col>
-          <el-col :span="6" style="height:60px;">
+          <el-col :span="6" style="height:60px">
             <div class="grid-content head-box3 bg-purple">
+              <!-- 评论按钮 -->
+              <el-tooltip class="item" effect="dark" content="评论" placement="bottom">
+                <el-button
+                  size="big"
+                  @click="drawer=true"
+                  style="border: none; margin-right: 0px;"
+                >
+                  <i class="fa fa-comments-o"></i>
+                </el-button>
+              </el-tooltip>
               <!-- 这里是右上角的头像 -->
-            <el-dropdown>
-              <span class="el-dropdown-link">
-                <div>
-                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-                </div>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item disabled>{{username}}</el-dropdown-item>
-                <el-dropdown-item disabled>{{mail_address}}</el-dropdown-item>
-                <!-- <el-divider></el-divider> -->
-                <!-- <el-dropdown-item >个人信息</el-dropdown-item> -->
-                <el-divider><i class="el-icon-mobile-phone"></i></el-divider>
-                <el-dropdown-item @click.native="changeInfo">修改信息</el-dropdown-item>
-                <el-dropdown-item style="color:red;" @click.native="logout">退出登录</el-dropdown-item>
-                
-              </el-dropdown-menu>
-            </el-dropdown>
+              <el-dropdown style="height:60px; width: 60px;">
+                <span class="el-dropdown-link">
+                  <div>
+                    <el-avatar
+                      :size="35"
+                      src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                    />
+                  </div>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item disabled>{{ username }}</el-dropdown-item>
+                  <el-dropdown-item disabled>{{ mail_address }}</el-dropdown-item>
+                  <!-- <el-divider></el-divider> -->
+                  <!-- <el-dropdown-item >个人信息</el-dropdown-item> -->
+                  <el-divider>
+                    <i class="el-icon-mobile-phone" />
+                  </el-divider>
+                  <el-dropdown-item @click.native="changeInfo">修改信息</el-dropdown-item>
+                  <el-dropdown-item style="color:red;" @click.native="logout">退出登录</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </div>
           </el-col>
         </el-row>
@@ -76,6 +90,14 @@
           <!-- <el-button size="small" @click="newdoc">测试</el-button> -->
           <!-- <editor v-model="content" @editorContent="getEditorContent"></editor> -->
           <editor :content="content" @editorContent="getEditorContent"></editor>
+          <!-- 评论面板 -->
+          <el-drawer
+            title="文档评论"
+            :visible.sync="drawer"
+            :direction="direction"
+          >
+            <span>我来啦!</span>
+          </el-drawer>
         </el-main>
       </el-container>
     </el-container>
@@ -100,8 +122,8 @@ export default {
         doc_id: this.$route.params.doc_id,
       });
       axios.post("ajax/get_doc/", data).then((res) => {
-        this.content = res.data.content
-        this.doc_name = res.data.name
+        this.content = res.data.content;
+        this.doc_name = res.data.name;
       });
     },
     logout() {
@@ -116,8 +138,8 @@ export default {
       this.$router.push("/home");
     },
     getEditorContent(data) {
-      this.content = data
-      console.log(this.content)
+      this.content = data;
+      console.log(this.content);
     },
     // 点击收藏的提示信息
     onlike() {
@@ -161,15 +183,18 @@ export default {
   },
   data() {
     return {
-      input: '',
+      input: "",
       // 编辑器内容
-      content: '',
+      content: "",
       //收藏按钮
       islike: false,
       //改：根据登陆人员的的信息改(可能是表单形式)
-      doc_name: '',
-      username: '檠莲焰',
-      mail_address: '921049836@qq.com',
+      doc_name: "",
+      username: "檠莲焰",
+      mail_address: "921049836@qq.com",
+      // 评论面板相关参数
+      drawer: false,
+      direction: "rtl",
     };
   },
 };
@@ -230,8 +255,11 @@ body > .el-container {
 .head-box3 {
   display: flex;
   align-items: center;
+  height: 60px;
+  box-sizing: border-box;
   // 居右对齐
   justify-content: flex-end;
+  // border: 1px solid red;
 }
 
 // .bg-purple {
@@ -254,7 +282,7 @@ body > .el-container {
 //   color: red;
 // }
 //编辑界面右上角的头像
-.el-dropdown-link{
+.el-dropdown-link {
   cursor: pointer;
 }
 </style>

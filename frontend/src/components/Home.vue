@@ -29,9 +29,12 @@
         <el-col :span="6" style="height:60px">
           <div class="grid-content head-box3 bg-purple">
             <!-- 通知图标 -->
-            <el-dropdown>
-              <span class="el-dropdown-link">
-                <i class="el-icon-bell" style="height:60px;font-size:25px;" />
+            <el-dropdown style="height:60px; display: flex; align-items: center;">
+              <span
+                class="el-dropdown-link"
+                style="height:60px;  display: flex; align-items: center;"
+              >
+                <i class="el-icon-bell" style="height:20px;font-size:20px;" />
               </span>
               <!-- 通知图标下面的下拉栏 -->
               <el-dropdown-menu slot="dropdown">
@@ -52,10 +55,11 @@
             </el-dropdown>
 
             <!-- 这里是右上角的头像 -->
-            <el-dropdown>
+            <el-dropdown style="height:60px">
               <span class="el-dropdown-link">
                 <div>
                   <el-avatar
+                    :size="35"
                     src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
                   />
                 </div>
@@ -124,16 +128,16 @@
 
             <!-- 二级菜单 -->
             <el-menu-item
-              class="second-menu"
-              :index="'/teamSpace/'+(i+1)"
               v-for="(team, i) in teamList"
               :key="i"
+              class="second-menu"
+              :index="'/teamSpace/'+team.team_id"
             >
               <template slot="title">
                 <!-- 图标 -->
                 <!-- <i class="el-icon-location"></i> -->
                 <!-- 文本 -->
-                <span>{{ team.fields.team_name }}</span>
+                <span>{{ team.team_name }}</span>
               </template>
             </el-menu-item>
           </el-submenu>
@@ -203,10 +207,10 @@ export default {
       },
       // 存储团队信息
       teamList: [
-        // {team_name: "team1", id: "123", path: "/teamList/1"},
-        // {team_name: "team2", id: "456", path: "/teamList/2"},
-        // {team_name: "team3", id: "456", path: "/teamList/3"},
-        // {team_name: "team4", id: "456", path: "/teamList/4"},
+        { team_name: "team1", id: "123", path: "/teamList/1", team_id: "123" },
+        { team_name: "team2", id: "456", path: "/teamList/2", team_id: "456" },
+        { team_name: "team3", id: "456", path: "/teamList/3", team_id: "656565" },
+        { team_name: "team4", id: "456", path: "/teamList/4", team_id: "123453" },
       ],
       docForm: {
         name: "",
@@ -235,18 +239,19 @@ export default {
         } else {
           alert("表格不能为空");
         }
+        this.getTeamList();
       });
     },
     // 获取团队名列表
     getTeamList() {
       axios.get("ajax/get_my_team/").then((res) => {
-        this.teamList = JSON.parse(res.data.team_list);
-        console.log(this.teamList);
+        this.teamList = res.data.team_list;
       });
     },
     logout() {
-      window.sessionStorage.clear();
-      this.$router.push("/login");
+      this.$store.dispatch("logout").then(() => {
+        this.$router.push("/login");
+      });
     },
     changeInfo() {
       window.sessionStorage.clear();
@@ -258,7 +263,7 @@ export default {
       window.sessionStorage.clear();
       // console.log(myDate.toLocaleString());
       try {
-        let resp = await this.get_docid();
+        const resp = await this.get_docid();
         console.log(resp);
         const flag = resp.data.flag;
         doc_id = resp.data.doc_id;
@@ -300,10 +305,11 @@ export default {
       this.$router.push("/home");
     },
     use_templates() {
-      this.$message({
-        message: "请跳转到选择模板页面",
-        type: "warning",
-      });
+      // this.$message({
+      //     message: "请跳转到选择模板页面",
+      //     type: "warning",
+      //   });
+      this.$router.push("/templates");
     },
   },
 };
@@ -362,8 +368,11 @@ body > .el-container {
 .head-box3 {
   display: flex;
   align-items: center;
+  height: 60px;
+  box-sizing: border-box;
   // 居右对齐
   justify-content: flex-end;
+  // border: 1px solid red;
 }
 
 // .bg-purple {
@@ -399,8 +408,9 @@ body > .el-container {
   width: 199px;
   height: 56px;
   line-height: 56px;
+  padding-left: 30px;
   // background-color: blue;
-  text-align: center;
+  // text-align: center;
   display: table-cell;
   vertical-align: middle;
 }

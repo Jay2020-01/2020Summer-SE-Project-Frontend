@@ -12,7 +12,7 @@ import Recyclebin from '../components/working_table/Recycle-bin.vue'
 import Team1 from '../components/working_table/team1.vue'
 import Team2 from '../components/working_table/team2.vue'
 import Templates from '../components/working_table/Templates.vue'
-// import ceshi from '../components/working_table/ceshi.vue'
+import ceshi from '../components/working_table/ceshi.vue'
 import template1 from '../components/working_table/templates/1.vue'
 import template2 from '../components/working_table/templates/2.vue'
 import template3 from '../components/working_table/templates/3.vue'
@@ -26,24 +26,25 @@ const routes = [
     { path: '/login', component: Login },
     { path: '/register', component: Register },
     // { path: '/editor', component: Editor },
-    { path: '/editor/:doc_id', component: Editor, meta: { requiresAuth: true } },
+    { path: '/editor', component: Editor, meta: { requiresAuth: true } },
     {
         path: '/home',
-        redirect: '/workingTable',
+        redirect: '1',
         component: Home,
         children: [
-            { path: '/workingTable', component: WorkingTable, meta: { requiresAuth: true } },
+            { path: '/1', component: WorkingTable, meta: { requiresAuth: true } },
             { path: '/myinfo', component: MyInfo, meta: { requiresAuth: true } },
-            { path: '/inbox', component: Inbox, meta: { requiresAuth: true } },
-            { path: '/myDesktop', component: Mydesktop, meta: { requiresAuth: true } },
-            { path: '/teamSpace/:team_id', component: Team1, meta: { requiresAuth: true } },
-            // { path: '/team2', component: Team2, meta: { requiresAuth: true } },
-            { path: '/trash', component: Recyclebin, meta: { requiresAuth: true } },
-            { path: '/templates', component: Templates, meta: {requiresAuth: true}},
-            { path: '/template1', component: template1, meta: {requiresAuth: true}},
-            { path: '/template2', component: template2, meta: {requiresAuth: true}},
-            { path: '/template3', component: template3, meta: {requiresAuth: true}},
-            { path: '/template4', component: template4, meta: {requiresAuth: true}},
+            { path: '/2', component: Inbox, meta: { requiresAuth: true } },
+            { path: '/3', component: Mydesktop, meta: { requiresAuth: true } },
+            { path: '/4-1', component: Team1, meta: { requiresAuth: true } },
+            { path: '/4-2', component: Team2, meta: { requiresAuth: true } },
+            { path: '/5', component: Recyclebin, meta: { requiresAuth: true } },
+            { path: '/100', component: Templates, meta: {requiresAuth: true}},
+            { path: '/101', component: template1, meta: {requiresAuth: true}},
+            { path: '/102', component: template2, meta: {requiresAuth: true}},
+            { path: '/103', component: template3, meta: {requiresAuth: true}},
+            { path: '/104', component: template4, meta: {requiresAuth: true}},
+            { path: '/200', component: ceshi, meta: {requiresAuth: true}},
         ],
         meta: { requiresAuth: true }
     }

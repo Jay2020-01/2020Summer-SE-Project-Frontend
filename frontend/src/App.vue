@@ -8,11 +8,21 @@
 <script>
 export default {
   name: 'App',
-  created: function () {
+  data () {
+    return {
+
+    }
+  },
+  created () {
+    var _this = this
     this.$http.interceptors.response.use(undefined, function (err) {
       return new Promise(function (resolve, reject) {
-        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-          this.$store.dispatch('logout')
+        if (err.response.status === 401) {
+          console.log('request error, token error')
+          _this.$store.dispatch('logout')
+            .then(() => {
+              _this.$router.push('/login')
+            })
         }
         throw err
       })
