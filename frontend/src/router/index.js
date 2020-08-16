@@ -23,16 +23,16 @@ const routes = [
   { path: '/editor', component: Editor, meta: { requiresAuth: true } },
   {
     path: '/home',
-    redirect: '1',
+    redirect: '/workingTable',
     component: Home,
     children: [
-      { path: '/1', component: WorkingTable, meta: { requiresAuth: true } },
+      { path: '/workingTable', component: WorkingTable, meta: { requiresAuth: true } },
       { path: '/myinfo', component: MyInfo, meta: { requiresAuth: true } },
-      { path: '/2', component: Inbox, meta: { requiresAuth: true } },
-      { path: '/3', component: Mydesktop, meta: { requiresAuth: true } },
-      { path: '/4-1', component: Team1, meta: { requiresAuth: true } },
-      { path: '/4-2', component: Team2, meta: { requiresAuth: true } },
-      { path: '/5', component: Recyclebin, meta: { requiresAuth: true } }
+      { path: '/inbox', component: Inbox, meta: { requiresAuth: true } },
+      { path: '/myDesktop', component: Mydesktop, meta: { requiresAuth: true } },
+      { path: '/teamSpace/:id', component: Team1, meta: { requiresAuth: true } },
+      // { path: '/team2', component: Team2, meta: { requiresAuth: true } },
+      { path: '/trash', component: Recyclebin, meta: { requiresAuth: true } }
     ],
     meta: { requiresAuth: true }
   }
