@@ -300,10 +300,11 @@ export default {
       this.$router.push("/home");
     },
     use_templates() {
-      this.$message({
-        message: "请跳转到选择模板页面",
-        type: "warning",
-      });
+      // this.$message({
+      //     message: "请跳转到选择模板页面",
+      //     type: "warning",
+      //   });
+      this.$router.push('/templates')
     },
   },
 };
