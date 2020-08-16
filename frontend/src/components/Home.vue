@@ -1,9 +1,18 @@
 <template>
   <el-container class="home-container">
     <!-- 头部区域 -->
-    <el-header height="60px" direction="horizontal">
-      <el-row type="flex" class="row-bg">
-        <el-col :span="6" :offset="0">
+    <el-header
+      height="60px"
+      direction="horizontal"
+    >
+      <el-row
+        type="flex"
+        class="row-bg"
+      >
+        <el-col
+          :span="6"
+          :offset="0"
+        >
           <div class="grid-content head-box1 bg-purple">
             <!-- 头像区域 -->
             <el-avatar
@@ -11,11 +20,16 @@
               style="color: #409eff; background-color: #fff !important; cursor:pointer;"
               :size="40"
               @click.native="backtoHome"
-            >logo</el-avatar>
+            >
+              logo
+            </el-avatar>
             <span class="site-name">钻石文档</span>
           </div>
         </el-col>
-        <el-col :span="5" :offset="7">
+        <el-col
+          :span="5"
+          :offset="7"
+        >
           <div class="grid-content head-box2 bg-purple-light">
             <el-input
               v-model="input"
@@ -26,12 +40,15 @@
             />
           </div>
         </el-col>
-        <el-col :span="6" style="height:60px">
+        <el-col
+          :span="6"
+          style="height:60px"
+        >
           <div class="grid-content head-box3 bg-purple">
             <!-- 通知图标 -->
-            <el-dropdown>
-              <span class="el-dropdown-link">
-                <i class="el-icon-bell" style="height:60px;font-size:25px;" />
+            <el-dropdown style="height:60px; display: flex; align-items: center;">
+              <span class="el-dropdown-link" style="height:60px;  display: flex; align-items: center;">
+                <i class="el-icon-bell" style="height:20px;font-size:20px;" />
               </span>
               <!-- 通知图标下面的下拉栏 -->
               <el-dropdown-menu slot="dropdown">
@@ -52,24 +69,36 @@
             </el-dropdown>
 
             <!-- 这里是右上角的头像 -->
-            <el-dropdown>
+            <el-dropdown style="height:60px">
               <span class="el-dropdown-link">
                 <div>
                   <el-avatar
+                    :size="35"
                     src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
                   />
                 </div>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item disabled>{{ username }}</el-dropdown-item>
-                <el-dropdown-item disabled>{{ mail_address }}</el-dropdown-item>
+                <el-dropdown-item disabled>
+                  {{ username }}
+                </el-dropdown-item>
+                <el-dropdown-item disabled>
+                  {{ mail_address }}
+                </el-dropdown-item>
                 <!-- <el-divider></el-divider> -->
                 <!-- <el-dropdown-item >个人信息</el-dropdown-item> -->
                 <el-divider>
                   <i class="el-icon-mobile-phone" />
                 </el-divider>
-                <el-dropdown-item @click.native="changeInfo">修改信息</el-dropdown-item>
-                <el-dropdown-item style="color:red;" @click.native="logout">退出登录</el-dropdown-item>
+                <el-dropdown-item @click.native="changeInfo">
+                  修改信息
+                </el-dropdown-item>
+                <el-dropdown-item
+                  style="color:red;"
+                  @click.native="logout"
+                >
+                  退出登录
+                </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -81,30 +110,51 @@
       <!-- 侧边栏 -->
       <el-aside width="200px">
         <!-- 侧边栏菜单区域  default-active="1"没写-->
-        <el-menu background-color="#fff" text-color="#535353" active-text-color="#409eff" router>
+        <el-menu
+          background-color="#fff"
+          text-color="#535353"
+          active-text-color="#409eff"
+          router
+        >
           <!-- 新建按钮 -->
           <!-- old-code -->
           <!-- <el-menu-item class="ceshi">
               <el-button size="midium" @click="newFile" type="primary" plain>新建文档</el-button>
           </el-menu-item>-->
           <div class="new-doc">
-            <el-button size="midium" type="primary" plain @click="newdocVisible=true">新建文档</el-button>
+            <el-button
+              size="midium"
+              type="primary"
+              plain
+              @click="newdocVisible=true"
+            >
+              新建文档
+            </el-button>
           </div>
           <!-- 不分级菜单 -->
           <el-menu-item index="/workingTable">
-            <i class="fa fa-archive" style="padding: 0 10px 0 10px" />
+            <i
+              class="fa fa-archive"
+              style="padding: 0 10px 0 10px"
+            />
             <span slot="title">工作台</span>
           </el-menu-item>
           <!-- 不分级菜单 -->
           <el-menu-item index="/inbox">
-            <i class="fa fa-envelope-o" style="padding: 0 10px 0 10px" />
+            <i
+              class="fa fa-envelope-o"
+              style="padding: 0 10px 0 10px"
+            />
             <span slot="title">收件箱</span>
           </el-menu-item>
           <!-- 分割线 -->
           <div style="margin: 8px 20px; height: 1.5px; background-color: rgb(230, 230, 230);" />
           <!-- 不分级菜单 -->
           <el-menu-item index="/myDesktop">
-            <i class="fa fa-desktop" style="padding: 0 10px 0 10px" />
+            <i
+              class="fa fa-desktop"
+              style="padding: 0 10px 0 10px"
+            />
             <span slot="title">我的桌面</span>
           </el-menu-item>
 
@@ -113,21 +163,27 @@
             <!-- 一级菜单模板区域 -->
             <template slot="title">
               <!-- 图标 -->
-              <i class="fa fa-cube" style="padding: 0 10px 0 10px" />
+              <i
+                class="fa fa-cube"
+                style="padding: 0 10px 0 10px"
+              />
               <!-- 文本 -->
               <span>团队空间</span>
               <!-- 新增团队按钮 -->
               <span>
-                <i class="add-team fa fa-plus-circle" @click.stop="dialogFormVisible = true" />
+                <i
+                  class="add-team fa fa-plus-circle"
+                  @click.stop="dialogFormVisible = true"
+                />
               </span>
             </template>
 
             <!-- 二级菜单 -->
             <el-menu-item
-              class="second-menu"
-              :index="'/teamSpace/'+(i+1)"
               v-for="(team, i) in teamList"
               :key="i"
+              class="second-menu"
+              :index="'/teamSpace/'+(i+1)"
             >
               <template slot="title">
                 <!-- 图标 -->
@@ -140,7 +196,10 @@
 
           <!-- 不分级菜单 -->
           <el-menu-item index="/trash">
-            <i class="fa fa-trash-o" style="padding: 0 12px 0 11px" />
+            <i
+              class="fa fa-trash-o"
+              style="padding: 0 12px 0 11px"
+            />
             <span slot="title">回收站</span>
           </el-menu-item>
         </el-menu>
@@ -148,34 +207,76 @@
       <!-- 右侧内容主体 -->
       <el-main>
         <!-- 隐藏的新建团队表单 -->
-        <el-dialog title="新建团队空间" :visible.sync="dialogFormVisible">
-          <el-form ref="teamForm" :model="teamForm">
+        <el-dialog
+          title="新建团队空间"
+          :visible.sync="dialogFormVisible"
+        >
+          <el-form
+            ref="teamForm"
+            :model="teamForm"
+          >
             <el-form-item prop="name">
               <span style="float: left;">空间名称</span>
-              <el-input v-model="teamForm.name" placeholder="请输入" autocomplete="off" />
+              <el-input
+                v-model="teamForm.name"
+                placeholder="请输入"
+                autocomplete="off"
+              />
             </el-form-item>
           </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <div
+            slot="footer"
+            class="dialog-footer"
+          >
+            <el-button @click="dialogFormVisible = false">
+              取 消
+            </el-button>
             <el-button
               type="primary"
               @click="dialogFormVisible = false; createTeam('teamForm') "
-            >确 定</el-button>
+            >
+              确 定
+            </el-button>
           </div>
         </el-dialog>
 
         <!-- 隐藏的新建文件的表单 -->
-        <el-dialog title="新建文档" :visible.sync="newdocVisible">
-          <el-form ref="docForm" :model="docForm" label-width="80px">
+        <el-dialog
+          title="新建文档"
+          :visible.sync="newdocVisible"
+        >
+          <el-form
+            ref="docForm"
+            :model="docForm"
+            label-width="80px"
+          >
             <el-form-item label="文档名称">
-              <el-input v-model="docForm.name" placeholder="无标题" />
+              <el-input
+                v-model="docForm.name"
+                placeholder="无标题"
+              />
               <!-- <el-button style="text-align: left;">使用模板</el-button> -->
             </el-form-item>
           </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button style="text-align: left;" @click="newdocVisible=false;use_templates();">使用模板</el-button>
-            <el-button @click="newdocVisible = false">取 消</el-button>
-            <el-button type="primary" @click="newdocVisible = false; newFile()">确 定</el-button>
+          <div
+            slot="footer"
+            class="dialog-footer"
+          >
+            <el-button
+              style="text-align: left;"
+              @click="newdocVisible=false;use_templates();"
+            >
+              使用模板
+            </el-button>
+            <el-button @click="newdocVisible = false">
+              取 消
+            </el-button>
+            <el-button
+              type="primary"
+              @click="newdocVisible = false; newFile()"
+            >
+              确 定
+            </el-button>
           </div>
         </el-dialog>
 
@@ -187,19 +288,19 @@
 </template>
 
 <script>
-import axios from "axios";
-import Qs from "qs";
+import axios from 'axios'
+import Qs from 'qs'
 export default {
-  data() {
+  data () {
     return {
-      input: "",
+      input: '',
       // 默认激活
-      activeIndex: "/workingTable",
+      activeIndex: '/workingTable',
       dialogFormVisible: false,
       newdocVisible: false,
       // 新建团队时提交的团队名表单
       teamForm: {
-        name: "",
+        name: ''
       },
       // 存储团队信息
       teamList: [
@@ -209,102 +310,104 @@ export default {
         // {team_name: "team4", id: "456", path: "/teamList/4"},
       ],
       docForm: {
-        name: "",
-        authority: [],
+        name: '',
+        authority: []
         // 如果不用在新建的时候设置权限就把上面这个删了
       },
-      formLabelWidth: "120px",
+      formLabelWidth: '120px',
       // 改：根据登陆人员的的信息改(可能是表单形式)
-      username: "檠莲焰",
-      mail_address: "921049836@qq.com",
-    };
+      username: '檠莲焰',
+      mail_address: '921049836@qq.com'
+    }
   },
   created: function () {
-    this.getTeamList();
+    this.getTeamList()
   },
   methods: {
-    createTeam(formName) {
+    createTeam (formName) {
       // 验证表单
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          var data = Qs.stringify(this.teamForm); // 先用Qs对数据进行处理
+          var data = Qs.stringify(this.teamForm) // 先用Qs对数据进行处理
           axios
-            .post("ajax/create_team/", data)
+            .post('ajax/create_team/', data)
             .then()
-            .catch((err) => console.log(err));
+            .catch((err) => console.log(err))
         } else {
-          alert("表格不能为空");
+          alert('表格不能为空')
         }
-      });
+      })
     },
     // 获取团队名列表
-    getTeamList() {
-      axios.get("ajax/get_my_team/").then((res) => {
-        this.teamList = JSON.parse(res.data.team_list);
-        console.log(this.teamList);
-      });
+    getTeamList () {
+      axios.get('ajax/get_my_team/').then((res) => {
+        this.teamList = JSON.parse(res.data.team_list)
+        console.log(this.teamList)
+      })
     },
-    logout() {
-      window.sessionStorage.clear();
-      this.$router.push("/login");
+    logout () {
+      this.$store.dispatch('logout')
+        .then(() => {
+          this.$router.push('/login')
+        })
     },
-    changeInfo() {
-      window.sessionStorage.clear();
-      this.$router.push("/myinfo");
+    changeInfo () {
+      window.sessionStorage.clear()
+      this.$router.push('/myinfo')
     },
-    async newFile() {
+    async newFile () {
       // var myDate = new Date();
-      var doc_id = 0;
-      window.sessionStorage.clear();
+      var doc_id = 0
+      window.sessionStorage.clear()
       // console.log(myDate.toLocaleString());
       try {
-        let resp = await this.get_docid();
-        console.log(resp);
-        const flag = resp.data.flag;
-        doc_id = resp.data.doc_id;
-        if (flag == "yes") {
+        const resp = await this.get_docid()
+        console.log(resp)
+        const flag = resp.data.flag
+        doc_id = resp.data.doc_id
+        if (flag == 'yes') {
           this.$message({
-            message: "新建成功",
-            type: "success",
-          });
+            message: '新建成功',
+            type: 'success'
+          })
         } else {
           this.$message({
-            message: "新建文档出错",
-            type: "warning",
-          });
+            message: '新建文档出错',
+            type: 'warning'
+          })
         }
       } catch (err) {
-        console.log(err);
+        console.log(err)
       }
-      console.log(doc_id);
-      this.$router.push("/editor/" + doc_id);
+      console.log(doc_id)
+      this.$router.push('/editor/' + doc_id)
     },
-    get_docid(data) {
+    get_docid (data) {
       return new Promise((resolve, reject) => {
         var data = Qs.stringify({
-          title: this.docForm.name,
+          title: this.docForm.name
           // create_time: myDate.toLocaleString(),
-        });
+        })
         axios
-          .post("ajax/create_doc/", data)
+          .post('ajax/create_doc/', data)
           .then((resp) => {
-            resolve(resp);
+            resolve(resp)
           })
           .catch((err) => {
-            reject(err);
-          });
-      });
+            reject(err)
+          })
+      })
     },
-    backtoHome() {
-      window.sessionStorage.clear();
-      this.$router.push("/home");
+    backtoHome () {
+      window.sessionStorage.clear()
+      this.$router.push('/home')
     },
-    use_templates() {
+    use_templates () {
       // this.$message({
       //     message: "请跳转到选择模板页面",
       //     type: "warning",
       //   });
-      this.$router.push('/templates')
+      this.$router.push("/templates");
     },
   },
 };
@@ -363,8 +466,11 @@ body > .el-container {
 .head-box3 {
   display: flex;
   align-items: center;
+  height: 60px;
+  box-sizing: border-box;
   // 居右对齐
   justify-content: flex-end;
+  // border: 1px solid red;
 }
 
 // .bg-purple {
@@ -400,8 +506,9 @@ body > .el-container {
   width: 199px;
   height: 56px;
   line-height: 56px;
+  padding-left: 30px;
   // background-color: blue;
-  text-align: center;
+  // text-align: center;
   display: table-cell;
   vertical-align: middle;
 }
