@@ -47,8 +47,14 @@
           <div class="grid-content head-box3 bg-purple">
             <!-- 通知图标 -->
             <el-dropdown style="height:60px; display: flex; align-items: center;">
-              <span class="el-dropdown-link" style="height:60px;  display: flex; align-items: center;">
-                <i class="el-icon-bell" style="height:20px;font-size:20px;" />
+              <span
+                class="el-dropdown-link"
+                style="height:60px;  display: flex; align-items: center;"
+              >
+                <i
+                  class="el-icon-bell"
+                  style="height:20px;font-size:20px;"
+                />
               </span>
               <!-- 通知图标下面的下拉栏 -->
               <el-dropdown-menu slot="dropdown">
@@ -189,7 +195,7 @@
                 <!-- 图标 -->
                 <!-- <i class="el-icon-location"></i> -->
                 <!-- 文本 -->
-                <span>{{ team.fields.team_name }}</span>
+                <span>{{ team.team_name }}</span>
               </template>
             </el-menu-item>
           </el-submenu>
@@ -336,13 +342,13 @@ export default {
         } else {
           alert('表格不能为空')
         }
+        this.getTeamList()
       })
     },
     // 获取团队名列表
     getTeamList () {
       axios.get('ajax/get_my_team/').then((res) => {
-        this.teamList = JSON.parse(res.data.team_list)
-        console.log(this.teamList)
+        this.teamList = res.data.team_list
       })
     },
     logout () {
@@ -407,10 +413,10 @@ export default {
       //     message: "请跳转到选择模板页面",
       //     type: "warning",
       //   });
-      this.$router.push("/templates");
-    },
-  },
-};
+      this.$router.push('/templates')
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
