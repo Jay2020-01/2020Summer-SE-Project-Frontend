@@ -15,9 +15,15 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <!-- 选项 -->
-                <el-dropdown-item><i class="el-icon-magic-stick"></i>协作</el-dropdown-item>
-                <el-dropdown-item style="border-bottom:1px solid #e5e5e5"><i class="el-icon-s-tools"></i>设置</el-dropdown-item>
-                <el-dropdown-item style="color:red"><i class="el-icon-delete"></i>删除</el-dropdown-item>
+                <el-dropdown-item>
+                  <i class="el-icon-magic-stick"></i>协作
+                </el-dropdown-item>
+                <el-dropdown-item style="border-bottom:1px solid #e5e5e5">
+                  <i class="el-icon-s-tools"></i>设置
+                </el-dropdown-item>
+                <el-dropdown-item style="color:red">
+                  <i class="el-icon-delete"></i>删除
+                </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -38,11 +44,21 @@
                     </div>
                     <el-dropdown-menu slot="dropdown">
                       <!-- 选项 -->
-                    <el-dropdown-item style="border-bottom:1px solid #e5e5e5"><i class="el-icon-magic-stick"></i>新标签页打开</el-dropdown-item>
-                    <el-dropdown-item><i class="el-icon-collection-tag"></i>收藏</el-dropdown-item>
-                    <el-dropdown-item style="border-bottom:1px solid #e5e5e5"><i class="el-icon-position"></i>分享</el-dropdown-item>
-                    <el-dropdown-item><i class="el-icon-delete"></i>重命名</el-dropdown-item>
-                    <el-dropdown-item style="color:red;"><i class="el-icon-delete"></i>删除</el-dropdown-item>
+                      <el-dropdown-item style="border-bottom:1px solid #e5e5e5">
+                        <i class="el-icon-magic-stick"></i>新标签页打开
+                      </el-dropdown-item>
+                      <el-dropdown-item>
+                        <i class="el-icon-collection-tag"></i>收藏
+                      </el-dropdown-item>
+                      <el-dropdown-item style="border-bottom:1px solid #e5e5e5">
+                        <i class="el-icon-position"></i>分享
+                      </el-dropdown-item>
+                      <el-dropdown-item>
+                        <i class="el-icon-delete"></i>重命名
+                      </el-dropdown-item>
+                      <el-dropdown-item style="color:red;">
+                        <i class="el-icon-delete"></i>删除
+                      </el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
                 </div>
@@ -124,18 +140,26 @@
                     <div style="display: flex; align-items: center;">
                       <el-avatar :size="24">头像</el-avatar>
                       <span style="margin-left: 15px;">{{ user.fields.username }}</span>
+                      <!-- <span style="margin-left: 15px;">{{ user.username }}</span> -->
                     </div>
                   </el-col>
                   <!-- 手机号 -->
                   <el-col :span="11" style>
                     <div style="display: flex; align-items: center; ">
                       <span style="color: #8a8a8a;">{{ user.fields.phone_number }}</span>
+                      <!-- <span style="color: #8a8a8a;">{{ user.phone_number }}</span> -->
                     </div>
                   </el-col>
                   <!-- 发送邀请按钮 -->
                   <el-col :span="5">
                     <div style="display: flex; align-items: center;">
-                      <el-button type="primary" round plain size="mini">邀请</el-button>
+                      <el-button
+                        type="primary"
+                        round
+                        plain
+                        size="mini"
+                        @click="invitePeople(user.fields.id)"
+                      >邀请</el-button>
                     </div>
                   </el-col>
                 </el-row>
@@ -223,12 +247,18 @@ export default {
       activeName: "first",
       showInvite: false,
       showSettings: false,
+      // 团队名称列表
+      teamNameList: [],
       // 搜索表单
       formInvite: {
         name: "",
       },
       // 搜索用户列表,想要造列表数据，需要套一层fields
-      userList: [],
+      user: {},
+      userList: [
+        { id: "001", username: "n1", phone_number: "123456" },
+        { id: "002", username: "n2", phone_number: "123456" },
+      ],
       userNum: "0",
       // 团队成员列表
       teamateList: [],
@@ -258,9 +288,19 @@ export default {
       value1: [],
     };
   },
+  created: function () {
+    this.getTeamList();
+  },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
+    },
+    // 获取团队列表
+    getTeamList() {
+      axios.get("ajax/get_my_team/").then((res) => {
+        this.teamNameList = JSON.parse(res.data.user_list);
+        console.log(this.teamNameList);
+      });
     },
     // 搜索方法
     serchPeople(formName) {
@@ -275,6 +315,14 @@ export default {
           alert("表格不能为空");
         }
       });
+    },
+    // 邀请新成员方法
+    invitePeople(id) {
+      var data = Qs.stringify({
+        id: id,
+      });
+      console.log(data);
+      axios.post("ajax/invite_user/", data).then((res) => {});
     },
   },
 };
