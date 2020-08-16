@@ -26,18 +26,12 @@
             />
           </div>
         </el-col>
-        <el-col
-          :span="6"
-          style="height:60px"
-        >
+        <el-col :span="6" style="height:60px">
           <div class="grid-content head-box3 bg-purple">
             <!-- 通知图标 -->
             <el-dropdown>
               <span class="el-dropdown-link">
-                <i
-                  class="el-icon-bell"
-                  style="height:60px;font-size:25px;"
-                />
+                <i class="el-icon-bell" style="height:60px;font-size:25px;" />
               </span>
               <!-- 通知图标下面的下拉栏 -->
               <el-dropdown-menu slot="dropdown">
@@ -61,28 +55,21 @@
             <el-dropdown>
               <span class="el-dropdown-link">
                 <div>
-                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+                  <el-avatar
+                    src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                  />
                 </div>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item disabled>
-                  {{ username }}
-                </el-dropdown-item>
-                <el-dropdown-item disabled>
-                  {{ mail_address }}
-                </el-dropdown-item>
+                <el-dropdown-item disabled>{{ username }}</el-dropdown-item>
+                <el-dropdown-item disabled>{{ mail_address }}</el-dropdown-item>
                 <!-- <el-divider></el-divider> -->
                 <!-- <el-dropdown-item >个人信息</el-dropdown-item> -->
-                <el-divider><i class="el-icon-mobile-phone" /></el-divider>
-                <el-dropdown-item @click.native="changeInfo">
-                  修改信息
-                </el-dropdown-item>
-                <el-dropdown-item
-                  style="color:red;"
-                  @click.native="logout"
-                >
-                  退出登录
-                </el-dropdown-item>
+                <el-divider>
+                  <i class="el-icon-mobile-phone" />
+                </el-divider>
+                <el-dropdown-item @click.native="changeInfo">修改信息</el-dropdown-item>
+                <el-dropdown-item style="color:red;" @click.native="logout">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -104,25 +91,25 @@
             <el-button size="midium" type="primary" plain @click="newdocVisible=true">新建文档</el-button>
           </div>
           <!-- 不分级菜单 -->
-          <el-menu-item index="1">
+          <el-menu-item index="/workingTable">
             <i class="fa fa-archive" style="padding: 0 10px 0 10px" />
             <span slot="title">工作台</span>
           </el-menu-item>
           <!-- 不分级菜单 -->
-          <el-menu-item index="2">
+          <el-menu-item index="/inbox">
             <i class="fa fa-envelope-o" style="padding: 0 10px 0 10px" />
             <span slot="title">收件箱</span>
           </el-menu-item>
           <!-- 分割线 -->
           <div style="margin: 8px 20px; height: 1.5px; background-color: rgb(230, 230, 230);" />
           <!-- 不分级菜单 -->
-          <el-menu-item index="3">
+          <el-menu-item index="/myDesktop">
             <i class="fa fa-desktop" style="padding: 0 10px 0 10px" />
             <span slot="title">我的桌面</span>
           </el-menu-item>
 
           <!-- 一级菜单 -->
-          <el-submenu index="4">
+          <el-submenu index="/teamSpace">
             <!-- 一级菜单模板区域 -->
             <template slot="title">
               <!-- 图标 -->
@@ -136,26 +123,23 @@
             </template>
 
             <!-- 二级菜单 -->
-            <el-menu-item class="second-menu" index="4-1">
+            <el-menu-item
+              class="second-menu"
+              :index="'/teamSpace/'+(i+1)"
+              v-for="(team, i) in teamList"
+              :key="i"
+            >
               <template slot="title">
                 <!-- 图标 -->
                 <!-- <i class="el-icon-location"></i> -->
                 <!-- 文本 -->
-                <span>团队名称1</span>
-              </template>
-            </el-menu-item>
-            <el-menu-item class="second-menu" index="4-2">
-              <template slot="title">
-                <!-- 图标 -->
-                <!-- <i class="el-icon-location"></i> -->
-                <!-- 文本 -->
-                <span>团队名称2</span>
+                <span>{{ team.fields.team_name }}</span>
               </template>
             </el-menu-item>
           </el-submenu>
 
           <!-- 不分级菜单 -->
-          <el-menu-item index="5">
+          <el-menu-item index="/trash">
             <i class="fa fa-trash-o" style="padding: 0 12px 0 11px" />
             <span slot="title">回收站</span>
           </el-menu-item>
@@ -184,32 +168,14 @@
         <el-dialog title="新建文档" :visible.sync="newdocVisible">
           <el-form ref="docForm" :model="docForm" label-width="80px">
             <el-form-item label="文档名称">
-              <el-input
-                v-model="docForm.name"
-                placeholder="无标题"
-              />
+              <el-input v-model="docForm.name" placeholder="无标题" />
               <!-- <el-button style="text-align: left;">使用模板</el-button> -->
             </el-form-item>
           </el-form>
-          <div
-            slot="footer"
-            class="dialog-footer"
-          >
-            <el-button
-              style="text-align: left;"
-              @click="newdocVisible=false;use_templates();"
-            >
-              使用模板
-            </el-button>
-            <el-button @click="newdocVisible = false">
-              取 消
-            </el-button>
-            <el-button
-              type="primary"
-              @click="newdocVisible = false; newFile()"
-            >
-              确 定
-            </el-button>
+          <div slot="footer" class="dialog-footer">
+            <el-button style="text-align: left;" @click="newdocVisible=false;use_templates();">使用模板</el-button>
+            <el-button @click="newdocVisible = false">取 消</el-button>
+            <el-button type="primary" @click="newdocVisible = false; newFile()">确 定</el-button>
           </div>
         </el-dialog>
 
@@ -227,24 +193,34 @@ export default {
   data() {
     return {
       input: "",
+      // 默认激活
+      activeIndex: "/workingTable",
       dialogFormVisible: false,
       newdocVisible: false,
+      // 新建团队时提交的团队名表单
       teamForm: {
         name: "",
       },
+      // 存储团队信息
+      teamList: [
+        // {team_name: "team1", id: "123", path: "/teamList/1"},
+        // {team_name: "team2", id: "456", path: "/teamList/2"},
+        // {team_name: "team3", id: "456", path: "/teamList/3"},
+        // {team_name: "team4", id: "456", path: "/teamList/4"},
+      ],
       docForm: {
         name: "",
         authority: [],
         // 如果不用在新建的时候设置权限就把上面这个删了
       },
       formLabelWidth: "120px",
-      //改：根据登陆人员的的信息改(可能是表单形式)
+      // 改：根据登陆人员的的信息改(可能是表单形式)
       username: "檠莲焰",
       mail_address: "921049836@qq.com",
     };
   },
   created: function () {
-    this.getTeamList()
+    this.getTeamList();
   },
   methods: {
     createTeam(formName) {
@@ -261,15 +237,16 @@ export default {
         }
       });
     },
-    getTeamList () {
-      axios.get('ajax/get_my_team/').then((res) => {
-        this.teamNameList = JSON.parse(res.data.team_list)
-        console.log(this.teamNameList)
-      })
+    // 获取团队名列表
+    getTeamList() {
+      axios.get("ajax/get_my_team/").then((res) => {
+        this.teamList = JSON.parse(res.data.team_list);
+        console.log(this.teamList);
+      });
     },
-    logout () {
-      window.sessionStorage.clear()
-      this.$router.push('/login')
+    logout() {
+      window.sessionStorage.clear();
+      this.$router.push("/login");
     },
     changeInfo() {
       window.sessionStorage.clear();
@@ -322,14 +299,14 @@ export default {
       window.sessionStorage.clear();
       this.$router.push("/home");
     },
-    use_templates () {
+    use_templates() {
       this.$message({
-        message: '请跳转到选择模板页面',
-        type: 'warning'
-      })
-    }
-  }
-}
+        message: "请跳转到选择模板页面",
+        type: "warning",
+      });
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
