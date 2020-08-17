@@ -157,7 +157,8 @@
                         plain
                         size="mini"
                         @click="invitePeople(user.id)"
-                      >邀请</el-button>
+                        :disabled="!user.is_join"
+                      >{{!user.is_join ? "已邀" : "邀请"}}</el-button>
                     </div>
                   </el-col>
                 </el-row>
@@ -269,8 +270,8 @@ export default {
       },
       user: {},
       userList: [
-        // { id: '001', username: 'n1', phone_number: '123456' },
-        // { id: '002', username: 'n2', phone_number: '123456' }
+        { id: '001', username: 'n1', phone_number: '123456', is_join: true },
+        { id: '002', username: 'n2', phone_number: '123456', is_join: false }
       ],
       userNum: "0",
       // 团队成员列表
@@ -312,7 +313,9 @@ export default {
     serchPeople(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          var data = Qs.stringify(this.formInvite);
+          var data = Qs.stringify({
+            name: this.formInvite.name,
+            team_id: this.$route.params.team_id,});
           axios.post("http://localhost:8000/ajax/search_user/", data).then((res) => {
             this.userList = res.data.user_list;
             this.userNum = this.userList.length;
@@ -338,7 +341,7 @@ export default {
       });
       console.log(data);
       axios.post("http://localhost:8000/ajax/delete_my_team/", data).then((res) => {});
-      this.$router.push('/workingTable');
+      this.$router.push('/home');
     },
     // 获取团队成员列表
     showTeamates() {
