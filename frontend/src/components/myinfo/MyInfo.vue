@@ -34,9 +34,9 @@
               on-success是上传成功时的钩子，应该就是上传成功就调用哪个函数
               before-upload上传之前的钩子，参数是上传的文件，返回false且被reject就停止删除 -->
               <el-upload
-                style="float:center;position:relative;top:75px"
                 class="avatar-uploader"
-                action="https://jsonplaceholder.typicode.com/posts/"
+                action="http://localhost:8000/ajax/image_upload/"
+                :headers="myHeaders"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
@@ -44,7 +44,6 @@
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-aside>
-            
             <el-main>
               <!-- 用户名 -->
               <el-form-item
@@ -113,9 +112,11 @@
 <script>
 import axios from 'axios'
 import Qs from 'qs'
+var token = localStorage.getItem('token')
 export default {
   data () {
     return {
+      myHeaders: { Authorization: token },
       // 注册表单的数据绑定对象
       registerForm: {
         username: '',
@@ -123,8 +124,7 @@ export default {
         confirm_password: '',
         phone_number: '',
         mail_address: '',
-        wechat: '',
-        url:''
+        wechat: ''
         // 这里好像要增加一个url
       },
       imageUrl:'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
@@ -141,6 +141,7 @@ export default {
         this.registerForm.wechat = res.data.wechat
         this.registerForm.mail_address = res.data.mail_address
         this.registerForm.password = res.data.password
+        this.imageUrl = res.data.url
       })
     },
     tologin () {
@@ -165,7 +166,6 @@ export default {
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;
-
         if (!isJPG) {
           this.$message.error('上传头像图片只能是 JPG 格式!');
         }
