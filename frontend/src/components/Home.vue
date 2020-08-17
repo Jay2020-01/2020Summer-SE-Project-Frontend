@@ -39,9 +39,9 @@
               <!-- 通知图标下面的下拉栏 -->
               <el-dropdown-menu slot="dropdown">
                 <!-- 这里好像要用嵌套路由来写下面的内容 -->
-                <el-row style="background-color:#ebf4fc">
+                <el-row>
                   <el-col :span="12" style="text-align:center;"><h5>全部消息</h5></el-col>
-                  <el-col :span="12" style="float:center;position:relative;top:20px"><el-button size="small">全部标记为已读</el-button></el-col>
+                  <el-col :span="12" style="float:center;position:relative;top:20px;right:-20px"><el-button type="primary" size="small">全部标记为已读</el-button></el-col>
                 </el-row>
                 
                 <div>
