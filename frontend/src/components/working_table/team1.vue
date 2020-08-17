@@ -337,7 +337,7 @@ export default {
         team_id: this.$route.params.team_id,
       });
       console.log(data);
-      axios.post("http://localhost:8000/ajax/get_teamate/", data).then((res) => {});
+      axios.post("http://localhost:8000/ajax/delete_my_team/", data).then((res) => {});
       this.$router.push('/workingTable');
     },
     // 获取团队成员列表
