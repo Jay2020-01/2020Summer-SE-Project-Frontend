@@ -212,7 +212,7 @@
                   <el-col :span="5">
                     <div style="display: flex; align-items: center;">
                       <!-- 可以多选权限 -->
-                      <el-select v-model="value1" size="mini" placeholder="权限选择">
+                      <el-select @blur="setLevel(teamate.username, valueList[index]);" v-model="valueList[index]" size="mini" placeholder="权限选择">
                         <el-option
                           v-for="item in options"
                           :key="item.value"
@@ -276,8 +276,10 @@ export default {
       userNum: "0",
       // 团队成员列表
       teamateList: [
-        { id: '001', username: 'n1', phone_number: '123456' },
-        { id: '002', username: 'n2', phone_number: '123456' },
+        { id: '001', username: 'n1', phone_number: '123456', level: '1' },
+        { id: '002', username: 'n2', phone_number: '123456', level: '2' },
+        { id: '003', username: 'n3', phone_number: '123456', level: '3' },
+        { id: '004', username: 'n4', phone_number: '123456', level: '4' },
       ],
       teamateNum: "0",
       // 空间名称表单
@@ -286,23 +288,24 @@ export default {
       },
       options: [
         {
-          value: "1",
+          value: "2",
           label: "只能阅读",
         },
         {
-          value: "2",
+          value: "3",
           label: "只能评论",
         },
         {
-          value: "3",
+          value: "4",
           label: "可以编辑",
         },
         {
-          value: "4",
+          value: "1",
           label: "禁止访问",
         },
       ],
-      value1: [],
+      // 权限列表
+      valueList: ["1", "2", "3", "4"],
     };
   },
   methods: {
@@ -350,10 +353,28 @@ export default {
       var data = Qs.stringify({
         team_id: this.$route.params.team_id,
       });
-      console.log(data);
+      // console.log(data);
       axios.post("http://localhost:8000/ajax/invite_user/", data).then((res) => {
         this.teamateList = res.data.user_list;
         this.teamateNum = this.teamateList.length;
+        // 获取权限列表
+        this.valueList = [];
+        for(var i = 0; i < this.teamateList.length; i++){
+          this.valueList.push(this.teamateList[i].level);
+        }
+        // console.log(this.valueList);
+      });
+    },
+    // 设置团队成员权限
+    setLevel(name, toLevel){
+      var data = Qs.stringify({
+        username: name,
+        team_id: this.$route.params.team_id,
+        level: toLevel,
+      });
+      console.log(data);
+      axios.post("http://localhost:8000/ajax/set_level/", data).then((res) => {
+
       });
     }
   },
