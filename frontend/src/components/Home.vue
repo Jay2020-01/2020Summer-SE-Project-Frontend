@@ -30,12 +30,15 @@
           <div class="grid-content head-box3 bg-purple">
             <!-- 通知图标 -->
             <el-dropdown style="height:60px; display: flex; align-items: center;">
-              <span
-                class="el-dropdown-link"
-                style="height:60px;  display: flex; align-items: center;"
-              >
-                <i class="el-icon-bell" style="height:20px;font-size:20px;" />
-              </span>
+              <el-badge is-dot class="item" :hidden="false">
+                <!-- 上面这里的hidden就是判断是否显示小红点的 -->
+                <span
+                  class="el-dropdown-link"
+                  style="height:20px;  display: flex; align-items: center;"
+                >
+                  <i class="el-icon-bell" style="height:20px;font-size:20px;" />
+                </span>
+              </el-badge>
               <!-- 通知图标下面的下拉栏 -->
               <el-dropdown-menu slot="dropdown">
                 <!-- 这里好像要用嵌套路由来写下面的内容 -->
