@@ -354,7 +354,7 @@ export default {
         team_id: this.$route.params.team_id,
       });
       // console.log(data);
-      axios.post("http://localhost:8000/ajax/invite_user/", data).then((res) => {
+      axios.post("http://localhost:8000/ajax/get_team_member/", data).then((res) => {
         this.teamateList = res.data.user_list;
         this.teamateNum = this.teamateList.length;
         // 获取权限列表
