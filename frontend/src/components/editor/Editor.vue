@@ -47,11 +47,7 @@
             <div class="grid-content head-box3 bg-purple">
               <!-- 评论按钮 -->
               <el-tooltip class="item" effect="dark" content="评论" placement="bottom">
-                <el-button
-                  size="big"
-                  @click="drawer=true"
-                  style="border: none; margin-right: 0px;"
-                >
+                <el-button size="big" @click="drawer=true" style="border: none; margin-right: 0px;">
                   <i class="fa fa-comments-o"></i>
                 </el-button>
               </el-tooltip>
@@ -91,11 +87,7 @@
           <!-- <editor v-model="content" @editorContent="getEditorContent"></editor> -->
           <editor :content="content" @editorContent="getEditorContent"></editor>
           <!-- 评论面板 -->
-          <el-drawer
-            title="文档评论"
-            :visible.sync="drawer"
-            :direction="direction"
-          >
+          <el-drawer title="文档评论" :visible.sync="drawer" :direction="direction">
             <span>我来啦!</span>
           </el-drawer>
         </el-main>
@@ -117,13 +109,14 @@ export default {
   },
   methods: {
     getContent: function () {
-      console.log(this.editorContent);
+      // console.log(this.editorContent);
       var data = Qs.stringify({
         doc_id: this.$route.params.doc_id,
       });
       axios.post("http://localhost:8000/ajax/get_doc/", data).then((res) => {
         this.content = res.data.content;
         this.doc_name = res.data.name;
+        this.islike = res.data.islike;
       });
     },
     logout() {
@@ -139,21 +132,68 @@ export default {
     },
     getEditorContent(data) {
       this.content = data;
-      console.log(this.content);
+      // console.log(this.content);
+    },
+    collect(doc_id) {
+      var data = Qs.stringify({
+        doc_id: doc_id,
+      });
+      axios
+        .post("http://localhost:8000/ajax/collect_doc/", data)
+        .then((res) => {
+          const flag = res.data.flag;
+          if (flag == "yes") {
+            return true;
+          } else {
+            return false;
+          }
+        });
+    },
+    uncollect(doc_id) {
+      var data = Qs.stringify({
+        doc_id: doc_id,
+      });
+      axios
+        .post("http://localhost:8000/ajax/uncollect_doc/", data)
+        .then((res) => {
+          const flag = res.data.flag;
+          if (flag == "yes") {
+            return true;
+          } else {
+            return false;
+          }
+        });
     },
     // 点击收藏的提示信息
     onlike() {
-      this.islike = !this.islike;
-      if (this.islike) {
-        this.$message({
-          message: "收藏成功",
-          type: "success",
-        });
+      if (!this.islike) {
+        const flag = this.collect(this.$route.params.doc_id);
+        if (!flag) {
+          this.islike = !this.islike;
+          this.$message({
+            message: "收藏成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "收藏失败",
+            type: "error",
+          });
+        }
       } else {
-        this.$message({
-          message: "取消收藏",
-          type: "warning",
-        });
+        const flag = this.uncollect(this.$route.params.doc_id);
+        if (!flag) {
+          this.islike = !this.islike;
+          this.$message({
+            message: "取消收藏成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "取消收藏失败",
+            type: "error",
+          });
+        }
       }
     },
     // 点击保存的提示信息
