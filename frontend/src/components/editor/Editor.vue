@@ -47,7 +47,7 @@
             <div class="grid-content head-box3 bg-purple">
               <!-- 评论按钮 -->
               <el-tooltip class="item" effect="dark" content="评论" placement="bottom">
-                <el-button size="big" @click="drawer=true" style="border: none; margin-right: 0px;">
+                <el-button size="big" @click="getCommentList() ;drawer=true" style="border: none; margin-right: 0px;">
                   <i class="el-icon-chat-dot-square"></i>
                 </el-button>
               </el-tooltip>
@@ -90,7 +90,7 @@
           <el-drawer :visible.sync="drawer" :direction="direction">
             <div>
               <!-- 评论按钮 -->
-              <el-popover placement="left" width="400" trigger="click">
+              <el-popover placement="left" width="400" trigger="click" >
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 2, maxRows: 4}"
@@ -100,7 +100,7 @@
                   show-word-limit
                 ></el-input>
                 <div style="display: flex; justify-content: flex-end; margin-top: 10px">
-                  <el-button type="primary" size="mini" plain round>发送评论</el-button>
+                  <el-button type="primary" size="mini"  @click="sendComment()" plain round>发送评论</el-button>
                 </div>
                 <el-button slot="reference">发表评论</el-button>
               </el-popover>
@@ -114,15 +114,15 @@
                     </div>
                     <!-- 文字 -->
                     <div class="word inline-div">
-                      <div class="details">{{comment.commenter + "   " + comment.comment_time}}</div>
-                      <div class="title">{{ comment.comment_content }}</div>
+                      <div class="details">{{comment.user + "   " + comment.post_time}}</div>
+                      <div class="title">{{ comment.content }}</div>
                     </div>
-                    <!-- 按钮 -->
+                    <!-- 删除按钮 -->
                     <div style="display: flex; justify-content: flex-end; align-items: center;">
                       <el-button
                       size="small"
                         icon=""
-                        @click="responseInvitation(index, 'No')"
+                        @click="deleteComment(comment.comment_id, 'No')"
                         circle
                         style="border: none;"
                       >
@@ -188,8 +188,37 @@ export default {
       });
     },
     logout() {
-      window.sessionStorage.clear();
-      this.$router.push("/login");
+      this.$store.dispatch("logout").then(() => {
+        this.$router.push("/login");
+      });
+    },
+    sendComment () {
+      var data = Qs.stringify({
+        doc_id: this.$route.params.doc_id,
+        body: this.textarea,
+      });
+      axios.post("http://localhost:8000/ajax/post_comment/", data).then((res) => {
+        this.getCommentList()
+      });
+    },
+    deleteComment (id) {
+      var data = Qs.stringify({
+        doc_id: this.$route.params.doc_id,
+        comment_id: id
+      });
+      axios.post("http://localhost:8000/ajax/delete_comment/", data).then((res) => {
+        this.getCommentList()
+      });
+    },
+    getCommentList () {
+      var data = Qs.stringify({
+        doc_id: this.$route.params.doc_id
+      });
+      axios.post("http://localhost:8000/ajax/get_comment_list/", data).then((res) => {
+        this.commentList = res.data.comment_list
+        console.log("get comment list")
+        console.log(this.commentList)
+      });
     },
     changeInfo() {
       window.sessionStorage.clear();
