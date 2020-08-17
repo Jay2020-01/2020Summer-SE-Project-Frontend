@@ -3,7 +3,7 @@ import { Button, Form, FormItem, Input, Container, Header, Aside, Main,
     Menu, Submenu, MenuItemGroup, MenuItem, Row, Col, Avatar, Tabs, TabPane,
     Card, Dropdown, DropdownMenu,DropdownItem, Table, TableColumn, Popconfirm,
     Upload, Tooltip, Dialog, MessageBox, Message , Divider, Select, Option,
-    Drawer, Popover } from 'element-ui'
+    Drawer, Popover, Badge } from 'element-ui'
 
 Vue.use(Button)
 Vue.use(Form)
@@ -37,6 +37,7 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(Drawer)
 Vue.use(Popover)
+Vue.use(Badge)
 
 //全局挂载
 Vue.prototype.$message=Message

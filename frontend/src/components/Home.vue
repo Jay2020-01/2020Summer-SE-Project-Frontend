@@ -30,27 +30,72 @@
           <div class="grid-content head-box3 bg-purple">
             <!-- 通知图标 -->
             <el-dropdown style="height:60px; display: flex; align-items: center;">
-              <span
-                class="el-dropdown-link"
-                style="height:60px;  display: flex; align-items: center;"
-              >
-                <i class="el-icon-bell" style="height:20px;font-size:20px;" />
-              </span>
+              <el-badge is-dot class="item" :hidden="false">
+                <!-- 上面这里的hidden就是判断是否显示小红点的 -->
+                <span
+                  class="el-dropdown-link"
+                  style="height:20px;  display: flex; align-items: center;"
+                >
+                  <i class="el-icon-bell" style="height:20px;font-size:20px;" />
+                </span>
+              </el-badge>
               <!-- 通知图标下面的下拉栏 -->
               <el-dropdown-menu slot="dropdown">
                 <!-- 这里好像要用嵌套路由来写下面的内容 -->
-                <el-menu
-                  :default-active="activeIndex"
-                  class="el-menu-demo"
-                  mode="horizontal"
-                  @select="handleSelect"
-                >
-                  <el-menu-item>全部消息</el-menu-item>
-                  <el-menu-item>未读消息</el-menu-item>
-                  <el-menu-item>
-                    <el-button>全部标为已读</el-button>
-                  </el-menu-item>
-                </el-menu>
+                <el-row>
+                  <el-col :span="12" style="text-align:center;">
+                    <h5>全部消息</h5>
+                  </el-col>
+                  <el-col :span="12" style="float:center;position:relative;top:20px;right:-20px">
+                    <el-button type="primary" size="small">全部标记为已读</el-button>
+                  </el-col>
+                </el-row>
+
+                <!-- 消息通知新样式 -->
+                <!-- 文件卡片 -->
+                <div :key="index" v-for="(notice, index) in noticeList">
+                  <el-card shadow="hover">
+                  <div class="card-container">
+                    <!-- 图标 -->
+                    <div class="picture inline-div">
+                      <span class="fa fa-file-text-o" style="font-size:25px" />
+                    </div>
+                    <!-- 文字 -->
+                    <div class="word inline-div">
+                      <div class="title">{{notice.actor_name + " 邀请我进入 " +notice.target_name}}</div>
+                      <div class="details">{{ notice.sent_time }}</div>
+                    </div>
+                    <!-- 按钮 -->
+                    <div style="display: flex; align-items: center;">
+                      <el-button size="mini" type="success" icon="el-icon-check" @click="responseInvitation(index, 'Yes')" circle></el-button>
+                      <el-button size="mini" type="danger" icon="el-icon-close" @click="responseInvitation(index, 'No')" circle></el-button>
+                    </div>
+                  </div>
+                </el-card>
+                </div>
+
+                <!-- <div>
+                  <el-table
+                    :data="noticeList"
+                    border="false"
+                    :show-header="false"
+                    style="width: 100%"
+                  >
+                    <el-table-column label="图片" width="50">
+                      <template>
+                        <img
+                          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                          width="40"
+                        />
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="actor_name" label="邀请人" width="70"></el-table-column>
+                    <el-table-column prop="邀请你加入" label="邀请信息" width="100"></el-table-column>
+                    <el-table-column prop="target_name" label="团队名称"></el-table-column>
+                    <el-table-column prop="sent_time" label="时间" width="100"></el-table-column>
+                    <el-table-column prop="sent_time" label="时间" width="100"></el-table-column>
+                  </el-table>
+                </div> -->
               </el-dropdown-menu>
             </el-dropdown>
 
@@ -209,8 +254,18 @@ export default {
       teamList: [
         { team_name: "team1", id: "123", path: "/teamList/1", team_id: "123" },
         { team_name: "team2", id: "456", path: "/teamList/2", team_id: "456" },
-        { team_name: "team3", id: "456", path: "/teamList/3", team_id: "656565" },
-        { team_name: "team4", id: "456", path: "/teamList/4", team_id: "123453" },
+        {
+          team_name: "team3",
+          id: "456",
+          path: "/teamList/3",
+          team_id: "656565",
+        },
+        {
+          team_name: "team4",
+          id: "456",
+          path: "/teamList/4",
+          team_id: "123453",
+        },
       ],
       docForm: {
         name: "",
@@ -221,12 +276,67 @@ export default {
       // 改：根据登陆人员的的信息改(可能是表单形式)
       username: "",
       mail_address: "",
+      // 消息列表
+      noticeList: [
+        {
+          notice_id: "1",
+          actor_name: "actor1",
+          target_name: "Team1",
+          sent_time: "2020年10月1日 20:30",
+        },
+        {
+          notice_id: "2",
+          actor_name: "actor2",
+          target_name: "Team2",
+          sent_time: "2020年10月1日 20:30",
+        },
+        {
+          notice_id: "3",
+          actor_name: "actor3",
+          target_name: "Team3",
+          sent_time: "2020年10月1日 20:30",
+        },
+      ],
+      // 消息表格
+      tableData: [
+        {
+          pic: "",
+          person: "檠莲焰",
+          yaoqing: "邀请你加入:",
+          team: "team1",
+          time: "2020-08-17",
+          // date: '2016-05-02',
+          // name: '王小虎',
+          // address: '上海市普陀区金沙江路 1518 弄'
+        },
+        {
+          person: "檠莲焰",
+          yaoqing: "邀请你加入:",
+          team: "team1",
+          time: "2020-08-17",
+        },
+        {
+          person: "檠莲焰",
+          yaoqing: "邀请你加入:",
+          team: "team1",
+          time: "2020-08-17",
+        },
+        {
+          person: "檠莲焰",
+          yaoqing: "邀请你加入:",
+          team: "team1",
+          time: "2020-08-17",
+        },
+      ],
     };
   },
   created: function () {
     this.get_user_info();
     this.getTeamList();
   },
+  // activated: function() {
+  //   this.getTeamList();
+  // },
   methods: {
     // 拉取用户名和邮箱地址
     get_user_info() {
@@ -248,6 +358,9 @@ export default {
           alert("表格不能为空");
         }
         this.getTeamList();
+        // 强制刷新
+        this.$router.go(0);
+        this.activeIndex = "/teamSpace";
       });
     },
     // 获取团队名列表
@@ -255,6 +368,21 @@ export default {
       axios.get("http://localhost:8000/ajax/get_my_team/").then((res) => {
         this.teamList = res.data.team_list;
       });
+    },
+    // 获取消息列表
+    getNoticeList() {
+      axios.get("http://localhost:8000/ajax/get_user_notice/").then((res) => {
+        this.noticeList = res.data.notice_list;
+      });
+    },
+    // 从消息列表统意/拒绝邀请
+    responseInvitation(index, answer) {
+      var data = Qs.stringify({
+        notice_id: this.noticeList[index].notice_id,
+        answer: answer,
+      });
+      console.log(data);
+      axios.post("http://localhost:8000/ajax/response_invitation/", data).then((res) => {});
     },
     logout() {
       this.$store.dispatch("logout").then(() => {
@@ -429,4 +557,42 @@ body > .el-container {
 .el-icon-arrow-down {
   font-size: 12px;
 }
+// 卡片样式
+.el-card {
+  margin: 5px;
+}
+// 卡片内容样式
+.card-container {
+  align-items: center;
+  display: flex;
+  height: 50px;
+  width: 300px;
+}
+.inline-div {
+  display: inline-block;
+}
+.picture {
+  box-sizing: border-box;
+  align-items: center;
+  width: 15%;
+}
+.word {
+  width: 80%;
+  text-align: left;
+}
+.title {
+  font-size: 12px;
+}
+.details {
+  margin-top: 3px;
+  font-size: 10px;
+  color: #999;
+}
+.el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
 </style>
