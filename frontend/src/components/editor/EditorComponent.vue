@@ -136,6 +136,8 @@ export default {
     // editor.customConfig.uploadImgServer = '/upload'  // 上传图片到服务器
     this.editor.create();
     this.editor.txt.html(this.content);
+    // 禁用编辑功能
+    // this.editor.$textElem.attr('contenteditable', false)
   },
 };
 </script>

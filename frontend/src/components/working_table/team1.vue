@@ -15,14 +15,8 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <!-- 选项 -->
-                <el-dropdown-item>
-                  <i class="el-icon-magic-stick" />协作
-                </el-dropdown-item>
-                <el-dropdown-item style="border-bottom:1px solid #e5e5e5">
-                  <i class="el-icon-s-tools" />设置
-                </el-dropdown-item>
-                <el-dropdown-item style="color:red">
-                  <i class="el-icon-delete" />删除
+                <el-dropdown-item @click.native="exitTeam" style="color:red">
+                  <i class="el-icon-delete" />退出团队
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -203,16 +197,22 @@
                     </div>
                   </el-col>
                   <!-- 手机号 -->
-                  <el-col :span="11" style>
+                  <el-col :span="9" style>
                     <div style="display: flex; align-items: center; ">
                       <span style="color: #8a8a8a;">{{ teamate.phone_number }}</span>
                     </div>
                   </el-col>
+
                   <!-- 设置权限按钮 -->
                   <el-col :span="5">
                     <div style="display: flex; align-items: center;">
                       <!-- 可以多选权限 -->
-                      <el-select @blur="setLevel(teamate.username, valueList[index]);" v-model="valueList[index]" size="mini" placeholder="权限选择">
+                      <el-select
+                        @blur="setLevel(teamate.username, valueList[index]);"
+                        v-model="valueList[index]"
+                        size="mini"
+                        placeholder="权限选择"
+                      >
                         <el-option
                           v-for="item in options"
                           :key="item.value"
@@ -221,6 +221,16 @@
                         />
                       </el-select>
                     </div>
+                  </el-col>
+                  <!-- 删除按钮成员 -->
+                  <el-col :span="2" justify="end">
+                    <el-button
+                      size="small"
+                      circle
+                      style="border: none;"
+                      icon="el-icon-close"
+                      @click="deleteTeamate(index)"
+                    ></el-button>
                   </el-col>
                 </el-row>
               </div>
@@ -259,6 +269,8 @@ export default {
     return {
       // “确认删除”显示
       visible: false,
+      // “确认删除成员”显示
+      visible1: false,
       activeName: "first",
       showInvite: false,
       showSettings: false,
@@ -270,16 +282,21 @@ export default {
       },
       user: {},
       userList: [
-        { id: '001', username: 'name1', phone_number: '123456', is_join: true },
-        { id: '002', username: 'name2', phone_number: '123456', is_join: false }
+        { id: "001", username: "name1", phone_number: "123456", is_join: true },
+        {
+          id: "002",
+          username: "name2",
+          phone_number: "123456",
+          is_join: false,
+        },
       ],
       userNum: "0",
       // 团队成员列表
       teamateList: [
-        { id: '001', username: 'n1', phone_number: '123456', level: '1' },
-        { id: '002', username: 'n2', phone_number: '123456', level: '2' },
-        { id: '003', username: 'n3', phone_number: '123456', level: '3' },
-        { id: '004', username: 'n4', phone_number: '123456', level: '4' },
+        { id: "001", username: "n1", phone_number: "123456", level: "1" },
+        { id: "002", username: "n2", phone_number: "123456", level: "2" },
+        { id: "003", username: "n3", phone_number: "123456", level: "3" },
+        { id: "004", username: "n4", phone_number: "123456", level: "4" },
       ],
       teamateNum: "0",
       // 空间名称表单
@@ -318,11 +335,14 @@ export default {
         if (valid) {
           var data = Qs.stringify({
             name: this.formInvite.name,
-            team_id: this.$route.params.team_id,});
-          axios.post("http://localhost:8000/ajax/search_user/", data).then((res) => {
-            this.userList = res.data.user_list;
-            this.userNum = this.userList.length;
+            team_id: this.$route.params.team_id,
           });
+          axios
+            .post("http://localhost:8000/ajax/search_user/", data)
+            .then((res) => {
+              this.userList = res.data.user_list;
+              this.userNum = this.userList.length;
+            });
         } else {
           alert("表格不能为空");
         }
@@ -335,7 +355,9 @@ export default {
         team_id: this.$route.params.team_id,
       });
       console.log(data);
-      axios.post("http://localhost:8000/ajax/invite_user/", data).then((res) => {});
+      axios
+        .post("http://localhost:8000/ajax/invite_user/", data)
+        .then((res) => {});
     },
     // 删除团队方法
     deleteTeam() {
@@ -343,8 +365,10 @@ export default {
         team_id: this.$route.params.team_id,
       });
       console.log(data);
-      axios.post("http://localhost:8000/ajax/delete_my_team/", data).then((res) => {});
-      this.$router.push('/home');
+      axios
+        .post("http://localhost:8000/ajax/delete_my_team/", data)
+        .then((res) => {});
+      this.$router.push("/home");
       // 强制刷新
       this.$router.go(0);
     },
@@ -354,29 +378,54 @@ export default {
         team_id: this.$route.params.team_id,
       });
       // console.log(data);
-      axios.post("http://localhost:8000/ajax/get_team_member/", data).then((res) => {
-        this.teamateList = res.data.user_list;
-        this.teamateNum = this.teamateList.length;
-        // 获取权限列表
-        this.valueList = [];
-        for(var i = 0; i < this.teamateList.length; i++){
-          this.valueList.push(this.teamateList[i].level);
-        }
-        // console.log(this.valueList);
-      });
+      axios
+        .post("http://localhost:8000/ajax/get_team_member/", data)
+        .then((res) => {
+          this.teamateList = res.data.user_list;
+          this.teamateNum = this.teamateList.length;
+          // 获取权限列表
+          this.valueList = [];
+          for (var i = 0; i < this.teamateList.length; i++) {
+            this.valueList.push(this.teamateList[i].level);
+          }
+          // console.log(this.valueList);
+        });
     },
     // 设置团队成员权限
-    setLevel(name, toLevel){
+    setLevel(name, toLevel) {
       var data = Qs.stringify({
         username: name,
         team_id: this.$route.params.team_id,
         level: toLevel,
       });
       console.log(data);
-      axios.post("http://localhost:8000/ajax/set_level/", data).then((res) => {
-
+      axios
+        .post("http://localhost:8000/ajax/set_level/", data)
+        .then((res) => {});
+    },
+    // 删除团队成员方法
+    deleteTeamate(index) {
+      var data = Qs.stringify({
+        team_id: this.$route.params.team_id,
+        username: this.teamateList[index].username,
       });
-    }
+      console.log(data);
+      axios
+        .post("http://localhost:8000/ajax/delete_team_member/", data)
+        .then((res) => {});
+      // 强制刷新
+      // this.$router.go(0);
+    },
+    // 成员退出团队
+    exitTeam() {
+      var data = Qs.stringify({
+        team_id: this.$route.params.team_id,
+      });
+      console.log(data);
+      axios
+        .post("http://localhost:8000/ajax/exit_team/", data)
+        .then((res) => {});
+    },
   },
 };
 </script>
