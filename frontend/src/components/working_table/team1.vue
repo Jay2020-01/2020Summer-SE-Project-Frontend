@@ -270,8 +270,8 @@ export default {
       },
       user: {},
       userList: [
-        { id: '001', username: 'n1', phone_number: '123456', is_join: true },
-        { id: '002', username: 'n2', phone_number: '123456', is_join: false }
+        { id: '001', username: 'name1', phone_number: '123456', is_join: true },
+        { id: '002', username: 'name2', phone_number: '123456', is_join: false }
       ],
       userNum: "0",
       // 团队成员列表
