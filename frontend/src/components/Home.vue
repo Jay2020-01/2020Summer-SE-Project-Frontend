@@ -149,7 +149,7 @@
               <el-button size="midium" @click="newFile" type="primary" plain>新建文档</el-button>
           </el-menu-item>-->
           <div class="new-doc">
-            <el-button size="midium" type="primary" plain @click="newdocVisible=true">新建文档</el-button>
+            <el-button size="midium" type="primary" plain @click="newdocVisible=true;">新建文档</el-button>
           </div>
           <!-- 不分级菜单 -->
           <el-menu-item index="/workingTable">
@@ -236,7 +236,7 @@
           <div slot="footer" class="dialog-footer">
             <el-button style="text-align: left;" @click="newdocVisible=false;use_templates();">使用模板</el-button>
             <el-button @click="newdocVisible = false">取 消</el-button>
-            <el-button type="primary" @click="newdocVisible = false; newFile()">确 定</el-button>
+            <el-button type="primary" @click="newdocVisible = false; newFile();">确 定</el-button>
           </div>
         </el-dialog>
 
@@ -439,8 +439,16 @@ export default {
     },
     get_docid(data) {
       return new Promise((resolve, reject) => {
+        var team_id = -1
+        if (this.$route.params.team_id >= 0) {
+          team_id = this.$route.params.team_id
+          console.log("新建团队文档")
+        } else {
+          console.log("新建个人文档")
+        }
         var data = Qs.stringify({
           title: this.docForm.name,
+          team_id: team_id,
           // create_time: myDate.toLocaleString(),
         });
         axios

@@ -157,8 +157,8 @@ export default {
       islike: false,
       //改：根据登陆人员的的信息改(可能是表单形式)
       doc_name: "",
-      username: "檠莲焰",
-      mail_address: "921049836@qq.com",
+      username: "",
+      mail_address: "",
       // 评论面板相关参数
       drawer: false,
       direction: "rtl",
@@ -174,8 +174,15 @@ export default {
   },
   created: function () {
     this.getContent();
+    this.get_user_info();
   },
   methods: {
+    get_user_info() {
+      axios.get('http://localhost:8000/ajax/user_info/').then(res => {
+        this.username = res.data.username
+        this.mail_address = res.data.mail_address
+      })
+    },
     getContent: function () {
       // console.log(this.editorContent);
       var data = Qs.stringify({
