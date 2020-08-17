@@ -226,6 +226,9 @@ export default {
   created: function () {
     this.getTeamList();
   },
+  // activated: function() {
+  //   this.getTeamList();
+  // },
   methods: {
     createTeam(formName) {
       // 验证表单
@@ -240,6 +243,9 @@ export default {
           alert("表格不能为空");
         }
         this.getTeamList();
+        // 强制刷新
+        this.$router.go(0);
+        this.activeIndex="/teamSpace";
       });
     },
     // 获取团队名列表

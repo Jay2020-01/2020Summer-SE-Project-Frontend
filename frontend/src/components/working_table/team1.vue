@@ -156,9 +156,9 @@
                         round
                         plain
                         size="mini"
-                        @click="invitePeople(user.id)"
-                        :disabled="!user.is_join"
-                      >{{!user.is_join ? "已邀" : "邀请"}}</el-button>
+                        @click="invitePeople(user.username)"
+                        :disabled="user.is_join"
+                      >{{user.is_join ? "已邀" : "邀请"}}</el-button>
                     </div>
                   </el-col>
                 </el-row>
@@ -276,8 +276,8 @@ export default {
       userNum: "0",
       // 团队成员列表
       teamateList: [
-        // { id: '001', username: 'n1', phone_number: '123456' },
-        // { id: '002', username: 'n2', phone_number: '123456' },
+        { id: '001', username: 'n1', phone_number: '123456' },
+        { id: '002', username: 'n2', phone_number: '123456' },
       ],
       teamateNum: "0",
       // 空间名称表单
@@ -326,9 +326,9 @@ export default {
       });
     },
     // 邀请新成员方法
-    invitePeople(id) {
+    invitePeople(username) {
       var data = Qs.stringify({
-        id: id,
+        username: username,
         team_id: this.$route.params.team_id,
       });
       console.log(data);
@@ -342,6 +342,8 @@ export default {
       console.log(data);
       axios.post("http://localhost:8000/ajax/delete_my_team/", data).then((res) => {});
       this.$router.push('/home');
+      // 强制刷新
+      this.$router.go(0);
     },
     // 获取团队成员列表
     showTeamates() {
