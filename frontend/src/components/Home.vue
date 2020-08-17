@@ -39,18 +39,44 @@
               <!-- 通知图标下面的下拉栏 -->
               <el-dropdown-menu slot="dropdown">
                 <!-- 这里好像要用嵌套路由来写下面的内容 -->
-                <el-menu
-                  :default-active="activeIndex"
-                  class="el-menu-demo"
-                  mode="horizontal"
-                  @select="handleSelect"
-                >
-                  <el-menu-item>全部消息</el-menu-item>
-                  <el-menu-item>未读消息</el-menu-item>
-                  <el-menu-item>
-                    <el-button>全部标为已读</el-button>
-                  </el-menu-item>
-                </el-menu>
+                <el-row style="background-color:#ebf4fc">
+                  <el-col :span="12" style="text-align:center;"><h5>全部消息</h5></el-col>
+                  <el-col :span="12" style="float:center;position:relative;top:20px"><el-button size="small">全部标记为已读</el-button></el-col>
+                </el-row>
+                
+                <div>
+                <el-table
+                  :data="tableData"
+                  border="false"
+                  :show-header="false"
+                  style="width: 100%">
+                  <el-table-column label="图片" width="50">
+                    <template>
+                      <img src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" width="40">
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    prop="person"
+                    label="邀请人"
+                    width="70">
+                  </el-table-column>
+                  <el-table-column
+                    prop="yaoqing"
+                    label="邀请信息"
+                    width="100">
+                  </el-table-column>
+                  <el-table-column
+                    prop="team"
+                    label="团队名称">
+                  </el-table-column>
+                  <el-table-column
+                    prop="time"
+                    label="时间"
+                    width="100">
+                  </el-table-column>
+                </el-table>
+                </div>
+
               </el-dropdown-menu>
             </el-dropdown>
 
@@ -221,6 +247,32 @@ export default {
       // 改：根据登陆人员的的信息改(可能是表单形式)
       username: "檠莲焰",
       mail_address: "921049836@qq.com",
+      //消息表格
+      tableData: [{
+            pic:'',
+            person:'檠莲焰',
+            yaoqing:'邀请你加入:',
+            team:'team1',
+            time:'2020-08-17'
+            // date: '2016-05-02',
+            // name: '王小虎',
+            // address: '上海市普陀区金沙江路 1518 弄'
+          }, {
+            person:'檠莲焰',
+            yaoqing:'邀请你加入:',
+            team:'team1',
+            time:'2020-08-17'
+          }, {
+            person:'檠莲焰',
+            yaoqing:'邀请你加入:',
+            team:'team1',
+            time:'2020-08-17'
+          }, {
+            person:'檠莲焰',
+            yaoqing:'邀请你加入:',
+            team:'team1',
+            time:'2020-08-17'
+          }]
     };
   },
   created: function () {
