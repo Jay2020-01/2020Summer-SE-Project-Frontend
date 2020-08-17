@@ -286,8 +286,8 @@ export default {
       },
       formLabelWidth: "120px",
       // 改：根据登陆人员的的信息改(可能是表单形式)
-      username: "檠莲焰",
-      mail_address: "921049836@qq.com",
+      username: "",
+      mail_address: "",
       // 消息列表
       noticeList: [
         {
@@ -344,12 +344,20 @@ export default {
     };
   },
   created: function () {
+    this.get_user_info();
     this.getTeamList();
   },
   // activated: function() {
   //   this.getTeamList();
   // },
   methods: {
+    // 拉取用户名和邮箱地址
+    get_user_info() {
+      axios.get('http://localhost:8000/ajax/user_info/').then(res => {
+        this.username = res.data.username
+        this.mail_address = res.data.mail_address
+      })
+    },
     createTeam(formName) {
       // 验证表单
       this.$refs[formName].validate((valid) => {

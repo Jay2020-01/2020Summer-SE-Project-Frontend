@@ -28,22 +28,22 @@
         </el-col>
         <el-col style="width:200px">
             <el-card :body-style="{ padding: '0px' }">
-                    <img src="../../assets/templates_photos/3.png" class="image" style="width:200px;height:120px;">
+                    <img src="../../assets/templates_photos/v3.png" class="image" style="width:200px;height:120px;">
                     <div style="padding: 14px;">
-                    <span>模板三</span>
+                    <span>个人简历模板</span>
                     <div class="bottom clearfix">
-                        <el-button type="text" class="button">操作按钮</el-button>
+                        <el-button type="text" class="button" @click="template3">操作按钮</el-button>
                     </div>
                 </div>
             </el-card>
         </el-col>
         <el-col style="width:200px">
             <el-card :body-style="{ padding: '0px' }">
-                    <img src="../../assets/templates_photos/4.png" class="image" style="width:200px;height:120px;">
+                    <img src="../../assets/templates_photos/v4.png" class="image" style="width:200px;height:120px;">
                     <div style="padding: 14px;">
-                    <span>模板四</span>
+                    <span>梦想计划清单</span>
                     <div class="bottom clearfix">
-                        <el-button type="text" class="button">操作按钮</el-button>
+                        <el-button type="text" class="button" @click="template4">操作按钮</el-button>
                     </div>
                 </div>
             </el-card>

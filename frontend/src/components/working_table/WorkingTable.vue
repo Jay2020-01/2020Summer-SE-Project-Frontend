@@ -42,7 +42,10 @@
                     <el-dropdown-item>
                       <i class="el-icon-delete"></i>重命名
                     </el-dropdown-item>
-                    <el-dropdown-item style="color:red;">
+                    <el-dropdown-item
+                      @click.native="delete_doc(doc_info.doc_id)"
+                      style="color:red;"
+                    >
                       <i class="el-icon-delete"></i>删除
                     </el-dropdown-item>
                   </el-dropdown-menu>
@@ -81,7 +84,7 @@
                     <el-dropdown-item style="border-bottom:1px solid #e5e5e5">
                       <i class="el-icon-magic-stick"></i>新标签页打开
                     </el-dropdown-item>
-                    <el-dropdown-item @click.native="uncollect(doc_info.doc_id, doc_info.doc_name)">
+                    <el-dropdown-item @click.native="uncollect(doc_info.doc_id)">
                       <i class="el-icon-collection-tag"></i>取消收藏
                     </el-dropdown-item>
                     <el-dropdown-item style="border-bottom:1px solid #e5e5e5">
@@ -90,7 +93,10 @@
                     <el-dropdown-item>
                       <i class="el-icon-delete"></i>重命名
                     </el-dropdown-item>
-                    <el-dropdown-item style="color:red;">
+                    <el-dropdown-item
+                      @click.native="delete_doc(doc_info.doc_id, doc_info.doc_name)"
+                      style="color:red;"
+                    >
                       <i class="el-icon-delete"></i>删除
                     </el-dropdown-item>
                   </el-dropdown-menu>
@@ -125,54 +131,100 @@ export default {
     },
     getDocsInfo() {
       axios.get("http://localhost:8000/ajax/my_doc/").then((res) => {
-        const created_docs_length = res.data.created_docs.length
-        const collected_docs_length = res.data.collected_docs.length
+        const created_docs_length = res.data.created_docs.length;
+        const collected_docs_length = res.data.collected_docs.length;
         for (let index = 0; index < created_docs_length; index++) {
           this.doc_infos.push({
-            doc_id: res.data.created_docs[created_docs_length-index-1].doc_id,
-            doc_name: res.data.created_docs[created_docs_length-index-1].name,
+            doc_id:
+              res.data.created_docs[created_docs_length - index - 1].doc_id,
+            doc_name:
+              res.data.created_docs[created_docs_length - index - 1].name,
           });
         }
         for (let index = 0; index < collected_docs_length; index++) {
           this.collected_doc_infos.push({
-            doc_id: res.data.collected_docs[collected_docs_length-index-1].doc_id,
-            doc_name: res.data.collected_docs[collected_docs_length-index-1].name,
+            doc_id:
+              res.data.collected_docs[collected_docs_length - index - 1].doc_id,
+            doc_name:
+              res.data.collected_docs[collected_docs_length - index - 1].name,
           });
         }
       });
     },
     toDoc(doc_id) {
-      this.$router.push('/editor/' + doc_id)
+      this.$router.push("/editor/" + doc_id);
     },
     collect(doc_id, doc_name) {
       var data = Qs.stringify({
         doc_id: doc_id,
       });
-      axios.post("http://localhost:8000/ajax/collect_doc/",data).then((res)=> {
-        const flag = res.data.flag;
-        if (flag == "yes") {
-          this.$message({
-            message: "已收藏",
-            type: "success",
-          });
-        } else {
-          this.$message({
-            message: "收藏了，请重试",
-            type: "warning",
-          });
-        }
-      })
-      this.collected_doc_infos.unshift({doc_id: doc_id, doc_name: doc_name})
+      axios
+        .post("http://localhost:8000/ajax/collect_doc/", data)
+        .then((res) => {
+          const flag = res.data.flag;
+          if (flag == "yes") {
+            this.$message({
+              message: "已收藏",
+              type: "success",
+            });
+            this.collected_doc_infos.unshift({
+              doc_id: doc_id,
+              doc_name: doc_name,
+            });
+          } else {
+            this.$message({
+              message: "收藏了，请重试",
+              type: "warning",
+            });
+          }
+        });
     },
-    uncollect(doc_id, doc_name) {
+    uncollect(doc_id) {
       var data = Qs.stringify({
         doc_id: doc_id,
       });
-      axios.post("http://localhost:8000/ajax/uncollect_doc/",data).then((res)=> {
+      axios
+        .post("http://localhost:8000/ajax/uncollect_doc/", data)
+        .then((res) => {
+          const flag = res.data.flag;
+          if (flag == "yes") {
+            this.$message({
+              message: "已取消收藏",
+              type: "success",
+            });
+            var index = this.collected_doc_infos.findIndex(
+              (doc) => doc.doc_id === doc_id
+            );
+            this.collected_doc_infos.splice(index, 1);
+          } else {
+            this.$message({
+              message: "出错了，请重试",
+              type: "warning",
+            });
+          }
+        });
+    },
+    delete_doc(doc_id) {
+      var data = Qs.stringify({
+        doc_id: doc_id,
+      });
+      console.log(this.collected_doc_infos);
+      axios.post("http://localhost:8000/ajax/delete_doc/", data).then((res) => {
         const flag = res.data.flag;
         if (flag == "yes") {
+          // 若在收藏中，先在收藏列表中删除
+          var index = this.collected_doc_infos.findIndex(
+            (doc) => doc.doc_id === doc_id
+          );
+          console.log(index);
+          if (index >= 0) {
+            this.collected_doc_infos.splice(index, 1);
+          }
+          // 在我创建的文档中删除该文档
+          index = this.doc_infos.findIndex((doc) => doc.doc_id === doc_id);
+          this.doc_infos.splice(index, 1);
           this.$message({
-            message: "已取消收藏",
+            message: "已删除",
             type: "success",
           });
         } else {
@@ -181,10 +233,8 @@ export default {
             type: "warning",
           });
         }
-      })
-      var index = this.collected_doc_infos.indexOf({doc_id: doc_id, doc_name: doc_name})
-      this.collected_doc_infos.splice(index,1)
-    }
+      });
+    },
   },
 };
 </script>
