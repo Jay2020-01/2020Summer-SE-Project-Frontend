@@ -29,7 +29,7 @@
         <el-col :span="6" style="height:60px">
           <div class="grid-content head-box3 bg-purple">
             <!-- 通知图标 -->
-            <el-dropdown style="height:60px; display: flex; align-items: center;">
+            <el-dropdown style="height:60px; display: flex; align-items: center;" @visible-change="getNoticeList">
               <el-badge is-dot class="item" :hidden="false">
                 <!-- 上面这里的hidden就是判断是否显示小红点的 -->
                 <span
@@ -55,23 +55,35 @@
                 <!-- 文件卡片 -->
                 <div :key="index" v-for="(notice, index) in noticeList">
                   <el-card shadow="hover">
-                  <div class="card-container">
-                    <!-- 图标 -->
-                    <div class="picture inline-div">
-                      <span class="fa fa-file-text-o" style="font-size:25px" />
+                    <div class="card-container">
+                      <!-- 图标 -->
+                      <div class="picture inline-div">
+                        <span class="fa fa-file-text-o" style="font-size:25px" />
+                      </div>
+                      <!-- 文字 -->
+                      <div class="word inline-div">
+                        <div class="title">{{notice.actor_name + " 邀请我进入 " +notice.target_name}}</div>
+                        <div class="details">{{ notice.sent_time }}</div>
+                      </div>
+                      <!-- 按钮 -->
+                      <div style="display: flex; align-items: center;">
+                        <el-button
+                          size="mini"
+                          type="success"
+                          icon="el-icon-check"
+                          @click="responseInvitation(index, 'Yes')"
+                          circle
+                        ></el-button>
+                        <el-button
+                          size="mini"
+                          type="danger"
+                          icon="el-icon-close"
+                          @click="responseInvitation(index, 'No')"
+                          circle
+                        ></el-button>
+                      </div>
                     </div>
-                    <!-- 文字 -->
-                    <div class="word inline-div">
-                      <div class="title">{{notice.actor_name + " 邀请我进入 " +notice.target_name}}</div>
-                      <div class="details">{{ notice.sent_time }}</div>
-                    </div>
-                    <!-- 按钮 -->
-                    <div style="display: flex; align-items: center;">
-                      <el-button size="mini" type="success" icon="el-icon-check" @click="responseInvitation(index, 'Yes')" circle></el-button>
-                      <el-button size="mini" type="danger" icon="el-icon-close" @click="responseInvitation(index, 'No')" circle></el-button>
-                    </div>
-                  </div>
-                </el-card>
+                  </el-card>
                 </div>
 
                 <!-- <div>
@@ -95,7 +107,7 @@
                     <el-table-column prop="sent_time" label="时间" width="100"></el-table-column>
                     <el-table-column prop="sent_time" label="时间" width="100"></el-table-column>
                   </el-table>
-                </div> -->
+                </div>-->
               </el-dropdown-menu>
             </el-dropdown>
 
@@ -282,6 +294,7 @@ export default {
           notice_id: "1",
           actor_name: "actor1",
           target_name: "Team1",
+          target_id: "123",
           sent_time: "2020年10月1日 20:30",
         },
         {
@@ -363,6 +376,7 @@ export default {
     },
     // 获取消息列表
     getNoticeList() {
+      console.log("success");
       axios.get("http://localhost:8000/ajax/get_user_notice/").then((res) => {
         this.noticeList = res.data.notice_list;
       });
@@ -372,9 +386,12 @@ export default {
       var data = Qs.stringify({
         notice_id: this.noticeList[index].notice_id,
         answer: answer,
+        team_id: this.noticeList[index].target_id,
       });
       console.log(data);
-      axios.post("http://localhost:8000/ajax/response_invitation/", data).then((res) => {});
+      axios
+        .post("http://localhost:8000/ajax/response_invitation/", data)
+        .then((res) => {});
     },
     logout() {
       this.$store.dispatch("logout").then(() => {
@@ -580,11 +597,4 @@ body > .el-container {
   font-size: 10px;
   color: #999;
 }
-.el-dropdown-link {
-    cursor: pointer;
-    color: #409EFF;
-  }
-  .el-icon-arrow-down {
-    font-size: 12px;
-  }
 </style>

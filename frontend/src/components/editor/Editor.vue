@@ -47,12 +47,8 @@
             <div class="grid-content head-box3 bg-purple">
               <!-- 评论按钮 -->
               <el-tooltip class="item" effect="dark" content="评论" placement="bottom">
-                <el-button
-                  size="big"
-                  @click="drawer=true"
-                  style="border: none; margin-right: 0px;"
-                >
-                  <i class="fa fa-comments-o"></i>
+                <el-button size="big" @click="drawer=true" style="border: none; margin-right: 0px;">
+                  <i class="el-icon-chat-dot-square"></i>
                 </el-button>
               </el-tooltip>
               <!-- 这里是右上角的头像 -->
@@ -91,12 +87,52 @@
           <!-- <editor v-model="content" @editorContent="getEditorContent"></editor> -->
           <editor :content="content" @editorContent="getEditorContent"></editor>
           <!-- 评论面板 -->
-          <el-drawer
-            title="文档评论"
-            :visible.sync="drawer"
-            :direction="direction"
-          >
-            <span>我来啦!</span>
+          <el-drawer :visible.sync="drawer" :direction="direction">
+            <div>
+              <!-- 评论按钮 -->
+              <el-popover placement="left" width="400" trigger="click">
+                <el-input
+                  type="textarea"
+                  :autosize="{ minRows: 2, maxRows: 4}"
+                  placeholder="请输入内容"
+                  v-model="textarea"
+                  maxlength="100"
+                  show-word-limit
+                ></el-input>
+                <div style="display: flex; justify-content: flex-end; margin-top: 10px">
+                  <el-button type="primary" size="mini" plain round>发送评论</el-button>
+                </div>
+                <el-button slot="reference">发表评论</el-button>
+              </el-popover>
+              <!-- 评论卡片 -->
+              <div :key="index" v-for="(comment, index) in commentList">
+                <el-card shadow="hover">
+                  <div class="card-container">
+                    <!-- 图标 -->
+                    <div class="picture inline-div">
+                      <span class="fa fa-file-text-o" style="font-size:25px" />
+                    </div>
+                    <!-- 文字 -->
+                    <div class="word inline-div">
+                      <div class="details">{{comment.commenter + "   " + comment.comment_time}}</div>
+                      <div class="title">{{ comment.comment_content }}</div>
+                    </div>
+                    <!-- 按钮 -->
+                    <div style="display: flex; justify-content: flex-end; align-items: center;">
+                      <el-button
+                      size="small"
+                        icon=""
+                        @click="responseInvitation(index, 'No')"
+                        circle
+                        style="border: none;"
+                      >
+                      <i class="el-icon-close"></i>
+                      </el-button>
+                    </div>
+                  </div>
+                </el-card>
+              </div>
+            </div>
           </el-drawer>
         </el-main>
       </el-container>
@@ -112,6 +148,30 @@ import editor from "./EditorComponent";
 import axios from "axios";
 import Qs from "qs";
 export default {
+  data() {
+    return {
+      input: "",
+      // 编辑器内容
+      content: "",
+      //收藏按钮
+      islike: false,
+      //改：根据登陆人员的的信息改(可能是表单形式)
+      doc_name: "",
+      username: "檠莲焰",
+      mail_address: "921049836@qq.com",
+      // 评论面板相关参数
+      drawer: false,
+      direction: "rtl",
+      // 写评论的内容
+      textarea: "",
+      // 获取评论列表
+      commentList: [
+        {commenter: "user1", comment_time: "2020年10月21日 19:08", comment_content:"加油加油加加油加油加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油"},
+        {commenter: "user2", comment_time: "2020年10月21日 19:08", comment_content:"加油加油加加油"},
+        {commenter: "user3", comment_time: "2020年10月21日 19:08", comment_content:"加油加油加加油"},
+      ]
+    };
+  },
   created: function () {
     this.getContent();
   },
@@ -181,22 +241,7 @@ export default {
   components: {
     editor,
   },
-  data() {
-    return {
-      input: "",
-      // 编辑器内容
-      content: "",
-      //收藏按钮
-      islike: false,
-      //改：根据登陆人员的的信息改(可能是表单形式)
-      doc_name: "",
-      username: "檠莲焰",
-      mail_address: "921049836@qq.com",
-      // 评论面板相关参数
-      drawer: false,
-      direction: "rtl",
-    };
-  },
+  
 };
 </script>
 
@@ -284,5 +329,45 @@ body > .el-container {
 //编辑界面右上角的头像
 .el-dropdown-link {
   cursor: pointer;
+}
+
+
+
+// 评论卡片样式
+.el-card {
+  margin: 20px;
+}
+
+// 评论内容样式
+.card-container {
+  align-items: center;
+  display: flex;
+}
+.inline-div {
+  display: inline-block;
+}
+.picture {
+  box-sizing: border-box;
+  align-items: center;
+  width: 15%;
+}
+.word {
+  width: 80%;
+  text-align: left;
+}
+.title {
+  font-size: 14px;
+}
+.details {
+  margin-top: 3px;
+  font-size: 11px;
+  color: #999;
+}
+</style>
+
+<style>
+/* 评论抽屉标题 */
+.el-drawer__header {
+  margin-bottom: 10px !important;
 }
 </style>
