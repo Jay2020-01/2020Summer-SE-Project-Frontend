@@ -118,10 +118,7 @@
             <el-dropdown style="height:60px">
               <span class="el-dropdown-link">
                 <div>
-                  <el-avatar
-                    :size="35"
-                    src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-                  />
+                  <el-avatar :size="35" :src="imageUrl" />
                 </div>
               </span>
               <el-dropdown-menu slot="dropdown">
@@ -276,6 +273,8 @@ export default {
       // 改：根据登陆人员的的信息改(可能是表单形式)
       username: "",
       mail_address: "",
+      imageUrl:
+        "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
       // 消息列表
       noticeList: [
         {
@@ -338,12 +337,16 @@ export default {
   // activated: function() {
   //   this.getTeamList();
   // },
+  beforeUpdate: function () {
+    this.get_user_info();
+  },
   methods: {
     // 拉取用户名和邮箱地址
     get_user_info() {
       axios.get("http://localhost:8000/ajax/user_info/").then((res) => {
         this.username = res.data.username;
         this.mail_address = res.data.mail_address;
+        this.imageUrl = res.data.url;
       });
     },
     createTeam(formName) {
@@ -420,14 +423,14 @@ export default {
       // var myDate = new Date();
       window.sessionStorage.clear();
       var doc_id = 0;
-      var team_id = this.$route.params.team_id;
+      var team_id = parseInt(this.$route.params.team_id);
       var level = 4;
-      // console.log(team_id)
       // console.log(this.teamList)
-      if (team_id != -1)
-        level = this.teamList.find(
-          (team) => team.team_id == team_id
-        ).level;
+      if (team_id >= 0) {
+        level = this.teamList.find((team) => team.team_id == team_id).level;
+      } else {
+        team_id = -1;
+      }
       // console.log(myDate.toLocaleString());
       // console.log(level)
       try {
@@ -449,16 +452,16 @@ export default {
       } catch (err) {
         console.log(err);
       }
-      console.log(doc_id);
+      // console.log(doc_id);
       this.$router.push("/editor/" + doc_id + "/" + team_id + "/" + level);
     },
     get_docid(data) {
       return new Promise((resolve, reject) => {
-        var team_id = -1;
-        if (this.$route.params.team_id >= 0) {
-          team_id = this.$route.params.team_id;
+        var team_id = parseInt(this.$route.params.team_id);;
+        if (team_id >= 0) {
           console.log("新建团队文档");
         } else {
+          team_id = -1
           console.log("新建个人文档");
         }
         var data = Qs.stringify({

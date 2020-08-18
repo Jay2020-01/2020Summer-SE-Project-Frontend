@@ -152,7 +152,7 @@ export default {
         if (valid) {
           var data = Qs.stringify(this.registerForm)
           axios.post('http://localhost:8000/ajax/change_info/', data).then(res => {
-            this.$router.push('/myinfo')
+            this.$router.push('/home')
           })
         } else {
           alert('表格不能为空')

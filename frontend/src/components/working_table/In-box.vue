@@ -30,7 +30,7 @@
                 <!-- 文字 -->
                 <div class="word inline-div">
                   <div class="tile">
-                    钻石文档
+                    钻石文档aaaaaaaaaaa
                   </div>
                   <div class="details">
                     今天 10:20 我 打开
@@ -119,4 +119,15 @@ export default {
   .el-icon-arrow-down {
     font-size: 12px;
   }
+.tile{
+  display:block;
+  text-overflow:ellipsis;
+  // text-overflow 属性规定当文本溢出包含元素时发生的事情。ellipsis显示省略符号来代表被修剪的文本。
+  white-space:nowrap;
+  // 规定段落中的文本不进行换行,直到遇到br标签
+  overflow:hidden;
+  // hidden	内容会被修剪，并且其余内容是不可见的。
+  width:100px;
+  // 这个是文档名称的长度，如果想显示名称长一点就改这个
+}
 </style>

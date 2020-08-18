@@ -10,7 +10,7 @@
         <el-row :gutter="12">
           <el-col v-for="doc_info in doc_infos" :key="doc_info" :span="8">
             <!-- 文件卡片 -->
-            <el-card shadow="hover">
+            <el-card @click.native="toDoc(doc_info.doc_id)" shadow="hover">
               <div class="card-container">
                 <!-- 图标 -->
                 <div class="picture inline-div">
@@ -18,7 +18,7 @@
                 </div>
                 <!-- 文字 -->
                 <div class="word inline-div">
-                  <div class="tile" @click="toDoc(doc_info.doc_id)">{{doc_info.doc_name}}</div>
+                  <div class="tile">{{doc_info.doc_name}}</div>
                   <div class="details">今天 10:20 我 打开</div>
                 </div>
 
@@ -61,7 +61,7 @@
         <el-row :gutter="12">
           <el-col v-for="doc_info in collected_doc_infos" :key="doc_info" :span="8">
             <!-- 文件卡片 -->
-            <el-card shadow="hover">
+            <el-card @click.native="toDoc(doc_info.doc_id)" shadow="hover">
               <div class="card-container">
                 <!-- 图标 -->
                 <div class="picture inline-div">
@@ -69,7 +69,7 @@
                 </div>
                 <!-- 文字 -->
                 <div class="word inline-div">
-                  <div class="tile" @click="toDoc(doc_info.doc_id)">{{doc_info.doc_name}}</div>
+                  <div class="tile">{{doc_info.doc_name}}</div>
                   <div class="details">今天 10:20 我 打开</div>
                 </div>
 
@@ -281,5 +281,16 @@ export default {
 }
 .el-icon-arrow-down {
   font-size: 12px;
+}
+.tile{
+  display:block;
+  text-overflow:ellipsis;
+  // text-overflow 属性规定当文本溢出包含元素时发生的事情。ellipsis显示省略符号来代表被修剪的文本。
+  white-space:nowrap;
+  // 规定段落中的文本不进行换行,直到遇到br标签
+  overflow:hidden;
+  // hidden	内容会被修剪，并且其余内容是不可见的。
+  width:100px;
+  // 这个是文档名称的长度，如果想显示名称长一点就改这个
 }
 </style>
