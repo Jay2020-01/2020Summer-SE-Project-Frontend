@@ -8,7 +8,7 @@
         配置管理
         <!-- 一行三个 -->
         <el-row :gutter="12">
-          <el-col v-for="doc_info in doc_infos" :key="doc_info" :span="8">
+          <el-col v-for="doc_info in doc_infos" :key="doc_info.doc_id" :span="8">
             <!-- 文件卡片 -->
             <el-card @click.native="toDoc(doc_info.doc_id)" shadow="hover">
               <div class="card-container">
@@ -59,7 +59,7 @@
         角色管理
         <!-- 一行三个 -->
         <el-row :gutter="12">
-          <el-col v-for="doc_info in collected_doc_infos" :key="doc_info" :span="8">
+          <el-col v-for="doc_info in collected_doc_infos" :key="doc_info.doc_id" :span="8">
             <!-- 文件卡片 -->
             <el-card @click.native="toDoc(doc_info.doc_id)" shadow="hover">
               <div class="card-container">

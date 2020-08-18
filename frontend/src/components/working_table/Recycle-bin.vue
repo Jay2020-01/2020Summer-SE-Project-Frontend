@@ -36,7 +36,7 @@
         <el-row>
           <el-col
             v-for="deleted_doc_info in deleted_doc_infos"
-            :key="deleted_doc_info"
+            :key="deleted_doc_info.doc_id"
             style="width:200px"
           >
             <!-- span是说col标签能够影响的列数 -->
