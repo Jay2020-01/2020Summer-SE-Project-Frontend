@@ -1,9 +1,9 @@
 <template>
-  <el-container class="home-container">
+  <el-container class="home-container" :style="styleControl?'filter: invert(95%);':''">
     <!-- 头部区域 -->
-    <el-header height="60px" direction="horizontal">
+    <el-header height="60px" direction="horizontal" :style="styleControl?'margin-bottom: 0px;':'margin-bottom: 7px;'">
       <el-row type="flex" class="row-bg">
-        <el-col :span="6" :offset="0">
+        <el-col :span="4" :offset="0">
           <div class="grid-content head-box1 bg-purple">
             <!-- 头像区域 -->
             <el-avatar
@@ -11,11 +11,16 @@
               style="color: #409eff; background-color: #fff !important; cursor:pointer;"
               :size="40"
               @click.native="backtoHome"
+              @click.middle.native="styleControl=!styleControl"
             >logo</el-avatar>
             <span class="site-name">钻石文档</span>
+            
           </div>
         </el-col>
-        <el-col :span="5" :offset="7">
+        <el-col  :span="8" :offset="0">
+            <span class="show-names" :style="styleControl?'color:#409eff;':'color:#fff'"></span>
+        </el-col>
+        <el-col :span="5" :offset="1">
           <div class="grid-content head-box2 bg-purple-light">
             <el-input
               v-model="input"
@@ -277,6 +282,9 @@ export default {
         "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
       // 消息列表
       noticeList: [],
+      // 彩蛋
+      styleControl: false,
+      names: "",
     };
   },
   created: function () {
@@ -479,11 +487,11 @@ export default {
 <style lang="less" scoped>
 .home-container {
   height: 100%;
+  // filter: invert(95%);
 }
 
 .el-header {
   background-color: #ffffff;
-  margin-bottom: 7px;
   color: #333;
   text-align: left;
   line-height: 60px;
@@ -612,5 +620,8 @@ body > .el-container {
   margin-top: 3px;
   font-size: 10px;
   color: #999;
+}
+.show-names {
+  font-size: 13px;
 }
 </style>

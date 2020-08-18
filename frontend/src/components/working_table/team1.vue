@@ -309,9 +309,7 @@ export default {
       ],
       teamateNum: "0",
       // 空间名称表单
-      formSettings: {
-        name: "Teamname",
-      },
+      formSettings: {},
       options: [
         {
           value: "2",
