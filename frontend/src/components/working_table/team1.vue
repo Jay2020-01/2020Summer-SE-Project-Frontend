@@ -26,7 +26,11 @@
           <el-row>
             <el-col v-for="teamDoc in teamDocs" :key="teamDoc.doc_id" style="width:200px">
               <!-- span是说col标签能够影响的列数 -->
-              <el-card @click.native="toDoc(teamDoc.doc_id)" :body-style="{ padding: '0px' }" shadow="hover">
+              <el-card
+                @click.native="toDoc(teamDoc.doc_id)"
+                :body-style="{ padding: '0px' }"
+                shadow="hover"
+              >
                 <div class="bottom clearfix" style="text-align:right">
                   <el-dropdown placement="bottom">
                     <!-- 操作图标 -->
@@ -167,8 +171,8 @@
           <!-- 隐藏的设置成员权限 -->
           <el-dialog title="团队空间设置" :visible.sync="showSettings">
             <!-- 设置团队空间名称 -->
-            <el-form :model="formSettings">
-              <el-form-item>
+            <el-form :model="formSettings" ref="formSettings">
+              <el-form-item prop="name">
                 <span style="float: left;">空间名称</span>
                 <el-input v-model="formSettings.name" placeholder="请输入" autocomplete="off" />
               </el-form-item>
@@ -252,7 +256,7 @@
                 <el-button slot="reference" type="danger" plain style="margin-right: 10px;">删除</el-button>
               </el-popover>
               <el-button @click="showSettings = false">取 消</el-button>
-              <el-button type="primary" @click="showSettings = false">确 定</el-button>
+              <el-button type="primary" @click="showSettings = false; editTeamName('formSettings')">确 定</el-button>
             </div>
           </el-dialog>
         </el-tab-pane>
@@ -268,7 +272,7 @@ export default {
   data() {
     return {
       // 判断是否是团队创建者
-      isLeader: false,
+      isLeader: true,
       // 团队权限
       level: 3,
       // “确认删除”显示
@@ -340,23 +344,41 @@ export default {
     },
     // 获取这个团队的文档信息
     getDocsInfo() {
-      console.log(this.$route.params.team_id)
+      console.log(this.$route.params.team_id);
       var data = Qs.stringify({
         team_id: this.$route.params.team_id,
       });
-      axios.post("http://localhost:8000/ajax/get_team_docs/",data).then((res) => {
-        const team_docs_length = res.data.team_docs.length;
-        for (let index = 0; index < team_docs_length; index++) {
-          this.teamDocs.push({
-            doc_id: res.data.team_docs[team_docs_length - index - 1].doc_id,
-            name: res.data.team_docs[team_docs_length - index - 1].name,
-          });
-        }
-      });
-      console.log(this.teamDocs)
+      axios
+        .post("http://localhost:8000/ajax/get_team_docs/", data)
+        .then((res) => {
+          const team_docs_length = res.data.team_docs.length;
+          for (let index = 0; index < team_docs_length; index++) {
+            this.teamDocs.push({
+              doc_id: res.data.team_docs[team_docs_length - index - 1].doc_id,
+              name: res.data.team_docs[team_docs_length - index - 1].name,
+            });
+          }
+        });
+      console.log(this.teamDocs);
     },
     toDoc(doc_id, team_id, level) {
-      this.$router.push("/editor/" + doc_id + "/" + this.$route.params.team_id + "/" + this.level);
+      // 1级权限时不能打开
+      if (this.level <= 1) {
+        this.$message({
+          showClose: true,
+          message: "您没有查看文档的权限",
+          type: "error",
+        });
+      } else {
+        this.$router.push(
+          "/editor/" +
+            doc_id +
+            "/" +
+            this.$route.params.team_id +
+            "/" +
+            this.level
+        );
+      }
     },
     // 获取是否是团队Leader & 权限
     getIsLeader() {
@@ -397,7 +419,13 @@ export default {
       console.log(data);
       axios
         .post("http://localhost:8000/ajax/invite_user/", data)
-        .then((res) => {});
+        .then((res) => {
+          this.$message({
+            showClose: true,
+            message: "已成功发送邀请",
+            type: "success",
+          });
+        });
     },
     // 删除团队方法
     deleteTeam() {
@@ -439,9 +467,13 @@ export default {
         level: toLevel,
       });
       console.log(data);
-      axios
-        .post("http://localhost:8000/ajax/set_level/", data)
-        .then((res) => {});
+      axios.post("http://localhost:8000/ajax/set_level/", data).then((res) => {
+        this.$message({
+          showClose: true,
+          message: "已设置权限",
+          type: "success",
+        });
+      });
     },
     // 删除团队成员方法
     deleteTeamate(index) {
@@ -466,6 +498,37 @@ export default {
         .post("http://localhost:8000/ajax/exit_team/", data)
         .then((res) => {});
     },
+    // 获取团队名称
+    getTeamName(){
+      var data = Qs.stringify({
+        team_id: this.$route.params.team_id,
+      });
+      console.log(data);
+      axios
+        .get("http://localhost:8000/ajax/get_team_name/", data)
+        .then((res) => {
+            this.formSettings.name = res.data.team_name;
+        });
+    },
+
+    // 修改团队名称
+    editTeamName(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          var data = Qs.stringify({
+            name: this.formSettings.name,
+            team_id: this.$route.params.team_id,
+          });
+          axios
+            .post("http://localhost:8000/ajax/edit_team_name/", data)
+            .then((res) => {
+              this.getTeamName();
+            });
+        } else {
+          alert("表格不能为空");
+        }
+      });
+    },
   },
 };
 </script>
@@ -481,7 +544,7 @@ export default {
 .el-card {
   // margin: 0px 20px 0px 20px;//左侧的边距
   width: 100px;
-  height: auto;
+  height: 135px;
   margin: 20px;
 }
 .el-card .card-pic {
@@ -489,7 +552,7 @@ export default {
 }
 .el-card:hover {
   cursor: pointer;
-  border: 1px solid #42b983;
+  border: 1px solid #409eff;
 }
 .el-card:hover .card-pic {
   visibility: visible;

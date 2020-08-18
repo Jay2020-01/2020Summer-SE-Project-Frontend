@@ -76,7 +76,7 @@
               />
 
               <div class="tile" style="padding: 14px;">
-                <span>一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十</span>
+                <span style="font-size:12px">一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十</span>
               </div>
             </el-card>
           </el-col>
@@ -183,7 +183,7 @@ export default {
 .el-card {
   // margin: 0px 20px 0px 20px;//左侧的边距
   width: 100px;
-  height: 150px;
+  height: 135px;
   margin: 20px;
 }
 .el-card .card-pic {
@@ -191,7 +191,7 @@ export default {
 }
 .el-card:hover {
   cursor: pointer;
-  border: 1px solid #42b983;
+  border: 1px solid #409eff;
 }
 .el-card:hover .card-pic {
   visibility: visible;

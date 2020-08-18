@@ -8,7 +8,15 @@
         slot="header"
         class="clearfix"
       >
+        <el-button
+          style="float: left; padding: 3px 0"
+          type="text"
+          @click="cancel_modify"
+        >
+          取消
+        </el-button>
         <span>账号信息</span>
+        
         <el-button
           style="float: right; padding: 3px 0"
           type="text"
@@ -152,12 +160,20 @@ export default {
         if (valid) {
           var data = Qs.stringify(this.registerForm)
           axios.post('http://localhost:8000/ajax/change_info/', data).then(res => {
-            this.$router.push('/home')
+            this.$router.push('/home');
+            this.$message({
+              message: "修改成功",
+              type: "success",
+            });
+            // 添加通知消息，我也不知道能不能加在这里，希望别搞错了
           })
         } else {
           alert('表格不能为空')
         }
       })
+    },
+    cancel_modify(){
+      this.$router.push("/home");
     },
     // 上传头像
     handleAvatarSuccess(res, file) {
@@ -167,10 +183,21 @@ export default {
         const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
+          // this.$message.error('上传头像图片只能是 JPG 格式!');
+          this.$message({
+            showClose: true,
+            message: '上传头像图片只能是 JPG 格式!',
+            type: 'error'
+          });
+          
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
+          // this.$message.error('上传头像图片大小不能超过 2MB!');
+          this.$message({
+            showClose: true,
+            message: '上传头像图片大小不能超过 2MB!',
+            type: 'error'
+          });
         }
         return isJPG && isLt2M;
       }

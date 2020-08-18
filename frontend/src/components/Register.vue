@@ -7,7 +7,7 @@
       <!-- 头像区域 -->
       <div class="avatar_box">
         <img
-          src="../assets/logo.png"
+          src="../assets/logo.jpg"
           alt
         >
       </div>
@@ -105,7 +105,13 @@ export default {
           })
           // 向后端发送数据
           this.$store.dispatch('register', data)
-            .then(() => this.$router.push('/home'))
+            .then(() => {
+              this.$message({
+                showClose: true,
+                message: "注册成功",
+                type: "success",
+              });
+              this.$router.push('/home')})
             .catch(err => console.log(err))
         } else {
           alert('出现错误，请重试')
