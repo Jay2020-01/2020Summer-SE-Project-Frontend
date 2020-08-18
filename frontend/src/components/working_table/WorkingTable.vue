@@ -250,6 +250,10 @@ export default {
 .el-card {
   margin: 20px;
 }
+.el-card:hover {
+  cursor: pointer;
+  border: 1px solid #409eff;
+}
 // 卡片内容样式
 .card-container {
   align-items: center;
