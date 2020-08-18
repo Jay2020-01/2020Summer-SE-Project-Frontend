@@ -117,7 +117,7 @@
                 <div>
                   <el-avatar
                     :size="35"
-                    src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                    :src="imageUrl"
                   />
                 </div>
               </span>
@@ -288,6 +288,7 @@ export default {
       // 改：根据登陆人员的的信息改(可能是表单形式)
       username: "",
       mail_address: "",
+      imageUrl:'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
       // 消息列表
       noticeList: [
         {
@@ -350,12 +351,16 @@ export default {
   // activated: function() {
   //   this.getTeamList();
   // },
+  beforeUpdate: function(){
+    this.get_user_info();
+  },
   methods: {
     // 拉取用户名和邮箱地址
     get_user_info() {
       axios.get('http://localhost:8000/ajax/user_info/').then(res => {
         this.username = res.data.username
         this.mail_address = res.data.mail_address
+        this.imageUrl = res.data.url
       })
     },
     createTeam(formName) {
