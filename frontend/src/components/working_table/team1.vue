@@ -7,7 +7,7 @@
         <!-- 标签一：团队文档 -->
         <el-tab-pane label="团队名称1" name="first">
           <div style="text-align:right">
-            <el-dropdown placement="bottom">
+            <el-dropdown v-if="!isLeader" placement="bottom">
               <!-- 团队的一些操作 -->
               <span class="el-dropdown-link">
                 <i class="el-icon-setting el-icon--right" />
@@ -72,7 +72,7 @@
           </el-row>
         </el-tab-pane>
         <!-- 标签二：团队管理 -->
-        <el-tab-pane label="团队管理" name="second">
+        <el-tab-pane v-if="isLeader" label="团队管理" name="second">
           <div>
             <el-row :gutter="20">
               <el-col :span="4">
@@ -267,6 +267,10 @@ import Qs from "qs";
 export default {
   data() {
     return {
+      // 判断是否是团队创建者
+      isLeader: false,
+      // 团队权限
+      level: 3,
       // “确认删除”显示
       visible: false,
       // “确认删除成员”显示
@@ -325,9 +329,25 @@ export default {
       valueList: ["1", "2", "3", "4"],
     };
   },
+  created: function () {
+    this.getIsLeader();
+  },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
+    },
+    // 获取是否是团队Leader & 权限
+    getIsLeader(){
+      var data = Qs.stringify({
+        team_id: this.$route.params.team_id,
+      });
+      console.log(data);
+      axios
+        .post("http://localhost:8000/ajax/is_leader/", data)
+        .then((res) => {
+          this.isLeader = res.data.is_leader;
+          this.level = res.data.level;
+        });
     },
     // 搜索方法
     serchPeople(formName) {
