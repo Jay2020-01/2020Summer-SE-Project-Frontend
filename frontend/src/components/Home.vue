@@ -467,6 +467,7 @@ export default {
     },
     use_templates() {
       // this.$message({
+        // showClose:true,
       //     message: "请跳转到选择模板页面",
       //     type: "warning",
       //   });

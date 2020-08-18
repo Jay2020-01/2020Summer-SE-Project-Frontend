@@ -111,7 +111,7 @@
     border-color: black;
 }
 .el-card:hover {
-    cursor: pointer;
-    border: 1px solid #42b983;
+  cursor: pointer;
+  border: 1px solid #409eff;
 }
 </style>
