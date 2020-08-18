@@ -26,7 +26,7 @@ const routes = [
     { path: '/login', component: Login },
     { path: '/register', component: Register },
     // { path: '/editor', component: Editor },
-    { path: '/editor/:doc_id', component: Editor, meta: { requiresAuth: true } },
+    { path: '/editor/:doc_id/:team_id', component: Editor, meta: { requiresAuth: true } },
     {
         path: '/home',
         redirect: '/workingTable',
@@ -39,11 +39,11 @@ const routes = [
             { path: '/teamSpace/:team_id', component: Team1, meta: { requiresAuth: true } },
             // { path: '/team2', component: Team2, meta: { requiresAuth: true } },
             { path: '/trash', component: Recyclebin, meta: { requiresAuth: true } },
-            { path: '/templates', component: Templates, meta: {requiresAuth: true}},
-            { path: '/template1', component: template1, meta: {requiresAuth: true}},
-            { path: '/template2', component: template2, meta: {requiresAuth: true}},
-            { path: '/template3', component: template3, meta: {requiresAuth: true}},
-            { path: '/template4', component: template4, meta: {requiresAuth: true}},
+            { path: '/templates', component: Templates, meta: { requiresAuth: true } },
+            { path: '/template1', component: template1, meta: { requiresAuth: true } },
+            { path: '/template2', component: template2, meta: { requiresAuth: true } },
+            { path: '/template3', component: template3, meta: { requiresAuth: true } },
+            { path: '/template4', component: template4, meta: { requiresAuth: true } },
         ],
         meta: { requiresAuth: true }
     }

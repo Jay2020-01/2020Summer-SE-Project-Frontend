@@ -413,6 +413,7 @@ export default {
     async newFile() {
       // var myDate = new Date();
       var doc_id = 0;
+      var team_id = -1;
       window.sessionStorage.clear();
       // console.log(myDate.toLocaleString());
       try {
@@ -420,6 +421,7 @@ export default {
         console.log(resp);
         const flag = resp.data.flag;
         doc_id = resp.data.doc_id;
+        team_id = resp.data.team_id;
         if (flag == "yes") {
           this.$message({
             message: "新建成功",
@@ -435,7 +437,7 @@ export default {
         console.log(err);
       }
       console.log(doc_id);
-      this.$router.push("/editor/" + doc_id);
+      this.$router.push("/editor/" + doc_id + "/" + team_id);
     },
     get_docid(data) {
       return new Promise((resolve, reject) => {
