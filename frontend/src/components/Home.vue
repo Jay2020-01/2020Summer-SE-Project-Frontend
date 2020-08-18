@@ -29,7 +29,10 @@
         <el-col :span="6" style="height:60px">
           <div class="grid-content head-box3 bg-purple">
             <!-- 通知图标 -->
-            <el-dropdown style="height:60px; display: flex; align-items: center;" @visible-change="getNoticeList">
+            <el-dropdown
+              style="height:60px; display: flex; align-items: center;"
+              @visible-change="getNoticeList"
+            >
               <el-badge is-dot class="item" :hidden="this.noticeList.length == 0">
                 <!-- 上面这里的hidden就是判断是否显示小红点的 -->
                 <span
@@ -48,7 +51,7 @@
                   </el-col>
                   <!-- <el-col :span="12" style="float:center;position:relative;top:20px;right:-20px">
                     <el-button type="primary" size="small">全部标记为已读</el-button>
-                  </el-col> -->
+                  </el-col>-->
                 </el-row>
 
                 <!-- 消息通知新样式 -->
@@ -146,7 +149,7 @@
               <el-button size="midium" @click="newFile" type="primary" plain>新建文档</el-button>
           </el-menu-item>-->
           <div class="new-doc">
-            <el-button size="midium" type="primary" plain @click="newdocVisible=true;">新建文档</el-button>
+            <el-button size="midium" type="primary" plain @click="canNewDoc();">新建文档</el-button>
           </div>
           <!-- 不分级菜单 -->
           <el-menu-item index="/workingTable">
@@ -233,7 +236,7 @@
           <div slot="footer" class="dialog-footer">
             <el-button style="text-align: left;" @click="newdocVisible=false;use_templates();">使用模板</el-button>
             <el-button @click="newdocVisible = false">取 消</el-button>
-            <el-button type="primary" @click="newdocVisible = false; newFile();">确 定</el-button>
+            <el-button type="primary" @click="newFile();">确 定</el-button>
           </div>
         </el-dialog>
 
@@ -273,58 +276,7 @@ export default {
       imageUrl:
         "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
       // 消息列表
-      noticeList: [
-        {
-          notice_id: "1",
-          actor_name: "actor1",
-          target_name: "Team1",
-          target_id: "123",
-          sent_time: "2020年10月1日 20:30",
-        },
-        {
-          notice_id: "2",
-          actor_name: "actor2",
-          target_name: "Team2",
-          sent_time: "2020年10月1日 20:30",
-        },
-        {
-          notice_id: "3",
-          actor_name: "actor3",
-          target_name: "Team3",
-          sent_time: "2020年10月1日 20:30",
-        },
-      ],
-      // 消息表格
-      tableData: [
-        {
-          pic: "",
-          person: "檠莲焰",
-          yaoqing: "邀请你加入:",
-          team: "team1",
-          time: "2020-08-17",
-          // date: '2016-05-02',
-          // name: '王小虎',
-          // address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          person: "檠莲焰",
-          yaoqing: "邀请你加入:",
-          team: "team1",
-          time: "2020-08-17",
-        },
-        {
-          person: "檠莲焰",
-          yaoqing: "邀请你加入:",
-          team: "team1",
-          time: "2020-08-17",
-        },
-        {
-          person: "檠莲焰",
-          yaoqing: "邀请你加入:",
-          team: "team1",
-          time: "2020-08-17",
-        },
-      ],
+      noticeList: [],
     };
   },
   created: function () {
@@ -387,6 +339,29 @@ export default {
           });
       });
     },
+    // 判断能否新建文档
+    canNewDoc() {
+      var team_id = parseInt(this.$route.params.team_id);
+      if (typeof(this.$route.params.team_id) === 'undefined') {
+        console.log("is nan")
+        this.newdocVisible = true;
+      } else {
+        for (var i = 0; i < this.teamList.length; i++) {
+          if (team_id == this.teamList[i].team_id) {
+            if (this.teamList[i].level < 4) {
+              this.$message({
+                showClose: true,
+                message: "您的权限不能创建文档",
+                type: "error",
+              });
+              break;
+            }else{
+              this.newdocVisible = true;
+            }
+          }
+        }
+      }
+    },
     // 获取消息列表
     getNoticeList() {
       console.log("success");
@@ -418,47 +393,57 @@ export default {
     // 暂时用不了，teamList level字段缺失
     async newFile() {
       // var myDate = new Date();
-      window.sessionStorage.clear();
-      var doc_id = 0;
-      var team_id = parseInt(this.$route.params.team_id);
-      var level = 4;
-      // console.log(this.teamList)
-      if (team_id >= 0) {
-        level = this.teamList.find((team) => team.team_id == team_id).level;
+      // 限制必须输入文档标题
+      if (this.docForm.name.length == 0) {
+        this.$message({
+          showClose: true,
+          message: "请输入文档标题",
+          type: "error",
+        });
       } else {
-        team_id = -1;
-      }
-      // console.log(myDate.toLocaleString());
-      // console.log(level)
-      try {
-        const resp = await this.get_docid();
-        console.log(resp);
-        const flag = resp.data.flag;
-        doc_id = resp.data.doc_id;
-        if (flag == "yes") {
-          this.$message({
-            message: "新建成功",
-            type: "success",
-          });
+        this.newdocVisible = false;
+        window.sessionStorage.clear();
+        var doc_id = 0;
+        var team_id = parseInt(this.$route.params.team_id);
+        var level = 4;
+        // console.log(this.teamList)
+        if (team_id >= 0) {
+          level = this.teamList.find((team) => team.team_id == team_id).level;
         } else {
-          this.$message({
-            message: "新建文档出错",
-            type: "warning",
-          });
+          team_id = -1;
         }
-      } catch (err) {
-        console.log(err);
+        // console.log(myDate.toLocaleString());
+        // console.log(level)
+        try {
+          const resp = await this.get_docid();
+          console.log(resp);
+          const flag = resp.data.flag;
+          doc_id = resp.data.doc_id;
+          if (flag == "yes") {
+            this.$message({
+              message: "新建成功",
+              type: "success",
+            });
+          } else {
+            this.$message({
+              message: "新建文档出错",
+              type: "warning",
+            });
+          }
+        } catch (err) {
+          console.log(err);
+        }
+        // console.log(doc_id);
+        this.$router.push("/editor/" + doc_id + "/" + team_id + "/" + level);
       }
-      // console.log(doc_id);
-      this.$router.push("/editor/" + doc_id + "/" + team_id + "/" + level);
     },
     get_docid(data) {
       return new Promise((resolve, reject) => {
-        var team_id = parseInt(this.$route.params.team_id);;
+        var team_id = parseInt(this.$route.params.team_id);
         if (team_id >= 0) {
           console.log("新建团队文档");
         } else {
-          team_id = -1
+          team_id = -1;
           console.log("新建个人文档");
         }
         var data = Qs.stringify({

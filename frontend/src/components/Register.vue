@@ -7,7 +7,7 @@
       <!-- 头像区域 -->
       <div class="avatar_box">
         <img
-          src="../assets/logo.png"
+          src="../assets/logo.jpg"
           alt
         >
       </div>

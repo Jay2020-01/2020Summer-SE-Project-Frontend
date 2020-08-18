@@ -356,7 +356,16 @@ export default {
       console.log(this.teamDocs)
     },
     toDoc(doc_id, team_id, level) {
-      this.$router.push("/editor/" + doc_id + "/" + this.$route.params.team_id + "/" + this.level);
+      // 1级权限时不能打开
+      if(this.level <= 1){
+        this.$message({
+          showClose: true,
+          message: '您没有查看文档的权限',
+          type: 'error'
+        });
+      }else{
+        this.$router.push("/editor/" + doc_id + "/" + this.$route.params.team_id + "/" + this.level);
+      }
     },
     // 获取是否是团队Leader & 权限
     getIsLeader() {

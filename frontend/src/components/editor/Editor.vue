@@ -1,5 +1,5 @@
 <template>
-  <div style="">
+  <div style>
     <el-container class="home-container">
       <!-- 头部区域 -->
       <el-header height="60px" direction="horizontal">
@@ -42,9 +42,7 @@
           <el-col :span="5" :offset="3">
             <div class="grid-content head-box2 bg-purple-light">
               <div class="title-sentence">
-                <span >
-                  {{ sentenceList[sentenceIndex] }}
-                </span>
+                <span>{{ sentenceList[sentenceIndex] }}</span>
               </div>
               <!-- <el-input placeholder="搜索内容" v-model="input" size="small" clearable></el-input> -->
             </div>
@@ -53,16 +51,27 @@
             <div class="grid-content head-box3 bg-purple">
               <!-- 护眼按钮 -->
               <el-tooltip class="item" effect="dark" content="护眼模式" placement="bottom">
-                <el-button size="big" @click="isEyeProtect = !isEyeProtect" style="border: none; margin-right: 0px;">
+                <el-button
+                  size="big"
+                  @click="isEyeProtect = !isEyeProtect"
+                  style="border: none; margin-right: 0px;"
+                >
                   <i class="fa fa-eye"></i>
                 </el-button>
               </el-tooltip>
               <!-- 评论按钮 -->
-              <el-tooltip class="item" effect="dark" content="评论" placement="bottom">
-                <el-button size="big" @click="getCommentList() ;drawer=true" style="border: none; margin-right: 0px;">
-                  <i class="el-icon-chat-dot-square"></i>
-                </el-button>
-              </el-tooltip>
+              <div v-show="level>=3">
+                <el-tooltip class="item" effect="dark" content="评论" placement="bottom">
+                  <el-button
+                    size="big"
+                    @click="getCommentList() ;drawer=true"
+                    style="border: none; margin-right: 0px;"
+                  >
+                    <i class="el-icon-chat-dot-square"></i>
+                  </el-button>
+                </el-tooltip>
+              </div>
+
               <!-- 这里是右上角的头像 -->
               <el-dropdown style="height:60px; width: 60px;">
                 <span class="el-dropdown-link">
@@ -92,17 +101,19 @@
       <!-- 页面主体区域 -->
       <el-container>
         <!-- 右侧内容主体 -->
-        <el-main :style="isEyeProtect ? 'background-color: rgb(204,232,207);' : 'background-color: #f7f7f7;'">
+        <el-main
+          :style="isEyeProtect ? 'background-color: rgb(204,232,207);' : 'background-color: #f7f7f7;'"
+        >
           <!-- <editor :content="content" @editorContent="getEditorContent"></editor> -->
           <!-- 测试按钮 -->
           <!-- <el-button size="small" @click="newdoc">测试</el-button> -->
           <!-- <editor v-model="content" @editorContent="getEditorContent"></editor> -->
-          <editor :content="content" @editorContent="getEditorContent"></editor>
+          <editor :content="content" :level="level" @editorContent="getEditorContent"></editor>
           <!-- 评论面板 -->
           <el-drawer :visible.sync="drawer" :direction="direction">
             <div>
               <!-- 评论按钮 -->
-              <el-popover placement="left" width="400" trigger="click" >
+              <el-popover placement="left" width="400" trigger="click">
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 2, maxRows: 4}"
@@ -112,7 +123,7 @@
                   show-word-limit
                 ></el-input>
                 <div style="display: flex; justify-content: flex-end; margin-top: 10px">
-                  <el-button type="primary" size="mini"  @click="sendComment()" plain round>发送评论</el-button>
+                  <el-button type="primary" size="mini" @click="sendComment()" plain round>发送评论</el-button>
                 </div>
                 <el-button type="primary" slot="reference" round>发表评论</el-button>
               </el-popover>
@@ -126,19 +137,19 @@
                     </div>
                     <!-- 文字 -->
                     <div class="word inline-div">
-                      <div class="details">{{comment.user + "   " + comment.post_time}}</div>
+                      <div class="details">{{comment.user + " " + comment.post_time}}</div>
                       <div class="title">{{ comment.content }}</div>
                     </div>
                     <!-- 删除按钮 -->
                     <div style="display: flex; justify-content: flex-end; align-items: center;">
                       <el-button
-                      size="small"
-                        icon=""
+                        size="small"
+                        icon
                         @click="deleteComment(comment.comment_id, 'No')"
                         circle
                         style="border: none;"
                       >
-                      <i class="el-icon-close"></i>
+                        <i class="el-icon-close"></i>
                       </el-button>
                     </div>
                   </div>
@@ -180,19 +191,34 @@ export default {
       textarea: "",
       // 获取评论列表
       commentList: [
-        {commenter: "user1", comment_time: "2020年10月21日 19:08", comment_content:"加油加油加加油加油加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油"},
-        {commenter: "user2", comment_time: "2020年10月21日 19:08", comment_content:"加油加油加加油"},
-        {commenter: "user3", comment_time: "2020年10月21日 19:08", comment_content:"加油加油加加油"},
+        {
+          commenter: "user1",
+          comment_time: "2020年10月21日 19:08",
+          comment_content:
+            "加油加油加加油加油加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油",
+        },
+        {
+          commenter: "user2",
+          comment_time: "2020年10月21日 19:08",
+          comment_content: "加油加油加加油",
+        },
+        {
+          commenter: "user3",
+          comment_time: "2020年10月21日 19:08",
+          comment_content: "加油加油加加油",
+        },
       ],
       // 励志名句列表
-      sentenceIndex: Math.floor(Math.random()*5),
+      sentenceIndex: Math.floor(Math.random() * 5),
       sentenceList: [
-        "积土成山,风雨兴焉    积水成渊,蛟龙生焉",
-        "天青色等烟雨    而我在等你",
-        "昨日之深渊    今日之浅谈",
+        "积土成山,风雨兴焉  积水成渊,蛟龙生焉",
+        "天青色等烟雨  而我在等你",
+        "昨日之深渊  今日之浅谈",
         "风乍起，合当奋意向人生",
         "念念不忘，必有回响",
-      ]
+      ],
+      // 权限等级
+      level: this.$route.params.level,
     };
   },
   created: function () {
@@ -201,10 +227,10 @@ export default {
   },
   methods: {
     get_user_info() {
-      axios.get('http://localhost:8000/ajax/user_info/').then(res => {
-        this.username = res.data.username
-        this.mail_address = res.data.mail_address
-      })
+      axios.get("http://localhost:8000/ajax/user_info/").then((res) => {
+        this.username = res.data.username;
+        this.mail_address = res.data.mail_address;
+      });
     },
     getContent: function () {
       // console.log(this.editorContent);
@@ -223,34 +249,40 @@ export default {
         this.$router.push("/login");
       });
     },
-    sendComment () {
+    sendComment() {
       var data = Qs.stringify({
         doc_id: this.$route.params.doc_id,
         body: this.textarea,
       });
       this.textarea = "";
-      axios.post("http://localhost:8000/ajax/post_comment/", data).then((res) => {
-        this.getCommentList()
-      });
+      axios
+        .post("http://localhost:8000/ajax/post_comment/", data)
+        .then((res) => {
+          this.getCommentList();
+        });
     },
-    deleteComment (id) {
+    deleteComment(id) {
       var data = Qs.stringify({
         doc_id: this.$route.params.doc_id,
-        comment_id: id
+        comment_id: id,
       });
-      axios.post("http://localhost:8000/ajax/delete_comment/", data).then((res) => {
-        this.getCommentList()
-      });
+      axios
+        .post("http://localhost:8000/ajax/delete_comment/", data)
+        .then((res) => {
+          this.getCommentList();
+        });
     },
-    getCommentList () {
+    getCommentList() {
       var data = Qs.stringify({
-        doc_id: this.$route.params.doc_id
+        doc_id: this.$route.params.doc_id,
       });
-      axios.post("http://localhost:8000/ajax/get_comment_list/", data).then((res) => {
-        this.commentList = res.data.comment_list
-        console.log("get comment list")
-        console.log(this.commentList)
-      });
+      axios
+        .post("http://localhost:8000/ajax/get_comment_list/", data)
+        .then((res) => {
+          this.commentList = res.data.comment_list;
+          console.log("get comment list");
+          console.log(this.commentList);
+        });
     },
     changeInfo() {
       window.sessionStorage.clear();
@@ -350,7 +382,6 @@ export default {
   components: {
     editor,
   },
-  
 };
 </script>
 
@@ -383,8 +414,6 @@ export default {
 }
 
 .el-main {
-  
-  
   color: #333;
   text-align: center;
 }
@@ -440,8 +469,6 @@ body > .el-container {
   cursor: pointer;
 }
 
-
-
 // 评论卡片样式
 .el-card {
   margin: 20px;
@@ -475,7 +502,7 @@ body > .el-container {
 
 // 顶栏励志名言
 .title-sentence {
-  font-size: 12px; 
+  font-size: 12px;
   color: #999;
 }
 </style>

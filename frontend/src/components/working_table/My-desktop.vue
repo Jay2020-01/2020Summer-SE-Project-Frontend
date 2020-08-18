@@ -191,7 +191,7 @@ export default {
 }
 .el-card:hover {
   cursor: pointer;
-  border: 1px solid #42b983;
+  border: 1px solid #409eff;
 }
 .el-card:hover .card-pic {
   visibility: visible;
