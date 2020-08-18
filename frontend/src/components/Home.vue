@@ -437,11 +437,13 @@ export default {
         doc_id = resp.data.doc_id;
         if (flag == "yes") {
           this.$message({
+            showClose:true,
             message: "新建成功",
             type: "success",
           });
         } else {
           this.$message({
+            showClose:true,
             message: "新建文档出错",
             type: "warning",
           });
@@ -482,6 +484,7 @@ export default {
     },
     use_templates() {
       // this.$message({
+        // showClose:true,
       //     message: "请跳转到选择模板页面",
       //     type: "warning",
       //   });

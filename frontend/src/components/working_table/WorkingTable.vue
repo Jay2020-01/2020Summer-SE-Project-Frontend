@@ -164,6 +164,7 @@ export default {
           const flag = res.data.flag;
           if (flag == "yes") {
             this.$message({
+              showClose:true,
               message: "已收藏",
               type: "success",
             });
@@ -173,6 +174,7 @@ export default {
             });
           } else {
             this.$message({
+              showClose:true,
               message: "收藏了，请重试",
               type: "warning",
             });
@@ -189,6 +191,7 @@ export default {
           const flag = res.data.flag;
           if (flag == "yes") {
             this.$message({
+              showClose:true,
               message: "已取消收藏",
               type: "success",
             });
@@ -198,6 +201,7 @@ export default {
             this.collected_doc_infos.splice(index, 1);
           } else {
             this.$message({
+              showClose:true,
               message: "出错了，请重试",
               type: "warning",
             });
@@ -224,11 +228,13 @@ export default {
           index = this.doc_infos.findIndex((doc) => doc.doc_id === doc_id);
           this.doc_infos.splice(index, 1);
           this.$message({
+            showClose:true,
             message: "已删除",
             type: "success",
           });
         } else {
           this.$message({
+            showClose:true,
             message: "出错了，请重试",
             type: "warning",
           });
