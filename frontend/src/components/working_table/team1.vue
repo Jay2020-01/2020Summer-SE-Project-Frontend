@@ -24,7 +24,7 @@
 
           <!-- 测试新卡片 -->
           <el-row>
-            <el-col v-for="teamDoc in teamDocs" :key="teamDoc" style="width:200px">
+            <el-col v-for="teamDoc in teamDocs" :key="teamDoc.doc_id" style="width:200px">
               <!-- span是说col标签能够影响的列数 -->
               <el-card @click.native="toDoc(teamDoc.doc_id)" :body-style="{ padding: '0px' }" shadow="hover">
                 <div class="bottom clearfix" style="text-align:right">

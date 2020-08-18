@@ -418,7 +418,6 @@ export default {
       window.sessionStorage.clear();
       this.$router.push("/myinfo");
     },
-    // 暂时用不了，teamList level字段缺失
     async newFile() {
       // var myDate = new Date();
       window.sessionStorage.clear();
