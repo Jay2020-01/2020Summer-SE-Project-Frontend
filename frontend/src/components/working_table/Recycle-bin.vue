@@ -134,6 +134,7 @@ export default {
           const flag = res.data.flag;
           if (flag == "yes") {
             this.$message({
+              showClose:true,
               message: "已还原",
               type: "success",
             });
@@ -143,6 +144,7 @@ export default {
             this.deleted_doc_infos.splice(index, 1);
           } else {
             this.$message({
+              showClose:true,
               message: "出错了，请重试",
               type: "warning",
             });
@@ -159,6 +161,7 @@ export default {
           const flag = res.data.flag;
           if (flag == "yes") {
             this.$message({
+              showClose:true,
               message: "已彻底删除",
               type: "success",
             });
@@ -168,6 +171,7 @@ export default {
             this.deleted_doc_infos.splice(index, 1);
           } else {
             this.$message({
+              showClose:true,
               message: "出错了，请重试",
               type: "warning",
             });
@@ -195,12 +199,14 @@ export default {
           // 这里就是以后绑定事件写代码的地方
           this.delete_completely_all();
           this.$message({
+            showClose:true,
             type: "success",
             message: "清空成功!",
           });
         })
         .catch(() => {
           this.$message({
+            showClose:true,
             type: "info",
             message: "已取消删除",
           });
