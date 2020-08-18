@@ -187,6 +187,7 @@ export default {
       // console.log(this.editorContent);
       var data = Qs.stringify({
         doc_id: this.$route.params.doc_id,
+        team_id: this.$route.params.team_id,
       });
       axios.post("http://localhost:8000/ajax/get_doc/", data).then((res) => {
         this.content = res.data.content;

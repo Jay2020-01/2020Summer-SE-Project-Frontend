@@ -29,7 +29,10 @@
         <el-col :span="6" style="height:60px">
           <div class="grid-content head-box3 bg-purple">
             <!-- 通知图标 -->
-            <el-dropdown style="height:60px; display: flex; align-items: center;" @visible-change="getNoticeList">
+            <el-dropdown
+              style="height:60px; display: flex; align-items: center;"
+              @visible-change="getNoticeList"
+            >
               <el-badge is-dot class="item" :hidden="false">
                 <!-- 上面这里的hidden就是判断是否显示小红点的 -->
                 <span
@@ -263,22 +266,7 @@ export default {
         name: "",
       },
       // 存储团队信息
-      teamList: [
-        { team_name: "team1", id: "123", path: "/teamList/1", team_id: "123" },
-        { team_name: "team2", id: "456", path: "/teamList/2", team_id: "456" },
-        {
-          team_name: "team3",
-          id: "456",
-          path: "/teamList/3",
-          team_id: "656565",
-        },
-        {
-          team_name: "team4",
-          id: "456",
-          path: "/teamList/4",
-          team_id: "123453",
-        },
-      ],
+      teamList: [],
       docForm: {
         name: "",
         authority: [],
@@ -353,10 +341,10 @@ export default {
   methods: {
     // 拉取用户名和邮箱地址
     get_user_info() {
-      axios.get('http://localhost:8000/ajax/user_info/').then(res => {
-        this.username = res.data.username
-        this.mail_address = res.data.mail_address
-      })
+      axios.get("http://localhost:8000/ajax/user_info/").then((res) => {
+        this.username = res.data.username;
+        this.mail_address = res.data.mail_address;
+      });
     },
     createTeam(formName) {
       // 验证表单
@@ -365,9 +353,7 @@ export default {
           var data = Qs.stringify(this.teamForm); // 先用Qs对数据进行处理
           axios
             .post("http://localhost:8000/ajax/create_team/", data)
-            .then(
-              this.getTeamList()
-            )
+            .then(this.getTeamList())
             .catch((err) => console.log(err));
         } else {
           alert("表格不能为空");
@@ -378,9 +364,27 @@ export default {
       });
     },
     // 获取团队名列表
-    getTeamList() {
-      axios.get("http://localhost:8000/ajax/get_my_team/").then((res) => {
-        this.teamList = res.data.team_list;
+    async getTeamList() {
+      try {
+        const resp = await this.get_my_team();
+        this.teamList = resp.data.team_list;
+      } catch (err) {
+        console.log(err);
+      }
+      // console.log(this.teamList)
+      // console.log(this.teamList[0].team_id)
+      // console.log(typeof(this.teamList[0].team_id))
+    },
+    get_my_team() {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("http://localhost:8000/ajax/get_my_team/")
+          .then((resp) => {
+            resolve(resp);
+          })
+          .catch((err) => {
+            reject(err);
+          });
       });
     },
     // 获取消息列表
@@ -411,18 +415,26 @@ export default {
       window.sessionStorage.clear();
       this.$router.push("/myinfo");
     },
+    // 暂时用不了，teamList level字段缺失
     async newFile() {
       // var myDate = new Date();
-      var doc_id = 0;
-      var team_id = -1;
       window.sessionStorage.clear();
+      var doc_id = 0;
+      var team_id = this.$route.params.team_id;
+      var level = 4;
+      // console.log(team_id)
+      // console.log(this.teamList)
+      if (team_id != -1)
+        level = this.teamList.find(
+          (team) => team.team_id == team_id
+        ).level;
       // console.log(myDate.toLocaleString());
+      // console.log(level)
       try {
         const resp = await this.get_docid();
         console.log(resp);
         const flag = resp.data.flag;
         doc_id = resp.data.doc_id;
-        team_id = resp.data.team_id;
         if (flag == "yes") {
           this.$message({
             message: "新建成功",
@@ -438,16 +450,16 @@ export default {
         console.log(err);
       }
       console.log(doc_id);
-      this.$router.push("/editor/" + doc_id + "/" + team_id);
+      this.$router.push("/editor/" + doc_id + "/" + team_id + "/" + level);
     },
     get_docid(data) {
       return new Promise((resolve, reject) => {
-        var team_id = -1
+        var team_id = -1;
         if (this.$route.params.team_id >= 0) {
-          team_id = this.$route.params.team_id
-          console.log("新建团队文档")
+          team_id = this.$route.params.team_id;
+          console.log("新建团队文档");
         } else {
-          console.log("新建个人文档")
+          console.log("新建个人文档");
         }
         var data = Qs.stringify({
           title: this.docForm.name,

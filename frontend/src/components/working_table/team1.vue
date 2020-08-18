@@ -24,9 +24,9 @@
 
           <!-- 测试新卡片 -->
           <el-row>
-            <el-col v-for="o in 8" :key="o" style="width:200px">
+            <el-col v-for="teamDoc in teamDocs" :key="teamDoc" style="width:200px">
               <!-- span是说col标签能够影响的列数 -->
-              <el-card :body-style="{ padding: '0px' }" shadow="hover">
+              <el-card @click.native="toDoc(teamDoc.doc_id)" :body-style="{ padding: '0px' }" shadow="hover">
                 <div class="bottom clearfix" style="text-align:right">
                   <el-dropdown placement="bottom">
                     <!-- 操作图标 -->
@@ -65,7 +65,7 @@
                 <i class="el-icon-document" style="font-size:50px" />
 
                 <div style="padding: 14px;">
-                  <span>钻石文档</span>
+                  <span>{{teamDoc.name}}</span>
                 </div>
               </el-card>
             </el-col>
@@ -284,6 +284,7 @@ export default {
       formInvite: {
         name: "",
       },
+      teamDocs: [],
       user: {},
       userList: [
         { id: "001", username: "name1", phone_number: "123456", is_join: true },
@@ -331,23 +332,42 @@ export default {
   },
   created: function () {
     this.getIsLeader();
+    this.getDocsInfo();
   },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
     },
+    // 获取这个团队的文档信息
+    getDocsInfo() {
+      console.log(this.$route.params.team_id)
+      var data = Qs.stringify({
+        team_id: this.$route.params.team_id,
+      });
+      axios.post("http://localhost:8000/ajax/get_team_docs/",data).then((res) => {
+        const team_docs_length = res.data.team_docs.length;
+        for (let index = 0; index < team_docs_length; index++) {
+          this.teamDocs.push({
+            doc_id: res.data.team_docs[team_docs_length - index - 1].doc_id,
+            name: res.data.team_docs[team_docs_length - index - 1].name,
+          });
+        }
+      });
+      console.log(this.teamDocs)
+    },
+    toDoc(doc_id, team_id, level) {
+      this.$router.push("/editor/" + doc_id + "/" + this.$route.params.team_id + "/" + this.level);
+    },
     // 获取是否是团队Leader & 权限
-    getIsLeader(){
+    getIsLeader() {
       var data = Qs.stringify({
         team_id: this.$route.params.team_id,
       });
       console.log(data);
-      axios
-        .post("http://localhost:8000/ajax/is_leader/", data)
-        .then((res) => {
-          this.isLeader = res.data.is_leader;
-          this.level = res.data.level;
-        });
+      axios.post("http://localhost:8000/ajax/is_leader/", data).then((res) => {
+        this.isLeader = res.data.is_leader;
+        this.level = res.data.level;
+      });
     },
     // 搜索方法
     serchPeople(formName) {

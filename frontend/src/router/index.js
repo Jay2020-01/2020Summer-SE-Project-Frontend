@@ -26,7 +26,7 @@ const routes = [
     { path: '/login', component: Login },
     { path: '/register', component: Register },
     // { path: '/editor', component: Editor },
-    { path: '/editor/:doc_id/:team_id', component: Editor, meta: { requiresAuth: true } },
+    { path: '/editor/:doc_id/:team_id/:level', component: Editor, meta: { requiresAuth: true } },
     {
         path: '/home',
         redirect: '/workingTable',

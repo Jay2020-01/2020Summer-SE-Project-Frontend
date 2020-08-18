@@ -152,7 +152,7 @@ export default {
       });
     },
     toDoc(doc_id) {
-      this.$router.push("/editor/" + doc_id);
+      this.$router.push("/editor/" + doc_id + "/-1/4");
     },
     collect(doc_id, doc_name) {
       var data = Qs.stringify({
