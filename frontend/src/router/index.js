@@ -13,10 +13,10 @@ import Team1 from '../components/working_table/team1.vue'
 import Team2 from '../components/working_table/team2.vue'
 import Templates from '../components/working_table/Templates.vue'
 // import ceshi from '../components/working_table/ceshi.vue'
-import template1 from '../components/working_table/templates/1.vue'
-import template2 from '../components/working_table/templates/2.vue'
-import template3 from '../components/working_table/templates/3.vue'
-import template4 from '../components/working_table/templates/4.vue'
+// import template1 from '../components/working_table/templates/1.vue'
+// import template2 from '../components/working_table/templates/2.vue'
+// import template3 from '../components/working_table/templates/3.vue'
+// import template4 from '../components/working_table/templates/4.vue'
 
 import store from '../store/index.js'
 Vue.use(VueRouter)
@@ -39,11 +39,12 @@ const routes = [
             { path: '/teamSpace/:team_id', component: Team1, meta: { requiresAuth: true } },
             // { path: '/team2', component: Team2, meta: { requiresAuth: true } },
             { path: '/trash', component: Recyclebin, meta: { requiresAuth: true } },
-            { path: '/templates', component: Templates, meta: { requiresAuth: true } },
-            { path: '/template1', component: template1, meta: { requiresAuth: true } },
-            { path: '/template2', component: template2, meta: { requiresAuth: true } },
-            { path: '/template3', component: template3, meta: { requiresAuth: true } },
-            { path: '/template4', component: template4, meta: { requiresAuth: true } },
+            { path: '/templates/:team_id', component: Templates, meta: { requiresAuth: true } },
+            // { path: '/template1', component: template1, meta: { requiresAuth: true } },
+            // { path: '/template2', component: template2, meta: { requiresAuth: true } },
+            // { path: '/template3', component: template3, meta: { requiresAuth: true } },
+            // { path: '/template4', component: template4, meta: { requiresAuth: true } },
+            // { path: '/templates', component: Templates, meta: { requiresAuth: true } },
         ],
         meta: { requiresAuth: true }
     }
@@ -53,17 +54,17 @@ const router = new VueRouter({
     routes
 })
 
-// router.beforeEach((to, from, next) => {
-//     if (to.matched.some(record => record.meta.requiresAuth)) {
-//         if (store.getters.isLoggedIn) {
-//             next()
-//             return
-//         }
-//         console.log(2222)
-//         next('/login')
-//     } else {
-//         next()
-//     }
-// })
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (store.getters.isLoggedIn) {
+            next()
+            return
+        }
+        console.log(2222)
+        next('/login')
+    } else {
+        next()
+    }
+})
 
 export default router
