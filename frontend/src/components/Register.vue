@@ -105,13 +105,22 @@ export default {
           })
           // 向后端发送数据
           this.$store.dispatch('register', data)
-            .then(() => {
-              this.$message({
-                showClose: true,
-                message: "注册成功",
-                type: "success",
-              });
-              this.$router.push('/home')})
+            .then((res) => {
+              if(res.data.success == false) {
+                this.$message({
+                  showClose: true,
+                  message: res.data.message,
+                  type: "error",
+                });
+              } else {  // 注册成功
+                this.$message({
+                  showClose: true,
+                  message: res.data.message,
+                  type: "success",
+                });
+              }
+              this.$router.push("/home");
+            })
             .catch(err => console.log(err))
         } else {
           alert('出现错误，请重试')

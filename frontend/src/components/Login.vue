@@ -64,12 +64,20 @@ export default {
           // 向后端发送请求
           this.$store
             .dispatch("login", data)
-            .then(() => {
-              this.$message({
-                showClose: true,
-                message: "登录成功",
-                type: "success",
-              });
+            .then((res) => {
+              if(res.data.success == false) {
+                this.$message({
+                  showClose: true,
+                  message: res.data.message,
+                  type: "error",
+                });
+              } else {  // 登录成功
+                this.$message({
+                  showClose: true,
+                  message: res.data.message,
+                  type: "success",
+                });
+              }
               this.$router.push("/home");
             })
             .catch((err) => console.log(err));
