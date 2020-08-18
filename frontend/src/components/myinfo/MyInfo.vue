@@ -8,7 +8,15 @@
         slot="header"
         class="clearfix"
       >
+        <el-button
+          style="float: left; padding: 3px 0"
+          type="text"
+          @click="cancel_modify"
+        >
+          取消
+        </el-button>
         <span>账号信息</span>
+        
         <el-button
           style="float: right; padding: 3px 0"
           type="text"
@@ -163,6 +171,9 @@ export default {
           alert('表格不能为空')
         }
       })
+    },
+    cancel_modify(){
+      this.$router.push("/home");
     },
     // 上传头像
     handleAvatarSuccess(res, file) {
