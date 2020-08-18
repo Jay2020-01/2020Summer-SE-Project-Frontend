@@ -30,7 +30,7 @@
           <div class="grid-content head-box3 bg-purple">
             <!-- 通知图标 -->
             <el-dropdown style="height:60px; display: flex; align-items: center;" @visible-change="getNoticeList">
-              <el-badge is-dot class="item" :hidden="false">
+              <el-badge is-dot class="item" :hidden="this.noticeList.length == 0">
                 <!-- 上面这里的hidden就是判断是否显示小红点的 -->
                 <span
                   class="el-dropdown-link"
@@ -43,12 +43,12 @@
               <el-dropdown-menu slot="dropdown">
                 <!-- 这里好像要用嵌套路由来写下面的内容 -->
                 <el-row>
-                  <el-col :span="12" style="text-align:center;">
+                  <el-col :span="12" style="text-align:center; width: 350px">
                     <h5>全部消息</h5>
                   </el-col>
-                  <el-col :span="12" style="float:center;position:relative;top:20px;right:-20px">
+                  <!-- <el-col :span="12" style="float:center;position:relative;top:20px;right:-20px">
                     <el-button type="primary" size="small">全部标记为已读</el-button>
-                  </el-col>
+                  </el-col> -->
                 </el-row>
 
                 <!-- 消息通知新样式 -->

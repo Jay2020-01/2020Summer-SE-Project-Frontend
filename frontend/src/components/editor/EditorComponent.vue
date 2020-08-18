@@ -201,6 +201,7 @@ ol {
 /* 工具栏 */
 .w-e-toolbar {
   background-color: #f7f7f7 !important;
+  background-color: rgba(247, 247, 247, 0) !important;
   width: 826px !important;
   margin: 0 auto;
   /* box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1) !important; */
@@ -222,7 +223,7 @@ ol {
   overflow-x: hidden !important;
   border: 0 !important;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1) !important;
-  background-color: #ffffff !important;
+  /* background-color: #ffffff !important; */
 
   /* border-bottom: 0px solid !important;
   border-left: 0px solid !important;

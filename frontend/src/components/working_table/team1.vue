@@ -268,7 +268,7 @@ export default {
   data() {
     return {
       // 判断是否是团队创建者
-      isLeader: false,
+      isLeader: true,
       // 团队权限
       level: 3,
       // “确认删除”显示
@@ -377,7 +377,13 @@ export default {
       console.log(data);
       axios
         .post("http://localhost:8000/ajax/invite_user/", data)
-        .then((res) => {});
+        .then((res) => {
+          this.$message({
+          showClose: true,
+          message: '已成功发送邀请',
+          type: 'success'
+        });
+        });
     },
     // 删除团队方法
     deleteTeam() {
@@ -421,7 +427,13 @@ export default {
       console.log(data);
       axios
         .post("http://localhost:8000/ajax/set_level/", data)
-        .then((res) => {});
+        .then((res) => {
+          this.$message({
+          showClose: true,
+          message: '已设置权限',
+          type: 'success',
+        });
+        });
     },
     // 删除团队成员方法
     deleteTeamate(index) {

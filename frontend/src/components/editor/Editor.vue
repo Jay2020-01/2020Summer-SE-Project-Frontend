@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div style="">
     <el-container class="home-container">
       <!-- 头部区域 -->
       <el-header height="60px" direction="horizontal">
         <el-row type="flex" class="row-bg">
-          <el-col :span="6" :offset="0">
+          <el-col :span="9" :offset="0">
             <div class="grid-content head-box1 bg-purple">
               <!-- 顶部工具栏区域 -->
               <!-- 返回按钮 -->
@@ -38,13 +38,25 @@
               <!-- <span style="margin-left: 13px; color:#a5a5a5; font-size: 14px;">文档将自动保存</span> -->
             </div>
           </el-col>
-          <el-col :span="5" :offset="7">
+          <!-- 励志句子 -->
+          <el-col :span="5" :offset="3">
             <div class="grid-content head-box2 bg-purple-light">
-              <el-input placeholder="搜索内容" v-model="input" size="small" clearable></el-input>
+              <div class="title-sentence">
+                <span >
+                  {{ sentenceList[sentenceIndex] }}
+                </span>
+              </div>
+              <!-- <el-input placeholder="搜索内容" v-model="input" size="small" clearable></el-input> -->
             </div>
           </el-col>
-          <el-col :span="6" style="height:60px">
+          <el-col :span="7" style="height:60px">
             <div class="grid-content head-box3 bg-purple">
+              <!-- 护眼按钮 -->
+              <el-tooltip class="item" effect="dark" content="护眼模式" placement="bottom">
+                <el-button size="big" @click="isEyeProtect = !isEyeProtect" style="border: none; margin-right: 0px;">
+                  <i class="fa fa-eye"></i>
+                </el-button>
+              </el-tooltip>
               <!-- 评论按钮 -->
               <el-tooltip class="item" effect="dark" content="评论" placement="bottom">
                 <el-button size="big" @click="getCommentList() ;drawer=true" style="border: none; margin-right: 0px;">
@@ -80,7 +92,7 @@
       <!-- 页面主体区域 -->
       <el-container>
         <!-- 右侧内容主体 -->
-        <el-main>
+        <el-main :style="isEyeProtect ? 'background-color: rgb(204,232,207);' : 'background-color: #f7f7f7;'">
           <!-- <editor :content="content" @editorContent="getEditorContent"></editor> -->
           <!-- 测试按钮 -->
           <!-- <el-button size="small" @click="newdoc">测试</el-button> -->
@@ -153,6 +165,8 @@ export default {
       input: "",
       // 编辑器内容
       content: "",
+      // 护眼模式是否开启
+      isEyeProtect: false,
       //收藏按钮
       islike: false,
       //改：根据登陆人员的的信息改(可能是表单形式)
@@ -169,6 +183,15 @@ export default {
         {commenter: "user1", comment_time: "2020年10月21日 19:08", comment_content:"加油加油加加油加油加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油"},
         {commenter: "user2", comment_time: "2020年10月21日 19:08", comment_content:"加油加油加加油"},
         {commenter: "user3", comment_time: "2020年10月21日 19:08", comment_content:"加油加油加加油"},
+      ],
+      // 励志名句列表
+      sentenceIndex: Math.floor(Math.random()*5),
+      sentenceList: [
+        "积土成山,风雨兴焉    积水成渊,蛟龙生焉",
+        "天青色等烟雨    而我在等你",
+        "昨日之深渊    今日之浅谈",
+        "风乍起，合当奋意向人生",
+        "念念不忘，必有回响",
       ]
     };
   },
@@ -358,8 +381,8 @@ export default {
 }
 
 .el-main {
-  background-color: #44d357;
-  // background-color: #ffffff;
+  
+  
   color: #333;
   text-align: center;
 }
@@ -445,6 +468,12 @@ body > .el-container {
 .details {
   margin-top: 3px;
   font-size: 11px;
+  color: #999;
+}
+
+// 顶栏励志名言
+.title-sentence {
+  font-size: 12px; 
   color: #999;
 }
 </style>
