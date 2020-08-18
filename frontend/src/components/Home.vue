@@ -470,7 +470,10 @@ export default {
       //     message: "请跳转到选择模板页面",
       //     type: "warning",
       //   });
-      this.$router.push("/templates");
+      var team_id = -1;
+      if (typeof(this.$route.params.team_id) !== 'undefined')
+        team_id = this.$route.params.team_id
+      this.$router.push("/templates/" + team_id);
     },
   },
 };

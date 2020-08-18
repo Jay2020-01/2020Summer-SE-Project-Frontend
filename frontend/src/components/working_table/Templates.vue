@@ -15,7 +15,7 @@
           <div style="padding: 14px;">
             <span>备考计划模板</span>
             <div class="bottom clearfix">
-              <el-button type="text" class="button" @click="newdocVisible=true;chosen_temp=1;">使用这个</el-button>
+              <el-button type="text" class="button" @click="chosen_temp=1;newdocVisible=true;">使用这个</el-button>
             </div>
           </div>
         </el-card>
@@ -31,7 +31,7 @@
           <div style="padding: 14px;">
             <span>读书笔记模板</span>
             <div class="bottom clearfix">
-              <el-button type="text" class="button" @click="newdocVisible=true;chosen_temp=2;">使用这个</el-button>
+              <el-button type="text" class="button" @click="chosen_temp=2;newdocVisible=true;;">使用这个</el-button>
             </div>
           </div>
         </el-card>
@@ -47,7 +47,7 @@
           <div style="padding: 14px;">
             <span>个人简历模板</span>
             <div class="bottom clearfix">
-              <el-button type="text" class="button" @click="newdocVisible=true;chosen_temp=3;">使用这个</el-button>
+              <el-button type="text" class="button" @click="chosen_temp=3;newdocVisible=true;">使用这个</el-button>
             </div>
           </div>
         </el-card>
@@ -63,7 +63,7 @@
           <div style="padding: 14px;">
             <span>梦想计划清单</span>
             <div class="bottom clearfix">
-              <el-button type="text" class="button" @click="newdocVisible=true;chosen_temp=4;">使用这个</el-button>
+              <el-button type="text" class="button" @click="chosen_temp=4;newdocVisible=true;">使用这个</el-button>
             </div>
           </div>
         </el-card>
@@ -95,6 +95,7 @@ export default {
         name: "",
       },
       chosen_temp: 0,
+      teamList: [],
       srclist: [
         require("../../assets/templates_photos/v1.png"),
         require("../../assets/templates_photos/v2.png"),
@@ -103,41 +104,79 @@ export default {
       ],
     };
   },
+  created: function () {
+    this.getTeamList();
+  },
   methods: {
-    async create_doc_with_temp() {
-      // var myDate = new Date();
-      window.sessionStorage.clear();
-      var doc_id = 0;
+    // 获取团队列表
+    async getTeamList() {
       var team_id = parseInt(this.$route.params.team_id);
-      var level = 4;
       // console.log(this.teamList)
       if (team_id >= 0) {
-        level = this.teamList.find((team) => team.team_id == team_id).level;
-      } else {
-        team_id = -1;
-      }
-      // console.log(myDate.toLocaleString());
-      try {
-        const resp = await this.get_doc_id(this.chosen_temp);
-        console.log(resp);
-        const flag = resp.data.flag;
-        doc_id = resp.data.doc_id;
-        if (flag == "yes") {
-          this.$message({
-            message: "新建成功",
-            type: "success",
-          });
-        } else {
-          this.$message({
-            message: "新建文档出错",
-            type: "warning",
-          });
+        try {
+          const resp = await this.get_my_team();
+          this.teamList = resp.data.team_list;
+        } catch (err) {
+          console.log(err);
         }
-      } catch (err) {
-        console.log(err);
       }
-      // console.log(doc_id);
-      this.$router.push("/editor/" + doc_id + "/" + team_id + "/" + level);
+    },
+    get_my_team() {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("http://localhost:8000/ajax/get_my_team/")
+          .then((resp) => {
+            resolve(resp);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+    },
+    async create_doc_with_temp() {
+      // var myDate = new Date();
+      // 限制必须输入文档标题
+      if (this.docForm.name.length == 0) {
+        this.$message({
+          showClose: true,
+          message: "请输入文档标题",
+          type: "error",
+        });
+      } else {
+        this.newdocVisible = false;
+        window.sessionStorage.clear();
+        var doc_id = 0;
+        var team_id = parseInt(this.$route.params.team_id);
+        var level = 4;
+        // console.log(this.teamList)
+        if (team_id >= 0) {
+          level = this.teamList.find((team) => team.team_id == team_id).level;
+        } else {
+          team_id = -1;
+        }
+        // console.log(myDate.toLocaleString());
+        try {
+          const resp = await this.get_doc_id(this.chosen_temp);
+          console.log(resp);
+          const flag = resp.data.flag;
+          doc_id = resp.data.doc_id;
+          if (flag == "yes") {
+            this.$message({
+              message: "新建成功",
+              type: "success",
+            });
+          } else {
+            this.$message({
+              message: "新建文档出错",
+              type: "warning",
+            });
+          }
+        } catch (err) {
+          console.log(err);
+        }
+        // console.log(doc_id);
+        this.$router.push("/editor/" + doc_id + "/" + team_id + "/" + level);
+      }
     },
     get_doc_id(temp_id) {
       return new Promise((resolve, reject) => {
