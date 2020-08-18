@@ -365,15 +365,16 @@ export default {
           var data = Qs.stringify(this.teamForm); // 先用Qs对数据进行处理
           axios
             .post("http://localhost:8000/ajax/create_team/", data)
-            .then()
+            .then(
+              this.getTeamList()
+            )
             .catch((err) => console.log(err));
         } else {
           alert("表格不能为空");
         }
-        this.getTeamList();
         // 强制刷新
-        this.$router.go(0);
-        this.activeIndex = "/teamSpace";
+        // this.$router.go(0);
+        // this.activeIndex = "/teamSpace";
       });
     },
     // 获取团队名列表
