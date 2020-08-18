@@ -75,8 +75,8 @@
                 style="font-size:50px"
               />
 
-              <div style="padding: 14px;">
-                <span>钻石文档</span>
+              <div class="tile" style="padding: 14px;">
+                <span>一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十</span>
               </div>
             </el-card>
           </el-col>
@@ -183,7 +183,7 @@ export default {
 .el-card {
   // margin: 0px 20px 0px 20px;//左侧的边距
   width: 100px;
-  height: auto;
+  height: 150px;
   margin: 20px;
 }
 .el-card .card-pic {
@@ -240,5 +240,22 @@ export default {
 }
 .el-icon-s-operation:hover {
   transform: scale(1.3);
+}
+// 控制文档名称显示两行
+.tile{
+  display:-webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow:ellipsis;
+  // text-overflow 属性规定当文本溢出包含元素时发生的事情。ellipsis显示省略符号来代表被修剪的文本。
+  // white-space:nowrap;
+  // 规定段落中的文本不进行换行,直到遇到br标签
+  -webkit-line-clamp: 2;
+  overflow:hidden;
+  // hidden	内容会被修剪，并且其余内容是不可见的。
+  
+  width:80px;
+  height: 26px;
+  // height是让文本框只有两行显示，其实后面还会显示的，
+  // 不过我们不能让用户看见，不信将height的值变大一点，就能看见了
 }
 </style>
