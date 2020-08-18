@@ -5,7 +5,7 @@
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <!-- 标签内容 -->
         <!-- 标签一：团队文档 -->
-        <el-tab-pane label="团队名称1" name="first">
+        <el-tab-pane :label="formSettings.name" name="first">
           <div style="text-align:right">
             <el-dropdown v-if="!isLeader" placement="bottom">
               <!-- 团队的一些操作 -->
@@ -310,7 +310,7 @@ export default {
       teamateNum: "0",
       // 空间名称表单
       formSettings: {
-        name: "团队名称1",
+        name: "Teamname",
       },
       options: [
         {
@@ -337,6 +337,7 @@ export default {
   created: function () {
     this.getIsLeader();
     this.getDocsInfo();
+    this.getTeamName();
   },
   methods: {
     handleClick(tab, event) {
@@ -505,7 +506,7 @@ export default {
       });
       console.log(data);
       axios
-        .get("http://localhost:8000/ajax/get_team_name/", data)
+        .post("http://localhost:8000/ajax/get_team_name/", data)
         .then((res) => {
             this.formSettings.name = res.data.team_name;
         });
