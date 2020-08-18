@@ -26,7 +26,7 @@ const routes = [
     { path: '/login', component: Login },
     { path: '/register', component: Register },
     // { path: '/editor', component: Editor },
-    { path: '/editor/:doc_id/:team_id', component: Editor, meta: { requiresAuth: true } },
+    { path: '/editor/:doc_id/:team_id/:level', component: Editor, meta: { requiresAuth: true } },
     {
         path: '/home',
         redirect: '/workingTable',
@@ -53,17 +53,17 @@ const router = new VueRouter({
     routes
 })
 
-router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (store.getters.isLoggedIn) {
-            next()
-            return
-        }
-        console.log(2222)
-        next('/login')
-    } else {
-        next()
-    }
-})
+// router.beforeEach((to, from, next) => {
+//     if (to.matched.some(record => record.meta.requiresAuth)) {
+//         if (store.getters.isLoggedIn) {
+//             next()
+//             return
+//         }
+//         console.log(2222)
+//         next('/login')
+//     } else {
+//         next()
+//     }
+// })
 
 export default router

@@ -114,7 +114,7 @@
                 <div style="display: flex; justify-content: flex-end; margin-top: 10px">
                   <el-button type="primary" size="mini"  @click="sendComment()" plain round>发送评论</el-button>
                 </div>
-                <el-button slot="reference">发表评论</el-button>
+                <el-button type="primary" slot="reference" round>发表评论</el-button>
               </el-popover>
               <!-- 评论卡片 -->
               <div :key="index" v-for="(comment, index) in commentList">
@@ -210,6 +210,7 @@ export default {
       // console.log(this.editorContent);
       var data = Qs.stringify({
         doc_id: this.$route.params.doc_id,
+        team_id: this.$route.params.team_id,
       });
       axios.post("http://localhost:8000/ajax/get_doc/", data).then((res) => {
         this.content = res.data.content;
@@ -227,6 +228,7 @@ export default {
         doc_id: this.$route.params.doc_id,
         body: this.textarea,
       });
+      this.textarea = "";
       axios.post("http://localhost:8000/ajax/post_comment/", data).then((res) => {
         this.getCommentList()
       });

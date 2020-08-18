@@ -115,10 +115,7 @@
             <el-dropdown style="height:60px">
               <span class="el-dropdown-link">
                 <div>
-                  <el-avatar
-                    :size="35"
-                    src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-                  />
+                  <el-avatar :size="35" :src="imageUrl" />
                 </div>
               </span>
               <el-dropdown-menu slot="dropdown">
@@ -263,22 +260,7 @@ export default {
         name: "",
       },
       // 存储团队信息
-      teamList: [
-        { team_name: "team1", id: "123", path: "/teamList/1", team_id: "123" },
-        { team_name: "team2", id: "456", path: "/teamList/2", team_id: "456" },
-        {
-          team_name: "team3",
-          id: "456",
-          path: "/teamList/3",
-          team_id: "656565",
-        },
-        {
-          team_name: "team4",
-          id: "456",
-          path: "/teamList/4",
-          team_id: "123453",
-        },
-      ],
+      teamList: [],
       docForm: {
         name: "",
         authority: [],
@@ -288,6 +270,8 @@ export default {
       // 改：根据登陆人员的的信息改(可能是表单形式)
       username: "",
       mail_address: "",
+      imageUrl:
+        "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
       // 消息列表
       noticeList: [
         {
@@ -350,13 +334,17 @@ export default {
   // activated: function() {
   //   this.getTeamList();
   // },
+  beforeUpdate: function () {
+    this.get_user_info();
+  },
   methods: {
     // 拉取用户名和邮箱地址
     get_user_info() {
-      axios.get('http://localhost:8000/ajax/user_info/').then(res => {
-        this.username = res.data.username
-        this.mail_address = res.data.mail_address
-      })
+      axios.get("http://localhost:8000/ajax/user_info/").then((res) => {
+        this.username = res.data.username;
+        this.mail_address = res.data.mail_address;
+        this.imageUrl = res.data.url;
+      });
     },
     createTeam(formName) {
       // 验证表单
@@ -365,9 +353,7 @@ export default {
           var data = Qs.stringify(this.teamForm); // 先用Qs对数据进行处理
           axios
             .post("http://localhost:8000/ajax/create_team/", data)
-            .then(
-              this.getTeamList()
-            )
+            .then(this.getTeamList())
             .catch((err) => console.log(err));
         } else {
           alert("表格不能为空");
@@ -378,9 +364,27 @@ export default {
       });
     },
     // 获取团队名列表
-    getTeamList() {
-      axios.get("http://localhost:8000/ajax/get_my_team/").then((res) => {
-        this.teamList = res.data.team_list;
+    async getTeamList() {
+      try {
+        const resp = await this.get_my_team();
+        this.teamList = resp.data.team_list;
+      } catch (err) {
+        console.log(err);
+      }
+      // console.log(this.teamList)
+      // console.log(this.teamList[0].team_id)
+      // console.log(typeof(this.teamList[0].team_id))
+    },
+    get_my_team() {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("http://localhost:8000/ajax/get_my_team/")
+          .then((resp) => {
+            resolve(resp);
+          })
+          .catch((err) => {
+            reject(err);
+          });
       });
     },
     // 获取消息列表
@@ -411,18 +415,26 @@ export default {
       window.sessionStorage.clear();
       this.$router.push("/myinfo");
     },
+    // 暂时用不了，teamList level字段缺失
     async newFile() {
       // var myDate = new Date();
-      var doc_id = 0;
-      var team_id = -1;
       window.sessionStorage.clear();
+      var doc_id = 0;
+      var team_id = parseInt(this.$route.params.team_id);
+      var level = 4;
+      // console.log(this.teamList)
+      if (team_id >= 0) {
+        level = this.teamList.find((team) => team.team_id == team_id).level;
+      } else {
+        team_id = -1;
+      }
       // console.log(myDate.toLocaleString());
+      // console.log(level)
       try {
         const resp = await this.get_docid();
         console.log(resp);
         const flag = resp.data.flag;
         doc_id = resp.data.doc_id;
-        team_id = resp.data.team_id;
         if (flag == "yes") {
           this.$message({
             message: "新建成功",
@@ -437,17 +449,17 @@ export default {
       } catch (err) {
         console.log(err);
       }
-      console.log(doc_id);
-      this.$router.push("/editor/" + doc_id + "/" + team_id);
+      // console.log(doc_id);
+      this.$router.push("/editor/" + doc_id + "/" + team_id + "/" + level);
     },
     get_docid(data) {
       return new Promise((resolve, reject) => {
-        var team_id = -1
-        if (this.$route.params.team_id >= 0) {
-          team_id = this.$route.params.team_id
-          console.log("新建团队文档")
+        var team_id = parseInt(this.$route.params.team_id);;
+        if (team_id >= 0) {
+          console.log("新建团队文档");
         } else {
-          console.log("新建个人文档")
+          team_id = -1
+          console.log("新建个人文档");
         }
         var data = Qs.stringify({
           title: this.docForm.name,
