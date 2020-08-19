@@ -268,6 +268,9 @@ export default {
   },
   created: function () {
     this.getTeamList();
+    this.get_user_avatar();
+    this.get_user_info();
+    this.get_user_notice();
   },
   // activated: function() {
   //   this.getTeamList();
