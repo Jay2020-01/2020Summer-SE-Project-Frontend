@@ -122,7 +122,7 @@ export default {
                   message: res.data.message,
                   type: "success",
                 });
-                this.$router.push("/home");
+                this.$router.push("/welcome");
               }
             })
             .catch(err => console.log(err))
