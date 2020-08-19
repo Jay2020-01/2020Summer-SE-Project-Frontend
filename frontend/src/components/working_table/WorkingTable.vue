@@ -36,7 +36,7 @@
                     </el-dropdown-item>
                     <el-dropdown-item
                       v-if="!doc_info.in_group"
-                      @click.native="collect(doc_info.doc_id)"
+                      @click.native="collect(doc_info.doc_id, doc_info.doc_name)"
                     >
                       <i class="el-icon-collection-tag"></i>收藏
                     </el-dropdown-item>
@@ -90,7 +90,7 @@
                     >
                       <i class="el-icon-magic-stick"></i>新标签页打开
                     </el-dropdown-item>
-                    <el-dropdown-item @click.native="collect(doc_info.doc_id)">
+                    <el-dropdown-item @click.native="collect(doc_info.doc_id, doc_info.doc_name)">
                       <i class="el-icon-collection-tag"></i>收藏
                     </el-dropdown-item>
                     <el-dropdown-item
@@ -506,6 +506,8 @@ export default {
               // 若是我创建的，在我创建的文档中删除
               index = this.doc_infos.indexOf(doc);
               if (index >= 0) this.doc_infos.splice(index, 1);
+              index = this.browsing_docs.indexOf(doc);
+              if(index>=0) this.browsing_docs.splice(index,1);
               this.$message({
                 showClose: true,
                 message: "已删除",
