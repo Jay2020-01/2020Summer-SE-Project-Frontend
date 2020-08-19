@@ -6,9 +6,9 @@
       <el-tab-pane label="搜索结果" name="first">
         <!-- 一行两个 -->
         <el-row :gutter="12">
-          <el-col v-for="(o) in 2" :key="o" :span="8">
+          <el-col v-for="doc_info in doc_infos" :key="doc_info.doc_id" :span="8">
             <!-- 文件卡片 -->
-            <el-card shadow="hover">
+            <el-card @click.native="toDoc(doc_info, false)" shadow="hover">
               <div class="card-container">
                 <!-- 图标 -->
                 <div class="picture inline-div">
@@ -16,8 +16,8 @@
                 </div>
                 <!-- 文字 -->
                 <div class="word inline-div">
-                  <div class="tile">钻石文档aaaaaaaaaaa</div>
-                  <div class="details">今天 10:20 我 打开</div>
+                  <div class="tile">{{doc_info.name}}</div>
+                  <div class="details">{{doc_info.created_time}} 被创建</div>
                 </div>
 
                 <el-dropdown placement="bottom">
@@ -28,19 +28,22 @@
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <!-- 选项 -->
-                    <el-dropdown-item style="border-bottom:1px solid #e5e5e5">
+                    <el-dropdown-item
+                      @click.native="toDoc(doc_info, true)"
+                      style="border-bottom:1px solid #e5e5e5"
+                    >
                       <i class="el-icon-magic-stick"></i>新标签页打开
                     </el-dropdown-item>
-                    <el-dropdown-item>
+                    <el-dropdown-item @click.native="collect(doc_info.doc_id, doc_info.name)">
                       <i class="el-icon-collection-tag"></i>收藏
                     </el-dropdown-item>
                     <el-dropdown-item style="border-bottom:1px solid #e5e5e5">
                       <i class="el-icon-position"></i>分享
                     </el-dropdown-item>
-                    <el-dropdown-item>
+                    <el-dropdown-item @click.native="rename_trig(doc_info)">
                       <i class="el-icon-delete"></i>重命名
                     </el-dropdown-item>
-                    <el-dropdown-item style="color:red;">
+                    <el-dropdown-item @click.native="delete_doc(doc_info)" style="color:red;">
                       <i class="el-icon-delete"></i>删除
                     </el-dropdown-item>
                   </el-dropdown-menu>
@@ -51,6 +54,19 @@
         </el-row>
       </el-tab-pane>
     </el-tabs>
+
+    <!-- 隐藏的重命名表单 -->
+    <el-dialog title="重命名" :visible.sync="renameVisible">
+      <el-form ref="docForm" :model="docForm" label-width="80px">
+        <el-form-item label="文档名称">
+          <el-input v-model="docForm.new_name" placeholder="无标题" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="renameVisible = false">取 消</el-button>
+        <el-button type="primary" @click="rename_doc();renameVisible = false;">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -61,6 +77,11 @@ export default {
   data() {
     return {
       activeName: "first",
+      renameVisible: false,
+      renamed_doc_id: 0,
+      docForm: {
+        new_name: "",
+      },
       doc_infos: [],
     };
   },
@@ -77,11 +98,129 @@ export default {
         keyword: this.$route.params.keyword,
       });
       console.log(data);
-      axios
-        .post("http://localhost:8000/ajax/doc_search/", data)
-        .then((res) => {
-          this.doc_infos = res.data.docs;
+      axios.post("http://localhost:8000/ajax/doc_search/", data).then((res) => {
+        this.doc_infos = res.data.docs;
+      });
+    },
+    toDoc(doc, in_new_page) {
+      // 1级权限时不能打开
+      console.log(doc);
+      var data = Qs.stringify({
+        doc_id: doc.doc_id,
+      });
+      axios.post("http://localhost:8000/ajax/update_browsing/", data);
+      if (in_new_page) {
+        var routeData = this.$router.resolve({
+          name: "editor",
+          params: {
+            doc_id: doc.doc_id,
+            team_id: -1,
+            level: 4,
+          },
         });
+        // console.log(routeData.href)
+        window.open(routeData.href, "_blank");
+      } else {
+        this.$router.push("/editor/" + doc.doc_id + "/" + -1 + "/" + 4);
+      }
+    },
+    collect(doc_id) {
+      var data = Qs.stringify({
+        doc_id: doc_id,
+      });
+      axios
+        .post("http://localhost:8000/ajax/collect_doc/", data)
+        .then((res) => {
+          const flag = res.data.flag;
+          if (flag == "yes") {
+            this.$message({
+              showClose: true,
+              message: "已收藏",
+              type: "success",
+            });
+          } else {
+            this.$message({
+              showClose: true,
+              message: "已经收藏",
+              type: "warning",
+            });
+          }
+        });
+    },
+    rename_trig(doc) {
+      this.renameVisible = true;
+      this.renamed_doc_id = doc.doc_id;
+      this.docForm.new_name = doc.name;
+    },
+    rename_doc() {
+      var doc = this.doc_infos.find(
+        (doc) => doc.doc_id === this.renamed_doc_id
+      );
+      console.log(doc);
+      if (this.docForm.new_name.length == 0) {
+        this.$message({
+          showClose: true,
+          message: "请输入文档标题",
+          type: "error",
+        });
+      } else if (doc.name == this.docForm.new_name) {
+        this.$message({
+          showClose: true,
+          message: "未改变标题",
+          type: "warning",
+        });
+      } else {
+        var new_name = this.docForm.new_name;
+        this.docForm.new_name = "";
+        var data = Qs.stringify({
+          doc_id: this.renamed_doc_id,
+          title: new_name,
+        });
+        axios
+          .post("http://localhost:8000/ajax/rename_doc/", data)
+          .then((res) => {
+            const flag = res.data.flag;
+            if (flag) {
+              this.$message({
+                showClose: true,
+                message: "已重命名",
+                type: "success",
+              });
+              // 及时更新
+              doc.name = new_name;
+            } else {
+              this.$message({
+                showClose: true,
+                message: "出错了，请重试",
+                type: "warning",
+              });
+            }
+          });
+      }
+    },
+    delete_doc(doc) {
+      var data = Qs.stringify({
+        doc_id: doc.doc_id,
+      });
+      console.log(this.collected_doc_infos);
+      axios.post("http://localhost:8000/ajax/delete_doc/", data).then((res) => {
+        const flag = res.data.flag;
+        if (flag == "yes") {
+          this.$message({
+            showClose: true,
+            message: "已删除",
+            type: "success",
+          });
+          var index = this.doc_infos.indexOf(doc)
+          this.doc_infos.splice(index, 1)
+        } else {
+          this.$message({
+            showClose: true,
+            message: "出错了，请重试",
+            type: "warning",
+          });
+        }
+      });
     },
   },
 };

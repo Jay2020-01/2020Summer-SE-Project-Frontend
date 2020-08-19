@@ -1,7 +1,11 @@
 <template>
   <el-container class="home-container" :style="styleControl?'filter: invert(95%);':''">
     <!-- 头部区域 -->
-    <el-header height="60px" direction="horizontal" :style="styleControl?'margin-bottom: 0px;':'margin-bottom: 7px;'">
+    <el-header
+      height="60px"
+      direction="horizontal"
+      :style="styleControl?'margin-bottom: 0px;':'margin-bottom: 7px;'"
+    >
       <el-row type="flex" class="row-bg">
         <el-col :span="4" :offset="0">
           <div class="grid-content head-box1 bg-purple">
@@ -14,11 +18,10 @@
               @click.middle.native="styleControl=!styleControl"
             >logo</el-avatar>
             <span class="site-name">钻石文档</span>
-            
           </div>
         </el-col>
-        <el-col  :span="8" :offset="0">
-            <span class="show-names" :style="styleControl?'color:#409eff;':'color:#fff'"></span>
+        <el-col :span="8" :offset="0">
+          <span class="show-names" :style="styleControl?'color:#409eff;':'color:#fff'"></span>
         </el-col>
         <el-col :span="5" :offset="1">
           <div class="grid-content head-box2 bg-purple-light">
@@ -316,8 +319,8 @@ export default {
           axios
             .post("http://localhost:8000/ajax/create_team/", data)
             .then((res) => {
-              this.getTeamList()
-            })
+              this.getTeamList();
+            });
         } else {
           alert("表格不能为空");
         }
@@ -328,17 +331,15 @@ export default {
     },
     // 获取团队名列表
     getTeamList() {
-      axios
-        .post("http://localhost:8000/ajax/get_my_team/")
-        .then((res) => {
-          this.teamList = res.data.team_list
-        })
+      axios.post("http://localhost:8000/ajax/get_my_team/").then((res) => {
+        this.teamList = res.data.team_list;
+      });
     },
     // 判断能否新建文档
     canNewDoc() {
       var team_id = parseInt(this.$route.params.team_id);
-      if (typeof(this.$route.params.team_id) === 'undefined') {
-        console.log("is nan")
+      if (typeof this.$route.params.team_id === "undefined") {
+        console.log("is nan");
         this.newdocVisible = true;
       } else {
         for (var i = 0; i < this.teamList.length; i++) {
@@ -350,7 +351,7 @@ export default {
                 type: "error",
               });
               break;
-            }else{
+            } else {
               this.newdocVisible = true;
             }
           }
@@ -418,6 +419,10 @@ export default {
               message: "新建成功",
               type: "success",
             });
+            var data = Qs.stringify({
+              doc_id: doc_id,
+            });
+            axios.post("http://localhost:8000/ajax/update_browsing/", data);
           } else {
             this.$message({
               message: "新建文档出错",
@@ -461,21 +466,21 @@ export default {
     },
     use_templates() {
       // this.$message({
-        // showClose:true,
+      // showClose:true,
       //     message: "请跳转到选择模板页面",
       //     type: "warning",
       //   });
       var team_id = -1;
-      if (typeof(this.$route.params.team_id) !== 'undefined')
-        team_id = this.$route.params.team_id
+      if (typeof this.$route.params.team_id !== "undefined")
+        team_id = this.$route.params.team_id;
       this.$router.push("/templates/" + team_id);
     },
 
     // 搜索文档
-    searchFile(){
-      if(this.input.length != 0)
+    searchFile() {
+      if (this.input.length != 0)
         this.$router.push("/searchresult/" + this.input);
-    }
+    },
   },
 };
 </script>
