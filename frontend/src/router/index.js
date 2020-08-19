@@ -12,7 +12,7 @@ import Recyclebin from '../components/working_table/Recycle-bin.vue'
 import Team1 from '../components/working_table/team1.vue'
 import Team2 from '../components/working_table/team2.vue'
 import Templates from '../components/working_table/Templates.vue'
-// import ceshi from '../components/working_table/ceshi.vue'
+import ceshi from '../components/working_table/templates/startoff.vue'
 // import template1 from '../components/working_table/templates/1.vue'
 // import template2 from '../components/working_table/templates/2.vue'
 // import template3 from '../components/working_table/templates/3.vue'
@@ -47,6 +47,7 @@ const routes = [
             // { path: '/template3', component: template3, meta: { requiresAuth: true } },
             // { path: '/template4', component: template4, meta: { requiresAuth: true } },
             // { path: '/templates', component: Templates, meta: { requiresAuth: true } },
+            { path: '/ceshi', component: ceshi, meta: { requiresAuth: true } },
         ],
         meta: { requiresAuth: true }
     }
