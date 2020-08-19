@@ -73,13 +73,10 @@
               </div>
 
               <!-- 这里是右上角的头像 -->
-              <el-dropdown style="height:60px; width: 60px;">
+              <el-dropdown style="height:60px; width: 60px;" @visible-change="get_user_info">
                 <span class="el-dropdown-link">
                   <div>
-                    <el-avatar
-                      :size="35"
-                      src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-                    />
+                    <el-avatar :size="35" :src="imageUrl" />
                   </div>
                 </span>
                 <el-dropdown-menu slot="dropdown">
@@ -199,6 +196,8 @@ export default {
       doc_name: "",
       username: "",
       mail_address: "",
+      imageUrl:
+        "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
       // 评论面板相关参数
       drawer: false,
       direction: "rtl",
@@ -240,8 +239,15 @@ export default {
     console.log("created");
     this.getContent();
     this.get_user_info();
+    this.get_user_avatar();
   },
   methods: {
+    // 拉取用户头像
+    get_user_avatar() {
+      axios.get("http://localhost:8000/ajax/get_user_avatar/").then((res) => {
+        this.imageUrl = res.data.url;
+      });
+    },
     get_user_info() {
       axios.get("http://localhost:8000/ajax/user_info/").then((res) => {
         this.username = res.data.username;
