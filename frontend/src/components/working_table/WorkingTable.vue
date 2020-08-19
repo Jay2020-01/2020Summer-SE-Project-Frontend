@@ -392,7 +392,7 @@ export default {
             const flag = res.data.flag;
             if (flag == "yes") {
               // 若是我创建的，在我创建的文档中删除
-              index = this.doc_infos.indexOf(doc);
+              var index = this.doc_infos.indexOf(doc);
               if (index >= 0) this.doc_infos.splice(index, 1);
               index = this.browsing_docs.indexOf(doc);
               if (index >= 0) this.browsing_docs.splice(index, 1);

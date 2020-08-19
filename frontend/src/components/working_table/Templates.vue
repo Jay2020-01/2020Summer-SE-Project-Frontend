@@ -21,7 +21,7 @@
         </el-card>
       </el-col>
       <el-col style="width:200px">
-        <el-card :body-style="{ padding: '0px' }"  shadow="hover">
+        <el-card :body-style="{ padding: '0px' }" shadow="hover">
           <!-- <img src="../../assets/templates_photos/v2.png" class="image" style="width:200px;height:120px;"> -->
           <el-image
             style="width:200px;height:120px;"
@@ -101,7 +101,11 @@ export default {
         require("../../assets/templates_photos/v3.png"),
         require("../../assets/templates_photos/v4.png"),
       ],
+      teamList: [],
     };
+  },
+  created: function () {
+    this.getTeamList();
   },
   methods: {
     async create_doc_with_temp() {
@@ -127,6 +131,10 @@ export default {
             message: "新建成功",
             type: "success",
           });
+          var data = Qs.stringify({
+            doc_id: doc_id,
+          });
+          axios.post("http://localhost:8000/ajax/update_browsing/", data);
         } else {
           this.$message({
             message: "新建文档出错",
@@ -162,6 +170,11 @@ export default {
           .catch((err) => {
             reject(err);
           });
+      });
+    },
+    getTeamList() {
+      axios.post("http://localhost:8000/ajax/get_my_team/").then((res) => {
+        this.teamList = res.data.team_list;
       });
     },
   },
