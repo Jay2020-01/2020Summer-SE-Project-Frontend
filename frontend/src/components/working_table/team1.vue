@@ -255,7 +255,7 @@
                   <el-button
                     type="primary"
                     size="mini"
-                    @click="visible = false; deleteTeam();"
+                    @click="visible = false; showSettings = false; deleteTeam();"
                     plain
                   >确定</el-button>
                 </div>
@@ -470,6 +470,13 @@ export default {
           });
         });
     },
+    getTeamList() {
+      axios
+        .post("http://localhost:8000/ajax/get_my_team/")
+        .then((res) => {
+          this.teamList = res.data.team_list
+        })
+    },
     // 删除团队方法
     deleteTeam() {
       var data = Qs.stringify({
@@ -478,9 +485,10 @@ export default {
       console.log(data);
       axios
         .post("http://localhost:8000/ajax/delete_my_team/", data)
-        .then((res) => {});
+        .then((res) => {
+        })
       this.$router.push("/home");
-      // 强制刷新
+      // // 强制刷新
       this.$router.go(0);
     },
     // 获取团队成员列表
