@@ -36,7 +36,7 @@ const routes = [
             { path: '/workingTable', component: WorkingTable, meta: { requiresAuth: true } },
             { path: '/myinfo', component: MyInfo, meta: { requiresAuth: true } },
             { path: '/inbox', component: Inbox, meta: { requiresAuth: true } },
-            { path: '/searchresult', component: searchresult, meta: { requiresAuth: true } },
+            { path: '/searchresult/:keyword', component: searchresult, meta: { requiresAuth: true } },
             { path: '/myDesktop', component: Mydesktop, meta: { requiresAuth: true } },
             { path: '/teamSpace/:team_id', component: Team1, meta: { requiresAuth: true } },
             // { path: '/team2', component: Team2, meta: { requiresAuth: true } },

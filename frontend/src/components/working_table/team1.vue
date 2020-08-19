@@ -252,7 +252,7 @@
                   <el-button
                     type="primary"
                     size="mini"
-                    @click="visible = false; deleteTeam();"
+                    @click="visible = false; showSettings = false; deleteTeam();"
                     plain
                   >确定</el-button>
                 </div>

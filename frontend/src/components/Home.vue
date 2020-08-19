@@ -27,6 +27,7 @@
               prefix-icon="fa fa-search"
               placeholder="搜索文档"
               size="small"
+              @keyup.enter.native="searchFile();"
               clearable
             />
           </div>
@@ -258,6 +259,7 @@ import Qs from "qs";
 export default {
   data() {
     return {
+      // 搜索文档关键词
       input: "",
       // 默认激活
       activeIndex: "/workingTable",
@@ -483,6 +485,12 @@ export default {
         team_id = this.$route.params.team_id
       this.$router.push("/templates/" + team_id);
     },
+
+    // 搜索文档
+    searchFile(){
+      if(this.input.length != 0)
+        this.$router.push("/searchresult/" + this.input);
+    }
   },
 };
 </script>
