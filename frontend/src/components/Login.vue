@@ -68,13 +68,13 @@ export default {
               if(res.data.success == false) {
                 this.$message({
                   showClose: true,
-                  message: res.data.message,
+                  message: "登录失败",
                   type: "error",
                 });
               } else {  // 登录成功
                 this.$message({
                   showClose: true,
-                  message: res.data.message,
+                  message: "登录成功",
                   type: "success",
                 });
               }

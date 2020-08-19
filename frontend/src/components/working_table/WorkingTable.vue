@@ -3,13 +3,68 @@
     <!-- 标签组件 -->
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <!-- 标签内容 -->
-      <el-tab-pane label="最近浏览" name="first"></el-tab-pane>
+      <el-tab-pane label="最近浏览" name="first">
+        <!-- 一行三个 -->
+        <el-row :gutter="12">
+          <el-col v-for="doc_info in browsing_docs" :key="doc_info.doc_id" :span="8">
+            <!-- 文件卡片 -->
+            <el-card @click.native="toDoc(doc_info, false)" shadow="hover">
+              <div class="card-container">
+                <!-- 图标 -->
+                <div class="picture inline-div">
+                  <span class="fa fa-file-text-o" style="font-size:25px"></span>
+                </div>
+                <!-- 文字 -->
+                <div class="word inline-div">
+                  <div class="tile">{{doc_info.doc_name}}</div>
+                  <div class="details">{{doc_info.browse_time}} 我 浏览</div>
+                </div>
+
+                <el-dropdown placement="bottom">
+                  <!-- 后面的操作图标 -->
+                  <span class="el-dropdown-link">
+                    <i class="el-icon-arrow-down el-icon--right"></i>
+                    <!-- 下拉图标 -->
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <!-- 选项 -->
+                    <el-dropdown-item
+                      @click.native="toDoc(doc_info, true)"
+                      style="border-bottom:1px solid #e5e5e5"
+                    >
+                      <i class="el-icon-magic-stick"></i>新标签页打开
+                    </el-dropdown-item>
+                    <el-dropdown-item
+                      v-if="!doc_info.in_group"
+                      @click.native="collect(doc_info.doc_id)"
+                    >
+                      <i class="el-icon-collection-tag"></i>收藏
+                    </el-dropdown-item>
+                    <el-dropdown-item
+                      style="border-bottom:1px solid #e5e5e5"
+                      @click.native="shareFormVisible = true; getDocLevel(doc_info.doc_id)"
+                    >
+                      <i class="el-icon-position"></i>分享
+                    </el-dropdown-item>
+                    <el-dropdown-item @click.native="rename_trig(doc_info)">
+                      <i class="el-icon-delete"></i>重命名
+                    </el-dropdown-item>
+                    <el-dropdown-item @click.native="delete_doc(doc_info)" style="color:red;">
+                      <i class="el-icon-delete"></i>删除
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+      </el-tab-pane>
       <el-tab-pane label="我创建的" name="second">
         <!-- 一行三个 -->
         <el-row :gutter="12">
           <el-col v-for="doc_info in doc_infos" :key="doc_info.doc_id" :span="8">
             <!-- 文件卡片 -->
-            <el-card @click.native="toDoc(doc_info.doc_id)" shadow="hover">
+            <el-card @click.native="toDoc(doc_info, false)" shadow="hover">
               <div class="card-container">
                 <!-- 图标 -->
                 <div class="picture inline-div">
@@ -29,10 +84,13 @@
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <!-- 选项 -->
-                    <el-dropdown-item style="border-bottom:1px solid #e5e5e5">
+                    <el-dropdown-item
+                      @click.native="toDoc(doc_info, true)"
+                      style="border-bottom:1px solid #e5e5e5"
+                    >
                       <i class="el-icon-magic-stick"></i>新标签页打开
                     </el-dropdown-item>
-                    <el-dropdown-item @click.native="collect(doc_info.doc_id, doc_info.doc_name)">
+                    <el-dropdown-item @click.native="collect(doc_info.doc_id)">
                       <i class="el-icon-collection-tag"></i>收藏
                     </el-dropdown-item>
                     <el-dropdown-item
@@ -41,13 +99,10 @@
                     >
                       <i class="el-icon-position"></i>分享
                     </el-dropdown-item>
-                    <el-dropdown-item>
+                    <el-dropdown-item @click.native="rename_trig(doc_info)">
                       <i class="el-icon-delete"></i>重命名
                     </el-dropdown-item>
-                    <el-dropdown-item
-                      @click.native="delete_doc(doc_info.doc_id)"
-                      style="color:red;"
-                    >
+                    <el-dropdown-item @click.native="delete_doc(doc_info)" style="color:red;">
                       <i class="el-icon-delete"></i>删除
                     </el-dropdown-item>
                   </el-dropdown-menu>
@@ -62,7 +117,7 @@
         <el-row :gutter="12">
           <el-col v-for="doc_info in collected_doc_infos" :key="doc_info.doc_id" :span="8">
             <!-- 文件卡片 -->
-            <el-card @click.native="toDoc(doc_info.doc_id)" shadow="hover">
+            <el-card @click.native="toDoc(doc_info, false)" shadow="hover">
               <div class="card-container">
                 <!-- 图标 -->
                 <div class="picture inline-div">
@@ -82,7 +137,10 @@
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <!-- 选项 -->
-                    <el-dropdown-item style="border-bottom:1px solid #e5e5e5">
+                    <el-dropdown-item
+                      @click.native="toDoc(doc_info, true)"
+                      style="border-bottom:1px solid #e5e5e5"
+                    >
                       <i class="el-icon-magic-stick"></i>新标签页打开
                     </el-dropdown-item>
                     <el-dropdown-item @click.native="uncollect(doc_info.doc_id)">
@@ -91,13 +149,10 @@
                     <el-dropdown-item style="border-bottom:1px solid #e5e5e5">
                       <i class="el-icon-position"></i>分享
                     </el-dropdown-item>
-                    <el-dropdown-item>
+                    <el-dropdown-item @click.native="rename_trig(doc_info)">
                       <i class="el-icon-delete"></i>重命名
                     </el-dropdown-item>
-                    <el-dropdown-item
-                      @click.native="delete_doc(doc_info.doc_id)"
-                      style="color:red;"
-                    >
+                    <el-dropdown-item @click.native="delete_doc(doc_info)" style="color:red;">
                       <i class="el-icon-delete"></i>删除
                     </el-dropdown-item>
                   </el-dropdown-menu>
@@ -115,18 +170,18 @@
       <el-form ref="shareForm" :model="shareForm">
         <el-form-item prop="link">
           <span style="float: left;">分享链接</span>
-          <el-input suffix-icon="el-icon-link" v-model="shareForm.link" placeholder="分享链接" autocomplete="off" />
+          <el-input
+            suffix-icon="el-icon-link"
+            v-model="shareForm.link"
+            placeholder="分享链接"
+            autocomplete="off"
+          />
         </el-form-item>
       </el-form>
       <div style="display: flex; align-items: center;">
         <!-- 可以多选权限 -->
         权限设置：
-        <el-select 
-        @blur="setDocLevel" 
-        v-model="shareLevel" 
-        size="big" 
-        placeholder="权限选择"
-        >
+        <el-select @blur="setDocLevel" v-model="shareLevel" size="big" placeholder="权限选择">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -140,6 +195,19 @@
         <el-button type="primary" @click="shareFormVisible = false; createTeam('shareForm') ">确 定</el-button>
       </div>
     </el-dialog>
+
+    <!-- 隐藏的重命名表单 -->
+    <el-dialog title="重命名" :visible.sync="renameVisible">
+      <el-form ref="docForm" :model="docForm" label-width="80px">
+        <el-form-item label="文档名称">
+          <el-input v-model="docForm.new_name" placeholder="无标题" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="renameVisible = false">取 消</el-button>
+        <el-button type="primary" @click="rename_doc();renameVisible = false;">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -151,8 +219,14 @@ export default {
     return {
       doc_infos: [],
       collected_doc_infos: [],
+      browsing_docs: [],
       activeName: "first",
       // 分享表单可见性
+      renameVisible: false,
+      renamed_doc_id: 0,
+      docForm: {
+        new_name: "",
+      },
       shareFormVisible: false,
       shareForm: {
         link: "http://localhost:8080/#/workingTable",
@@ -191,6 +265,7 @@ export default {
       axios.get("http://localhost:8000/ajax/my_doc/").then((res) => {
         const created_docs_length = res.data.created_docs.length;
         const collected_docs_length = res.data.collected_docs.length;
+        const browsing_docs_length = res.data.browsing_docs.length;
         for (let index = 0; index < created_docs_length; index++) {
           this.doc_infos.push({
             doc_id:
@@ -200,6 +275,8 @@ export default {
             created_time:
               res.data.created_docs[created_docs_length - index - 1]
                 .created_time,
+            team_id: -1,
+            level: 4,
           });
         }
         for (let index = 0; index < collected_docs_length; index++) {
@@ -211,12 +288,129 @@ export default {
             collected_time:
               res.data.collected_docs[collected_docs_length - index - 1]
                 .collected_time,
+            team_id: -1,
+            level: 4,
+          });
+        }
+        for (let index = 0; index < browsing_docs_length; index++) {
+          this.browsing_docs.push({
+            doc_id:
+              res.data.browsing_docs[browsing_docs_length - index - 1].doc_id,
+            doc_name:
+              res.data.browsing_docs[browsing_docs_length - index - 1].name,
+            in_group:
+              res.data.browsing_docs[browsing_docs_length - index - 1].in_group,
+            browse_time:
+              res.data.browsing_docs[browsing_docs_length - index - 1]
+                .browse_time,
+            team_id:
+              res.data.browsing_docs[browsing_docs_length - index - 1].team_id,
+            level:
+              res.data.browsing_docs[browsing_docs_length - index - 1].level,
           });
         }
       });
     },
-    toDoc(doc_id) {
-      this.$router.push("/editor/" + doc_id + "/-1/4");
+    toDoc(doc, in_new_page) {
+      // 1级权限时不能打开
+      console.log(doc);
+      if (doc.level <= 1) {
+        this.$message({
+          showClose: true,
+          message: "您没有查看文档的权限",
+          type: "error",
+        });
+      } else {
+        var data = Qs.stringify({
+          doc_id: doc.doc_id,
+        });
+        axios.post("http://localhost:8000/ajax/update_browsing/", data);
+        if (in_new_page) {
+          var routeData = this.$router.resolve({
+            name: "editor",
+            params: {
+              doc_id: doc.doc_id,
+              team_id: doc.team_id,
+              level: doc.level,
+            },
+          });
+          // console.log(routeData.href)
+          window.open(routeData.href, "_blank");
+        } else {
+          this.$router.push(
+            "/editor/" + doc.doc_id + "/" + doc.team_id + "/" + doc.level
+          );
+        }
+      }
+    },
+    rename_trig(doc) {
+      if (doc.level < 4) {
+        this.$message({
+          showClose: true,
+          message: "您没有重命名文档的权限",
+          type: "error",
+        });
+      } else {
+        this.renameVisible = true;
+        this.renamed_doc_id = doc.doc_id;
+        this.docForm.new_name = doc.doc_name;
+      }
+    },
+    rename_doc() {
+      var doc = this.doc_infos.find(
+        (doc) => doc.doc_id === this.renamed_doc_id
+      );
+      console.log(doc)
+      if (doc === undefined) {
+        doc = this.collected_doc_infos.find(
+          (doc) => doc.doc_id === this.renamed_doc_id
+        );
+        if (doc === undefined) {
+          doc = this.browsing_docs.find(
+            (doc) => doc.doc_id === this.renamed_doc_id
+          );
+        }
+      }
+      if (this.docForm.new_name.length == 0) {
+        this.$message({
+          showClose: true,
+          message: "请输入文档标题",
+          type: "error",
+        });
+      } else if (doc.doc_name == this.docForm.new_name) {
+        this.$message({
+          showClose: true,
+          message: "未改变标题",
+          type: "error",
+        });
+      } else {
+        var new_name = this.docForm.new_name;
+        this.docForm.new_name = "";
+        var data = Qs.stringify({
+          doc_id: this.renamed_doc_id,
+          title: new_name,
+        });
+        axios
+          .post("http://localhost:8000/ajax/rename_doc/", data)
+          .then((res) => {
+            const flag = res.data.flag;
+            if (flag) {
+              this.$message({
+                showClose: true,
+                message: "已重命名",
+                type: "success",
+              });
+              // 及时更新本地文档列表
+              doc.doc_name = new_name;
+            } else {
+              this.$message({
+                showClose: true,
+                message: "出错了，请重试",
+                type: "warning",
+              });
+            }
+          });
+      }
     },
     collect(doc_id, doc_name) {
       var data = Qs.stringify({
@@ -283,38 +477,44 @@ export default {
           }
         });
     },
-    delete_doc(doc_id) {
-      var data = Qs.stringify({
-        doc_id: doc_id,
-      });
-      console.log(this.collected_doc_infos);
-      axios.post("http://localhost:8000/ajax/delete_doc/", data).then((res) => {
-        const flag = res.data.flag;
-        if (flag == "yes") {
-          // 若在收藏中，先在收藏列表中删除
-          var index = this.collected_doc_infos.findIndex(
-            (doc) => doc.doc_id === doc_id
-          );
-          console.log(index);
-          if (index >= 0) {
-            this.collected_doc_infos.splice(index, 1);
-          }
-          // 在我创建的文档中删除该文档
-          index = this.doc_infos.findIndex((doc) => doc.doc_id === doc_id);
-          this.doc_infos.splice(index, 1);
-          this.$message({
-            showClose: true,
-            message: "已删除",
-            type: "success",
+    delete_doc(doc) {
+      if (doc.level < 4) {
+        this.$message({
+          showClose: true,
+          message: "您没有删除文档的权限",
+          type: "error",
+        });
+      } else {
+        var data = Qs.stringify({
+          doc_id: doc.doc_id,
+        });
+        console.log(this.collected_doc_infos);
+        axios
+          .post("http://localhost:8000/ajax/delete_doc/", data)
+          .then((res) => {
+            const flag = res.data.flag;
+            if (flag == "yes") {
+              // 若在收藏中，先在收藏列表中删除
+              var index = this.collected_doc_infos.indexOf(doc);
+              console.log(index);
+              if (index >= 0) this.collected_doc_infos.splice(index, 1);
+              // 若是我创建的，在我创建的文档中删除
+              index = this.doc_infos.indexOf(doc);
+              if (index >= 0) this.doc_infos.splice(index, 1);
+              this.$message({
+                showClose: true,
+                message: "已删除",
+                type: "success",
+              });
+            } else {
+              this.$message({
+                showClose: true,
+                message: "出错了，请重试",
+                type: "warning",
+              });
+            }
           });
-        } else {
-          this.$message({
-            showClose: true,
-            message: "出错了，请重试",
-            type: "warning",
-          });
-        }
-      });
+      }
     },
     // 点击分享时,获取文档权限
     getDocLevel(doc_id) {
@@ -322,7 +522,9 @@ export default {
         doc_id: doc_id,
       });
       console.log(data);
-      axios.post("http://localhost:8000/ajax/get_doc_key/", data).then((res) => {
+      axios
+        .post("http://localhost:8000/ajax/get_doc_key/", data)
+        .then((res) => {
           this.shareLevel = res.data.share_level;
           this.shareKey = res.data.key;
         });
@@ -334,7 +536,9 @@ export default {
         level: this.shareLevel,
       });
       console.log(data);
-      axios.post("http://localhost:8000/ajax/edit_share_level/", data).then((res) => {
+      axios
+        .post("http://localhost:8000/ajax/edit_share_level/", data)
+        .then((res) => {
           this.$message({
             showClose: true,
             message: "已设置权限",

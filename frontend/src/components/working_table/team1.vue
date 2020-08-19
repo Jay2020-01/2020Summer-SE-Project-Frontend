@@ -27,7 +27,7 @@
             <el-col v-for="teamDoc in teamDocs" :key="teamDoc.doc_id" style="width:200px">
               <!-- span是说col标签能够影响的列数 -->
               <el-card
-                @click.native="toDoc(teamDoc.doc_id)"
+                @click.native="toDoc(teamDoc.doc_id, false)"
                 :body-style="{ padding: '0px' }"
                 shadow="hover"
               >
@@ -42,7 +42,10 @@
                     </div>
                     <el-dropdown-menu slot="dropdown">
                       <!-- 选项 -->
-                      <el-dropdown-item style="border-bottom:1px solid #e5e5e5">
+                      <el-dropdown-item
+                        @click.native="toDoc(teamDoc.doc_id, true)"
+                        style="border-bottom:1px solid #e5e5e5"
+                      >
                         <i class="el-icon-magic-stick" />新标签页打开
                       </el-dropdown-item>
                       <!-- <el-dropdown-item>
@@ -51,7 +54,7 @@
                       <el-dropdown-item style="border-bottom:1px solid #e5e5e5">
                         <i class="el-icon-position" />分享
                       </el-dropdown-item>
-                      <el-dropdown-item>
+                      <el-dropdown-item @click.native="rename_trig(teamDoc.doc_id)">
                         <i class="el-icon-delete" />重命名
                       </el-dropdown-item>
                       <el-dropdown-item
@@ -267,6 +270,19 @@
           </el-dialog>
         </el-tab-pane>
       </el-tabs>
+
+      <!-- 隐藏的重命名表单 -->
+      <el-dialog title="重命名" :visible.sync="renameVisible">
+        <el-form ref="docForm" :model="docForm" label-width="80px">
+          <el-form-item label="文档名称">
+            <el-input v-model="docForm.new_name" placeholder="无标题" />
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="renameVisible = false">取 消</el-button>
+          <el-button type="primary" @click="rename_doc();renameVisible = false;">确 定</el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -295,6 +311,11 @@ export default {
         name: "",
       },
       teamDocs: [],
+      renameVisible: false,
+      renamed_doc_id: 0,
+      docForm: {
+        new_name: "",
+      },
       user: {},
       userList: [
         { id: "001", username: "name1", phone_number: "123456", is_join: true },
@@ -366,7 +387,7 @@ export default {
         });
       console.log(this.teamDocs);
     },
-    toDoc(doc_id, team_id, level) {
+    toDoc(doc_id, in_new_page) {
       // 1级权限时不能打开
       if (this.level <= 1) {
         this.$message({
@@ -375,14 +396,31 @@ export default {
           type: "error",
         });
       } else {
-        this.$router.push(
-          "/editor/" +
-            doc_id +
-            "/" +
-            this.$route.params.team_id +
-            "/" +
-            this.level
-        );
+        var data = Qs.stringify({
+          doc_id: doc_id,
+        });
+        axios.post("http://localhost:8000/ajax/update_browsing/", data);
+        if (in_new_page) {
+          var routeData = this.$router.resolve({
+            name: "editor",
+            params: {
+              doc_id: doc_id,
+              team_id: this.$route.params.team_id,
+              level: this.level,
+            },
+          });
+          // console.log(routeData.href)
+          window.open(routeData.href, "_blank");
+        } else {
+          this.$router.push(
+            "/editor/" +
+              doc_id +
+              "/" +
+              this.$route.params.team_id +
+              "/" +
+              this.level
+          );
+        }
       }
     },
     // 获取是否是团队Leader & 权限
@@ -515,7 +553,6 @@ export default {
           this.formSettings.name = res.data.team_name;
         });
     },
-
     // 修改团队名称
     editTeamName(formName) {
       this.$refs[formName].validate((valid) => {
@@ -545,25 +582,86 @@ export default {
         var data = Qs.stringify({
           doc_id: doc_id,
         });
-        axios.post("http://localhost:8000/ajax/delete_doc/", data).then((res) => {
-          const flag = res.data.flag;
-          if (flag == "yes") {
-            // 在文档列表中删除该文档
-            var index = this.teamDocs.findIndex((doc) => doc.doc_id === doc_id);
-            this.teamDocs.splice(index, 1);
-            this.$message({
-              showClose: true,
-              message: "已删除",
-              type: "success",
-            });
-          } else {
-            this.$message({
-              showClose: true,
-              message: "出错了，请重试",
-              type: "error",
-            });
-          }
+        axios
+          .post("http://localhost:8000/ajax/delete_doc/", data)
+          .then((res) => {
+            const flag = res.data.flag;
+            if (flag == "yes") {
+              // 在文档列表中删除该文档
+              var index = this.teamDocs.findIndex(
+                (doc) => doc.doc_id === doc_id
+              );
+              this.teamDocs.splice(index, 1);
+              this.$message({
+                showClose: true,
+                message: "已删除",
+                type: "success",
+              });
+            } else {
+              this.$message({
+                showClose: true,
+                message: "出错了，请重试",
+                type: "error",
+              });
+            }
+          });
+      }
+    },
+    rename_trig(doc_id) {
+      if (this.level < 4) {
+        this.$message({
+          showClose: true,
+          message: "您没有重命名文档的权限",
+          type: "error",
         });
+      } else {
+        this.renameVisible = true;
+        this.renamed_doc_id = doc_id;
+        var doc = this.teamDocs.find((doc) => doc.doc_id === this.renamed_doc_id);
+        this.docForm.new_name = doc.name;
+      }
+    },
+    rename_doc() {
+      var doc = this.teamDocs.find((doc) => doc.doc_id === this.renamed_doc_id);
+      if (this.docForm.new_name.length == 0) {
+        this.$message({
+          showClose: true,
+          message: "请输入文档标题",
+          type: "error",
+        });
+      } else if (doc.name == this.docForm.new_name ) {
+        this.$message({
+          showClose: true,
+          message: "未改变标题",
+          type: "error",
+        });
+      } else {
+        var new_name = this.docForm.new_name;
+        this.docForm.new_name = "";
+        var data = Qs.stringify({
+          doc_id: this.renamed_doc_id,
+          title: new_name,
+        });
+        axios
+          .post("http://localhost:8000/ajax/rename_doc/", data)
+          .then((res) => {
+            const flag = res.data.flag;
+            if (flag) {
+              this.$message({
+                showClose: true,
+                message: "已重命名",
+                type: "success",
+              });
+              // 及时更新本地文档列表
+              doc.name = new_name;
+            } else {
+              this.$message({
+                showClose: true,
+                message: "出错了，请重试",
+                type: "warning",
+              });
+            }
+          });
       }
     },
   },
