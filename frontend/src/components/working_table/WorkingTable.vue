@@ -112,57 +112,6 @@
           </el-col>
         </el-row>
       </el-tab-pane>
-      <el-tab-pane label="我的收藏" name="third">
-        <!-- 一行三个 -->
-        <el-row :gutter="12">
-          <el-col v-for="doc_info in collected_doc_infos" :key="doc_info.doc_id" :span="8">
-            <!-- 文件卡片 -->
-            <el-card @click.native="toDoc(doc_info, false)" shadow="hover">
-              <div class="card-container">
-                <!-- 图标 -->
-                <div class="picture inline-div">
-                  <span class="fa fa-file-text-o" style="font-size:25px"></span>
-                </div>
-                <!-- 文字 -->
-                <div class="word inline-div">
-                  <div class="tile">{{doc_info.doc_name}}</div>
-                  <div class="details">{{doc_info.collected_time}} 我 收藏</div>
-                </div>
-
-                <el-dropdown placement="bottom">
-                  <!-- 后面的操作图标 -->
-                  <span class="el-dropdown-link">
-                    <i class="el-icon-arrow-down el-icon--right"></i>
-                    <!-- 下拉图标 -->
-                  </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <!-- 选项 -->
-                    <el-dropdown-item
-                      @click.native="toDoc(doc_info, true)"
-                      style="border-bottom:1px solid #e5e5e5"
-                    >
-                      <i class="el-icon-magic-stick"></i>新标签页打开
-                    </el-dropdown-item>
-                    <el-dropdown-item @click.native="uncollect(doc_info.doc_id)">
-                      <i class="el-icon-collection-tag"></i>取消收藏
-                    </el-dropdown-item>
-                    <el-dropdown-item style="border-bottom:1px solid #e5e5e5">
-                      <i class="el-icon-position"></i>分享
-                    </el-dropdown-item>
-                    <el-dropdown-item @click.native="rename_trig(doc_info)">
-                      <i class="el-icon-delete"></i>重命名
-                    </el-dropdown-item>
-                    <el-dropdown-item @click.native="delete_doc(doc_info)" style="color:red;">
-                      <i class="el-icon-delete"></i>删除
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </div>
-            </el-card>
-          </el-col>
-        </el-row>
-      </el-tab-pane>
-      <el-tab-pane label="团队文档" name="fourth">定时任务补偿</el-tab-pane>
     </el-tabs>
 
     <!-- 隐藏分享表单 -->
@@ -181,11 +130,7 @@
       <div style="display: flex; align-items: center;">
         <!-- 可以多选权限 -->
         权限设置：
-        <el-select 
-        v-model="shareLevel" 
-        size="big" 
-        placeholder="权限选择"
-        >
+        <el-select v-model="shareLevel" size="big" placeholder="权限选择">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -222,7 +167,6 @@ export default {
   data() {
     return {
       doc_infos: [],
-      collected_doc_infos: [],
       browsing_docs: [],
       activeName: "first",
       share_doc_id: "",
@@ -269,7 +213,6 @@ export default {
     getDocsInfo() {
       axios.get("http://localhost:8000/ajax/my_doc/").then((res) => {
         const created_docs_length = res.data.created_docs.length;
-        const collected_docs_length = res.data.collected_docs.length;
         const browsing_docs_length = res.data.browsing_docs.length;
         for (let index = 0; index < created_docs_length; index++) {
           this.doc_infos.push({
@@ -280,19 +223,6 @@ export default {
             created_time:
               res.data.created_docs[created_docs_length - index - 1]
                 .created_time,
-            team_id: -1,
-            level: 4,
-          });
-        }
-        for (let index = 0; index < collected_docs_length; index++) {
-          this.collected_doc_infos.push({
-            doc_id:
-              res.data.collected_docs[collected_docs_length - index - 1].doc_id,
-            doc_name:
-              res.data.collected_docs[collected_docs_length - index - 1].name,
-            collected_time:
-              res.data.collected_docs[collected_docs_length - index - 1]
-                .collected_time,
             team_id: -1,
             level: 4,
           });
@@ -365,16 +295,11 @@ export default {
       var doc = this.doc_infos.find(
         (doc) => doc.doc_id === this.renamed_doc_id
       );
-      console.log(doc)
+      console.log(doc);
       if (doc === undefined) {
-        doc = this.collected_doc_infos.find(
+        doc = this.browsing_docs.find(
           (doc) => doc.doc_id === this.renamed_doc_id
         );
-        if (doc === undefined) {
-          doc = this.browsing_docs.find(
-            (doc) => doc.doc_id === this.renamed_doc_id
-          );
-        }
       }
       if (this.docForm.new_name.length == 0) {
         this.$message({
@@ -431,11 +356,6 @@ export default {
               message: "已收藏",
               type: "success",
             });
-            this.collected_doc_infos.unshift({
-              doc_id: doc_id,
-              doc_name: doc_name,
-              collected_time: this.formatDate(new Date()),
-            });
           } else {
             this.$message({
               showClose: true,
@@ -455,33 +375,6 @@ export default {
       var newTime = year + "-" + month + "-" + day + " " + hour + ":" + min;
       return newTime;
     },
-    uncollect(doc_id) {
-      var data = Qs.stringify({
-        doc_id: doc_id,
-      });
-      axios
-        .post("http://localhost:8000/ajax/uncollect_doc/", data)
-        .then((res) => {
-          const flag = res.data.flag;
-          if (flag == "yes") {
-            this.$message({
-              showClose: true,
-              message: "已取消收藏",
-              type: "success",
-            });
-            var index = this.collected_doc_infos.findIndex(
-              (doc) => doc.doc_id === doc_id
-            );
-            this.collected_doc_infos.splice(index, 1);
-          } else {
-            this.$message({
-              showClose: true,
-              message: "出错了，请重试",
-              type: "warning",
-            });
-          }
-        });
-    },
     delete_doc(doc) {
       if (doc.level < 4) {
         this.$message({
@@ -493,21 +386,16 @@ export default {
         var data = Qs.stringify({
           doc_id: doc.doc_id,
         });
-        console.log(this.collected_doc_infos);
         axios
           .post("http://localhost:8000/ajax/delete_doc/", data)
           .then((res) => {
             const flag = res.data.flag;
             if (flag == "yes") {
-              // 若在收藏中，先在收藏列表中删除
-              var index = this.collected_doc_infos.indexOf(doc);
-              console.log(index);
-              if (index >= 0) this.collected_doc_infos.splice(index, 1);
               // 若是我创建的，在我创建的文档中删除
               index = this.doc_infos.indexOf(doc);
               if (index >= 0) this.doc_infos.splice(index, 1);
               index = this.browsing_docs.indexOf(doc);
-              if(index>=0) this.browsing_docs.splice(index,1);
+              if (index >= 0) this.browsing_docs.splice(index, 1);
               this.$message({
                 showClose: true,
                 message: "已删除",
@@ -529,10 +417,16 @@ export default {
         doc_id: doc_id,
       });
       this.share_doc_id = doc_id;
-      this.shareForm.link = window.location.href.replace("workingTable", "editor") + "/" + doc_id + "/-1/4";
+      this.shareForm.link =
+        window.location.href.replace("workingTable", "editor") +
+        "/" +
+        doc_id +
+        "/-1/4";
       // console.log(data);
       // console.log(this.shareForm.link = window.location.href);
-      axios.post("http://localhost:8000/ajax/get_doc_key/", data).then((res) => {
+      axios
+        .post("http://localhost:8000/ajax/get_doc_key/", data)
+        .then((res) => {
           this.shareLevel = res.data.share_level;
         });
     },

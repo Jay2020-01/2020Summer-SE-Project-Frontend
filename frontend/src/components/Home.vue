@@ -144,15 +144,15 @@
           </el-menu-item>
           <!-- 不分级菜单 -->
           <el-menu-item index="/inbox">
-            <i class="fa fa-envelope-o" style="padding: 0 10px 0 10px" />
-            <span slot="title">收件箱</span>
+            <i class="fa fa-bookmark-o" style="padding: 0 10px 0 10px" />
+            <span slot="title">收藏夹</span>
           </el-menu-item>
           <!-- 分割线 -->
           <div style="margin: 8px 20px; height: 1.5px; background-color: rgb(230, 230, 230);" />
           <!-- 不分级菜单 -->
           <el-menu-item index="/myDesktop">
-            <i class="fa fa-desktop" style="padding: 0 10px 0 10px" />
-            <span slot="title">我的桌面</span>
+            <i class="fa fa-id-card-o" style="padding: 0 10px 0 10px" />
+            <span slot="title">个人信息</span>
           </el-menu-item>
 
           <!-- 一级菜单 -->

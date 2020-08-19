@@ -202,7 +202,6 @@ export default {
       var data = Qs.stringify({
         doc_id: doc.doc_id,
       });
-      console.log(this.collected_doc_infos);
       axios.post("http://localhost:8000/ajax/delete_doc/", data).then((res) => {
         const flag = res.data.flag;
         if (flag == "yes") {
