@@ -24,8 +24,8 @@ export default {
   },
   watch: {
     //  watch表示监听，当父组件的内容变化时需要更新编辑器的内容
-    content() {
-      this.editor.txt.html(this.content);
+    content: function(newVal, oldVal) {
+      if(!oldVal) this.editor.txt.html(this.content);
     },
   },
   mounted() {
