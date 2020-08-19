@@ -112,14 +112,18 @@ export default {
                   message: res.data.message,
                   type: "error",
                 });
+                this.registerForm.username = ""
+                this.registerForm.password = ""
+                this.registerForm.email = ""
+
               } else {  // 注册成功
                 this.$message({
                   showClose: true,
                   message: res.data.message,
                   type: "success",
                 });
+                this.$router.push("/home");
               }
-              this.$router.push("/home");
             })
             .catch(err => console.log(err))
         } else {

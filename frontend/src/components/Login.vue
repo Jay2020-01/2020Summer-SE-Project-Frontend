@@ -71,14 +71,16 @@ export default {
                   message: "登录失败",
                   type: "error",
                 });
+                this.loginForm.username = ""
+                this.loginForm.password = ""
               } else {  // 登录成功
                 this.$message({
                   showClose: true,
                   message: "登录成功",
                   type: "success",
                 });
+                this.$router.push("/home");
               }
-              this.$router.push("/home");
             })
             .catch((err) => console.log(err));
         } else {

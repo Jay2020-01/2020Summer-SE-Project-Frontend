@@ -5,7 +5,7 @@
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <!-- 标签内容 -->
         <!-- 标签一：团队文档 -->
-        <el-tab-pane :label="formSettings.name" name="first">
+        <el-tab-pane label="团队文档" name="first">
           <div style="text-align:right">
             <el-dropdown v-if="!isLeader" placement="bottom">
               <!-- 团队的一些操作 -->
