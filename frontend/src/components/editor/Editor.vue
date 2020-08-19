@@ -237,9 +237,9 @@ export default {
   },
   created: function () {
     console.log("created");
+    this.get_user_avatar();
     this.getContent();
     this.get_user_info();
-    this.get_user_avatar();
   },
   methods: {
     // 拉取用户头像
