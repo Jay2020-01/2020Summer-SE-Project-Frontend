@@ -313,8 +313,9 @@ export default {
           var data = Qs.stringify(this.teamForm); // 先用Qs对数据进行处理
           axios
             .post("http://localhost:8000/ajax/create_team/", data)
-            .then(this.getTeamList())
-            .catch((err) => console.log(err));
+            .then((res) => {
+              this.getTeamList()
+            })
         } else {
           alert("表格不能为空");
         }
@@ -324,28 +325,12 @@ export default {
       });
     },
     // 获取团队名列表
-    async getTeamList() {
-      try {
-        const resp = await this.get_my_team();
-        this.teamList = resp.data.team_list;
-      } catch (err) {
-        console.log(err);
-      }
-      // console.log(this.teamList)
-      // console.log(this.teamList[0].team_id)
-      // console.log(typeof(this.teamList[0].team_id))
-    },
-    get_my_team() {
-      return new Promise((resolve, reject) => {
-        axios
-          .post("http://localhost:8000/ajax/get_my_team/")
-          .then((resp) => {
-            resolve(resp);
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      });
+    getTeamList() {
+      axios
+        .post("http://localhost:8000/ajax/get_my_team/")
+        .then((res) => {
+          this.teamList = res.data.team_list
+        })
     },
     // 判断能否新建文档
     canNewDoc() {
