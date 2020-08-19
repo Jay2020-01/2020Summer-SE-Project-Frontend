@@ -309,7 +309,6 @@ export default {
         // 强制刷新
         // this.$router.go(0);
         // this.activeIndex = "/teamSpace";
-        this.getTeamList();
       });
     },
     // 获取团队名列表
