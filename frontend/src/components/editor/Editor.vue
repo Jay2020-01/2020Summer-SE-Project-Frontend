@@ -170,7 +170,22 @@
 import editor from "./EditorComponent";
 import axios from "axios";
 import Qs from "qs";
+// import func from "../../../vue-temp/vue-editor-bridge";
 export default {
+  // 进入之前
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      // 通过 `vm` 访问组件实例
+      console.log("before");
+      vm.getLock();
+    });
+  },
+
+  // beforeRouteLeave(to, from, next) {
+  //   console.log("after");
+  //   this.unLock();
+  //   next();
+  // },
   data() {
     return {
       input: "",
@@ -222,6 +237,7 @@ export default {
     };
   },
   created: function () {
+    console.log("created");
     this.getContent();
     this.get_user_info();
   },
@@ -378,6 +394,35 @@ export default {
           });
         }
       });
+    },
+    // 获得文件锁
+    getLock() {
+      var data = Qs.stringify({
+        doc_id: this.$route.params.doc_id, // 实为key
+      });
+      console.log("getlock");
+      console.log(data);
+      axios
+        .post("http://localhost:8000/ajax/get_lock/", data)
+        .then((res) => {
+          if(! res.data.success) {
+            this.$message({
+              showClose: true,
+              message: "文件正在被他人使用，请稍后使用",
+              type: "error",
+            });
+            window.history.go(-1);
+          }
+        });
+    },
+    // 解除文件锁
+    unLock() {
+      var data = Qs.stringify({
+        doc_id: this.$route.params.doc_id, // 实为key
+      });
+      console.log("unlock");
+      console.log(data);
+      axios.post("http://localhost:8000/ajax/unlock/", data).then((res) => {});
     },
   },
   components: {
