@@ -118,41 +118,6 @@ export default {
       pingpu: true,
       liebiao: false,
       tableData: [
-        {
-          name: '一分钟，了解金刚石文档',
-          author: '921049836',
-          lasttime: '今天23：29'
-        },
-        {
-          name: '一分钟，了解金刚石文档',
-          author: '921049836',
-          lasttime: '今天23：29'
-        },
-        {
-          name: '一分钟，了解金刚石文档',
-          author: '921049836',
-          lasttime: '今天23：29'
-        },
-        {
-          name: '一分钟，了解金刚石文档',
-          author: '921049836',
-          lasttime: '今天23：29'
-        },
-        {
-          name: '一分钟，了解金刚石文档',
-          author: '921049836',
-          lasttime: '今天23：29'
-        },
-        {
-          name: '一分钟，了解金刚石文档',
-          author: '921049836',
-          lasttime: '今天23：29'
-        },
-        {
-          name: '一分钟，了解金刚石文档',
-          author: '921049836',
-          lasttime: '今天23：29'
-        }
       ]
     }
   },

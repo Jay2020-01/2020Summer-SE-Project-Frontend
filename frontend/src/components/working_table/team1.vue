@@ -142,7 +142,7 @@
                   <!-- 头像和用户名 -->
                   <el-col :span="8" style>
                     <div style="display: flex; align-items: center;">
-                      <el-avatar :size="24">头像</el-avatar>
+                      <!-- <el-avatar :size="24">头像</el-avatar> -->
                       <span style="margin-left: 15px;">{{ user.username }}</span>
                     </div>
                   </el-col>
@@ -318,21 +318,10 @@ export default {
       },
       user: {},
       userList: [
-        { id: "001", username: "name1", phone_number: "123456", is_join: true },
-        {
-          id: "002",
-          username: "name2",
-          phone_number: "123456",
-          is_join: false,
-        },
       ],
       userNum: "0",
       // 团队成员列表
       teamateList: [
-        { id: "001", username: "n1", phone_number: "123456", level: "1" },
-        { id: "002", username: "n2", phone_number: "123456", level: "2" },
-        { id: "003", username: "n3", phone_number: "123456", level: "3" },
-        { id: "004", username: "n4", phone_number: "123456", level: "4" },
       ],
       teamateNum: "0",
       // 空间名称表单
