@@ -95,7 +95,7 @@
                       <i class="el-icon-delete"></i>重命名
                     </el-dropdown-item>
                     <el-dropdown-item
-                      @click.native="delete_doc(doc_info.doc_id, doc_info.doc_name)"
+                      @click.native="delete_doc(doc_info.doc_id)"
                       style="color:red;"
                     >
                       <i class="el-icon-delete"></i>删除

@@ -45,16 +45,19 @@
                       <el-dropdown-item style="border-bottom:1px solid #e5e5e5">
                         <i class="el-icon-magic-stick" />新标签页打开
                       </el-dropdown-item>
-                      <el-dropdown-item>
+                      <!-- <el-dropdown-item>
                         <i class="el-icon-collection-tag" />收藏
-                      </el-dropdown-item>
+                      </el-dropdown-item>-->
                       <el-dropdown-item style="border-bottom:1px solid #e5e5e5">
                         <i class="el-icon-position" />分享
                       </el-dropdown-item>
                       <el-dropdown-item>
                         <i class="el-icon-delete" />重命名
                       </el-dropdown-item>
-                      <el-dropdown-item style="color:red;">
+                      <el-dropdown-item
+                        @click.native="delete_doc(teamDoc.doc_id)"
+                        style="color:red;"
+                      >
                         <i class="el-icon-delete" />删除
                       </el-dropdown-item>
                     </el-dropdown-menu>
@@ -256,7 +259,10 @@
                 <el-button slot="reference" type="danger" plain style="margin-right: 10px;">删除</el-button>
               </el-popover>
               <el-button @click="showSettings = false">取 消</el-button>
-              <el-button type="primary" @click="showSettings = false; editTeamName('formSettings')">确 定</el-button>
+              <el-button
+                type="primary"
+                @click="showSettings = false; editTeamName('formSettings')"
+              >确 定</el-button>
             </div>
           </el-dialog>
         </el-tab-pane>
@@ -498,7 +504,7 @@ export default {
         .then((res) => {});
     },
     // 获取团队名称
-    getTeamName(){
+    getTeamName() {
       var data = Qs.stringify({
         team_id: this.$route.params.team_id,
       });
@@ -506,7 +512,7 @@ export default {
       axios
         .post("http://localhost:8000/ajax/get_team_name/", data)
         .then((res) => {
-            this.formSettings.name = res.data.team_name;
+          this.formSettings.name = res.data.team_name;
         });
     },
 
@@ -527,6 +533,38 @@ export default {
           alert("表格不能为空");
         }
       });
+    },
+    delete_doc(doc_id) {
+      if (this.level < 4) {
+        this.$message({
+          showClose: true,
+          message: "您没有删除文档的权限",
+          type: "error",
+        });
+      } else {
+        var data = Qs.stringify({
+          doc_id: doc_id,
+        });
+        axios.post("http://localhost:8000/ajax/delete_doc/", data).then((res) => {
+          const flag = res.data.flag;
+          if (flag == "yes") {
+            // 在文档列表中删除该文档
+            var index = this.teamDocs.findIndex((doc) => doc.doc_id === doc_id);
+            this.teamDocs.splice(index, 1);
+            this.$message({
+              showClose: true,
+              message: "已删除",
+              type: "success",
+            });
+          } else {
+            this.$message({
+              showClose: true,
+              message: "出错了，请重试",
+              type: "error",
+            });
+          }
+        });
+      }
     },
   },
 };
