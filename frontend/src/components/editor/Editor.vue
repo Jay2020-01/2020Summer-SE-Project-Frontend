@@ -181,11 +181,11 @@ export default {
     });
   },
 
-  // beforeRouteLeave(to, from, next) {
-  //   console.log("after");
-  //   this.unLock();
-  //   next();
-  // },
+  beforeRouteLeave(to, from, next) {
+    console.log("after");
+    this.unLock();
+    next();
+  },
   data() {
     return {
       input: "",
