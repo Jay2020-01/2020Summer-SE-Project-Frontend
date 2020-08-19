@@ -527,7 +527,7 @@ export default {
       console.log(data);
       axios
         .post("http://localhost:8000/ajax/delete_team_member/", data)
-        .then((res) => {});
+        .then((res) => {this.showTeamates()});
       // 强制刷新
       // this.$router.go(0);
     },
