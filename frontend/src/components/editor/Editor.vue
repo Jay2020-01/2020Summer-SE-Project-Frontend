@@ -174,6 +174,7 @@ export default {
     next((vm) => {
       // 通过 `vm` 访问组件实例
       console.log("before");
+      console.log(vm.level);
       vm.getLock();
     });
   },
@@ -204,24 +205,7 @@ export default {
       // 写评论的内容
       textarea: "",
       // 获取评论列表
-      commentList: [
-        {
-          commenter: "user1",
-          comment_time: "2020年10月21日 19:08",
-          comment_content:
-            "加油加油加加油加油加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油加油加油加加油",
-        },
-        {
-          commenter: "user2",
-          comment_time: "2020年10月21日 19:08",
-          comment_content: "加油加油加加油",
-        },
-        {
-          commenter: "user3",
-          comment_time: "2020年10月21日 19:08",
-          comment_content: "加油加油加加油",
-        },
-      ],
+      commentList: [],
       // 励志名句列表
       sentenceIndex: Math.floor(Math.random() * 5),
       sentenceList: [
@@ -254,6 +238,7 @@ export default {
         this.mail_address = res.data.mail_address;
       });
     },
+    
     getContent: function () {
       // console.log(this.editorContent);
       var data = Qs.stringify({
@@ -264,9 +249,13 @@ export default {
         this.content = res.data.content;
         this.doc_name = res.data.name;
         this.islike = res.data.islike;
-        this.level = res.data.level;
+        this.level = res.data.level+'';
+        var temp = res.data.level+'';
+
+        return temp;
       });
     },
+    
     logout() {
       this.$store.dispatch("logout").then(() => {
         this.$router.push("/login");

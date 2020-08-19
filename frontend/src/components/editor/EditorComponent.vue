@@ -27,6 +27,20 @@ export default {
     content: function(newVal, oldVal) {
       if(!oldVal) this.editor.txt.html(this.content);
     },
+    level: function() {
+      console.log("watch");
+      if(this.level < 4){
+      console.log("禁用编辑")
+      console.log(typeof(this.level))
+      console.log(this.level)
+      this.editor.$textElem.attr('contenteditable', false);
+    } else {
+      console.log("启用编辑")
+      console.log(typeof(this.level))
+      console.log(this.level)
+      this.editor.$textElem.attr('contenteditable', true);
+    }
+    }
   },
   mounted() {
     this.editor = new E(this.$refs.editorForm);
@@ -139,7 +153,15 @@ export default {
     this.editor.txt.html(this.content);
     // 如果权限小于4, 禁用编辑功能
     if(this.level < 4){
+      console.log("禁用编辑")
+      console.log(typeof(this.level))
+      console.log(this.level)
       this.editor.$textElem.attr('contenteditable', false);
+    } else {
+      console.log("启用编辑")
+      console.log(typeof(this.level))
+      console.log(this.level)
+      this.editor.$textElem.attr('contenteditable', true);
     }
   },
 };

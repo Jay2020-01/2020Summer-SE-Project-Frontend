@@ -21,7 +21,9 @@
           </div>
         </el-col>
         <el-col :span="8" :offset="0">
-          <span class="show-names" :style="styleControl?'color:#409eff;':'color:#fff'"></span>
+          <span class="show-names" :style="styleControl?'color:#409eff;':'color:#fff'">
+            {{ names }}
+          </span>
         </el-col>
         <el-col :span="5" :offset="1">
           <div class="grid-content head-box2 bg-purple-light">
@@ -266,7 +268,7 @@ export default {
       noticeList: [],
       // 彩蛋
       styleControl: false,
-      names: "",
+      names: "Designed by 纪怀宇 黄俊钦 沙斌竹 陈新钰 李岱泉 姜昊",
     };
   },
   created: function () {
