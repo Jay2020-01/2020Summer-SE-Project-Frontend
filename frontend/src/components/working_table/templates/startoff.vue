@@ -1,7 +1,7 @@
 <template>
 <div id="title">
-    <p style="text-align:center;color:red;border-bottom:1px solid #DCDFE6;border-top:1px solid #DCDFE6;"><br></p>
-    <p></p>
+    <!-- <p style="text-align:center;color:red;border-bottom:1px solid #DCDFE6;border-top:1px solid #DCDFE6;"><br></p>
+    <p></p> -->
     <div style="text-align: center;"><span
         style="font-weight: bold; font-family: 宋体; font-size: x-large;">钻石文档-新手上路指南
         </span>
