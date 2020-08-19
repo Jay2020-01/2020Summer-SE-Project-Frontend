@@ -122,7 +122,6 @@
         <!-- 可以多选权限 -->
         权限设置：
         <el-select 
-        @blur="setDocLevel" 
         v-model="shareLevel" 
         size="big" 
         placeholder="权限选择"
@@ -137,7 +136,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="shareFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="shareFormVisible = false; createTeam('shareForm') ">确 定</el-button>
+        <el-button type="primary" @click="shareFormVisible = false; setDocLevel();">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -152,6 +151,7 @@ export default {
       doc_infos: [],
       collected_doc_infos: [],
       activeName: "first",
+      share_doc_id: "",
       // 分享表单可见性
       shareFormVisible: false,
       shareForm: {
@@ -321,16 +321,18 @@ export default {
       var data = Qs.stringify({
         doc_id: doc_id,
       });
-      console.log(data);
+      this.share_doc_id = doc_id;
+      this.shareForm.link = window.location.href.replace("workingTable", "editor") + "/" + doc_id + "/-1/4";
+      // console.log(data);
+      // console.log(this.shareForm.link = window.location.href);
       axios.post("http://localhost:8000/ajax/get_doc_key/", data).then((res) => {
           this.shareLevel = res.data.share_level;
-          this.shareKey = res.data.key;
         });
     },
     // 设置分享文档权限
     setDocLevel() {
       var data = Qs.stringify({
-        key: this.shareKey,
+        doc_id: this.share_doc_id,
         level: this.shareLevel,
       });
       console.log(data);

@@ -218,7 +218,7 @@ export default {
         "念念不忘，必有回响",
       ],
       // 权限等级
-      level: this.$route.params.level,
+      level: "4",
     };
   },
   created: function () {
@@ -242,6 +242,7 @@ export default {
         this.content = res.data.content;
         this.doc_name = res.data.name;
         this.islike = res.data.islike;
+        this.level = res.data.level;
       });
     },
     logout() {
