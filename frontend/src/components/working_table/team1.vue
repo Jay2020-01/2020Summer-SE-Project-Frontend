@@ -180,7 +180,7 @@
             <el-form :model="formSettings" ref="formSettings">
               <el-form-item prop="name">
                 <span style="float: left;">空间名称</span>
-                <el-input v-model="formSettings.name" placeholder="请输入" autocomplete="off" />
+                <el-input v-model="formSettings.name" placeholder="请输入" @input="onInput()" autocomplete="off" />
               </el-form-item>
             </el-form>
             <!-- 空间成员展示 -->
@@ -360,6 +360,9 @@ export default {
     },
   },
   methods: {
+    onInput(){
+     this.$forceUpdate();
+    },
     handleClick(tab, event) {
       console.log(tab, event);
     },
