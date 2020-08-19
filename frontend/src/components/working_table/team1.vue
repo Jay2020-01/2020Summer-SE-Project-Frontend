@@ -252,7 +252,7 @@
                   <el-button
                     type="primary"
                     size="mini"
-                    @click="visible = false; deleteTeam();"
+                    @click="visible = false; showSettings = false; deleteTeam();"
                     plain
                   >确定</el-button>
                 </div>
@@ -448,11 +448,10 @@ export default {
       axios
         .post("http://localhost:8000/ajax/delete_my_team/", data)
         .then((res) => {
-          this.getTeamList()
         })
-      // this.$router.push("/home");
-      // // // 强制刷新
-      // this.$router.go(0);
+      this.$router.push("/home");
+      // // 强制刷新
+      this.$router.go(0);
     },
     // 获取团队成员列表
     showTeamates() {
