@@ -94,34 +94,11 @@
                     </div>
                   </el-card>
                 </div>
-
-                <!-- <div>
-                  <el-table
-                    :data="noticeList"
-                    border="false"
-                    :show-header="false"
-                    style="width: 100%"
-                  >
-                    <el-table-column label="图片" width="50">
-                      <template>
-                        <img
-                          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-                          width="40"
-                        />
-                      </template>
-                    </el-table-column>
-                    <el-table-column prop="actor_name" label="邀请人" width="70"></el-table-column>
-                    <el-table-column prop="邀请你加入" label="邀请信息" width="100"></el-table-column>
-                    <el-table-column prop="target_name" label="团队名称"></el-table-column>
-                    <el-table-column prop="sent_time" label="时间" width="100"></el-table-column>
-                    <el-table-column prop="sent_time" label="时间" width="100"></el-table-column>
-                  </el-table>
-                </div>-->
               </el-dropdown-menu>
             </el-dropdown>
 
             <!-- 这里是右上角的头像 -->
-            <el-dropdown style="height:60px">
+            <el-dropdown style="height:60px" @visible-change="get_user_info">
               <span class="el-dropdown-link">
                 <div>
                   <el-avatar :size="35" :src="imageUrl" />
@@ -290,16 +267,21 @@ export default {
     };
   },
   created: function () {
-    this.get_user_info();
     this.getTeamList();
   },
   // activated: function() {
   //   this.getTeamList();
   // },
   beforeUpdate: function () {
-    this.get_user_info();
+    this.get_user_avatar();
   },
   methods: {
+    // 拉取用户头像
+    get_user_avatar(){
+      axios.get("http://localhost:8000/ajax/get_user_avatar/").then((res) => {
+        this.imageUrl = res.data.url;
+      })
+    },
     // 拉取用户名和邮箱地址
     get_user_info() {
       axios.get("http://localhost:8000/ajax/user_info/").then((res) => {
@@ -324,6 +306,7 @@ export default {
         // 强制刷新
         // this.$router.go(0);
         // this.activeIndex = "/teamSpace";
+        this.getTeamList();
       });
     },
     // 获取团队名列表
