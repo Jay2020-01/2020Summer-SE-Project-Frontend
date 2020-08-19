@@ -21,7 +21,7 @@
         </el-card>
       </el-col>
       <el-col style="width:200px">
-        <el-card :body-style="{ padding: '0px' }">
+        <el-card :body-style="{ padding: '0px' }"  shadow="hover">
           <!-- <img src="../../assets/templates_photos/v2.png" class="image" style="width:200px;height:120px;"> -->
           <el-image
             style="width:200px;height:120px;"
@@ -37,7 +37,7 @@
         </el-card>
       </el-col>
       <el-col style="width:200px">
-        <el-card :body-style="{ padding: '0px' }">
+        <el-card :body-style="{ padding: '0px' }" shadow="hover">
           <!-- <img src="../../assets/templates_photos/v3.png" class="image" style="width:200px;height:120px;"> -->
           <el-image
             style="width:200px;height:120px;"
@@ -53,7 +53,7 @@
         </el-card>
       </el-col>
       <el-col style="width:200px">
-        <el-card :body-style="{ padding: '0px' }">
+        <el-card :body-style="{ padding: '0px' }" shadow="hover">
           <!-- <img src="../../assets/templates_photos/v4.png" class="image" style="width:200px;height:120px;"> -->
           <el-image
             style="width:200px;height:120px;"
