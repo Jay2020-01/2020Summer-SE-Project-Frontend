@@ -270,7 +270,7 @@ export default {
     this.getTeamList();
     this.get_user_avatar();
     this.get_user_info();
-    this.get_user_notice();
+    this.getNoticeList();
   },
   // activated: function() {
   //   this.getTeamList();
