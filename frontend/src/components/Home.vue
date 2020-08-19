@@ -283,10 +283,10 @@ export default {
   },
   methods: {
     // 拉取用户头像
-    get_user_avatar(){
+    get_user_avatar() {
       axios.get("http://localhost:8000/ajax/get_user_avatar/").then((res) => {
         this.imageUrl = res.data.url;
-      })
+      });
     },
     // 拉取用户名和邮箱地址
     get_user_info() {

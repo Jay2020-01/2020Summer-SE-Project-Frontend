@@ -364,6 +364,12 @@ export default {
     this.getDocsInfo();
     this.getTeamName();
   },
+  watch: {
+    $route: function (to, from) {
+      this.teamDocs = [];
+      this.getDocsInfo();
+    },
+  },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
@@ -471,11 +477,9 @@ export default {
         });
     },
     getTeamList() {
-      axios
-        .post("http://localhost:8000/ajax/get_my_team/")
-        .then((res) => {
-          this.teamList = res.data.team_list
-        })
+      axios.post("http://localhost:8000/ajax/get_my_team/").then((res) => {
+        this.teamList = res.data.team_list;
+      });
     },
     // 删除团队方法
     deleteTeam() {
@@ -485,8 +489,7 @@ export default {
       console.log(data);
       axios
         .post("http://localhost:8000/ajax/delete_my_team/", data)
-        .then((res) => {
-        })
+        .then((res) => {});
       this.$router.push("/home");
       // // 强制刷新
       this.$router.go(0);
@@ -625,7 +628,9 @@ export default {
       } else {
         this.renameVisible = true;
         this.renamed_doc_id = doc_id;
-        var doc = this.teamDocs.find((doc) => doc.doc_id === this.renamed_doc_id);
+        var doc = this.teamDocs.find(
+          (doc) => doc.doc_id === this.renamed_doc_id
+        );
         this.docForm.new_name = doc.name;
       }
     },
@@ -637,7 +642,7 @@ export default {
           message: "请输入文档标题",
           type: "error",
         });
-      } else if (doc.name == this.docForm.new_name ) {
+      } else if (doc.name == this.docForm.new_name) {
         this.$message({
           showClose: true,
           message: "未改变标题",
