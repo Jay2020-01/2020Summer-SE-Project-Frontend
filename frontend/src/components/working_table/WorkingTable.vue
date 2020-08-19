@@ -292,15 +292,14 @@ export default {
       }
     },
     rename_doc() {
-      var doc = this.doc_infos.find(
+      var created_doc = this.doc_infos.find(
         (doc) => doc.doc_id === this.renamed_doc_id
       );
-      console.log(doc);
-      if (doc === undefined) {
-        doc = this.browsing_docs.find(
-          (doc) => doc.doc_id === this.renamed_doc_id
-        );
-      }
+      var browsing_doc = this.browsing_docs.find(
+        (doc) => doc.doc_id === this.renamed_doc_id
+      );
+      var doc = created_doc;
+      if (doc === undefined) doc = browsing_doc;
       if (this.docForm.new_name.length == 0) {
         this.$message({
           showClose: true,
@@ -331,7 +330,8 @@ export default {
                 type: "success",
               });
               // 及时更新本地文档列表
-              doc.doc_name = new_name;
+              if(created_doc !== undefined) created_doc.doc_name = new_name
+              if(browsing_doc !== undefined) browsing_doc.doc_name = new_name
             } else {
               this.$message({
                 showClose: true,

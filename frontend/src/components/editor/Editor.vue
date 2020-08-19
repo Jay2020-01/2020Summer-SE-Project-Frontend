@@ -19,7 +19,7 @@
               <!-- 文件名 -->
               <span style="margin-left: 13px; font-size: 14px;">{{doc_name}}</span>
               <!-- 收藏按钮 -->
-              <el-tooltip class="item" effect="dark" content="收藏" placement="bottom">
+              <el-tooltip v-if="this.$route.params.team_id==-1" class="item" effect="dark" content="收藏" placement="bottom">
                 <el-button size="big" style="border: none; margin-left: 13px;" @click="onlike">
                   <i
                     class="el-icon-collection-tag"
