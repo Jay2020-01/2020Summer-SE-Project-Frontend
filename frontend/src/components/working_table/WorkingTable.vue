@@ -18,7 +18,7 @@
                 <!-- 文字 -->
                 <div class="word inline-div">
                   <div class="tile">{{doc_info.doc_name}}</div>
-                  <div class="details">今天 10:20 我 打开</div>
+                  <div class="details">{{doc_info.created_time}} 我 创建</div>
                 </div>
 
                 <el-dropdown placement="bottom">
@@ -71,7 +71,7 @@
                 <!-- 文字 -->
                 <div class="word inline-div">
                   <div class="tile">{{doc_info.doc_name}}</div>
-                  <div class="details">今天 10:20 我 打开</div>
+                  <div class="details">{{doc_info.collected_time}} 我 收藏</div>
                 </div>
 
                 <el-dropdown placement="bottom">
@@ -121,11 +121,11 @@
       <div style="display: flex; align-items: center;">
         <!-- 可以多选权限 -->
         权限设置：
-        <el-select
-          @blur="setDocLevel"
-          v-model="shareLevel"
-          size="big"
-          placeholder="权限选择"
+        <el-select 
+        @blur="setDocLevel" 
+        v-model="shareLevel" 
+        size="big" 
+        placeholder="权限选择"
         >
           <el-option
             v-for="item in options"
@@ -197,6 +197,9 @@ export default {
               res.data.created_docs[created_docs_length - index - 1].doc_id,
             doc_name:
               res.data.created_docs[created_docs_length - index - 1].name,
+            created_time:
+              res.data.created_docs[created_docs_length - index - 1]
+                .created_time,
           });
         }
         for (let index = 0; index < collected_docs_length; index++) {
@@ -205,6 +208,9 @@ export default {
               res.data.collected_docs[collected_docs_length - index - 1].doc_id,
             doc_name:
               res.data.collected_docs[collected_docs_length - index - 1].name,
+            collected_time:
+              res.data.collected_docs[collected_docs_length - index - 1]
+                .collected_time,
           });
         }
       });
@@ -229,6 +235,7 @@ export default {
             this.collected_doc_infos.unshift({
               doc_id: doc_id,
               doc_name: doc_name,
+              collected_time: this.formatDate(new Date()),
             });
           } else {
             this.$message({
@@ -238,6 +245,16 @@ export default {
             });
           }
         });
+    },
+    formatDate(date) {
+      var year = date.getFullYear(),
+        month = date.getMonth() + 1, //月份是从0开始的
+        day = date.getDate(),
+        hour = date.getHours(),
+        min = date.getMinutes(),
+        sec = date.getSeconds();
+      var newTime = year + "-" + month + "-" + day + " " + hour + ":" + min;
+      return newTime;
     },
     uncollect(doc_id) {
       var data = Qs.stringify({
@@ -306,9 +323,9 @@ export default {
       });
       console.log(data);
       axios.post("http://localhost:8000/ajax/get_doc_key/", data).then((res) => {
-        this.shareLevel = res.data.share_level;
-        this.shareKey = res.data.key;
-      });
+          this.shareLevel = res.data.share_level;
+          this.shareKey = res.data.key;
+        });
     },
     // 设置分享文档权限
     setDocLevel() {
@@ -318,12 +335,12 @@ export default {
       });
       console.log(data);
       axios.post("http://localhost:8000/ajax/edit_share_level/", data).then((res) => {
-        this.$message({
-          showClose: true,
-          message: "已设置权限",
-          type: "success",
+          this.$message({
+            showClose: true,
+            message: "已设置权限",
+            type: "success",
+          });
         });
-      });
     },
   },
 };
