@@ -17,6 +17,7 @@ import Templates from '../components/working_table/Templates.vue'
 // import template2 from '../components/working_table/templates/2.vue'
 // import template3 from '../components/working_table/templates/3.vue'
 // import template4 from '../components/working_table/templates/4.vue'
+import searchresult from '../components/working_table/search_result.vue'
 
 import store from '../store/index.js'
 Vue.use(VueRouter)
@@ -35,6 +36,7 @@ const routes = [
             { path: '/workingTable', component: WorkingTable, meta: { requiresAuth: true } },
             { path: '/myinfo', component: MyInfo, meta: { requiresAuth: true } },
             { path: '/inbox', component: Inbox, meta: { requiresAuth: true } },
+            { path: '/searchresult', component: searchresult, meta: { requiresAuth: true } },
             { path: '/myDesktop', component: Mydesktop, meta: { requiresAuth: true } },
             { path: '/teamSpace/:team_id', component: Team1, meta: { requiresAuth: true } },
             // { path: '/team2', component: Team2, meta: { requiresAuth: true } },
@@ -54,17 +56,17 @@ const router = new VueRouter({
     routes
 })
 
-router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (store.getters.isLoggedIn) {
-            next()
-            return
-        }
-        console.log(2222)
-        next('/login')
-    } else {
-        next()
-    }
-})
+// router.beforeEach((to, from, next) => {
+//     if (to.matched.some(record => record.meta.requiresAuth)) {
+//         if (store.getters.isLoggedIn) {
+//             next()
+//             return
+//         }
+//         console.log(2222)
+//         next('/login')
+//     } else {
+//         next()
+//     }
+// })
 
 export default router
