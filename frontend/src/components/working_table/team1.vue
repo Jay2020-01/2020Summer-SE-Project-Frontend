@@ -296,7 +296,7 @@ export default {
       // 判断是否是团队创建者
       isLeader: true,
       // 团队权限
-      level: 3,
+      level: '',
       // “确认删除”显示
       visible: false,
       // “确认删除成员”显示
