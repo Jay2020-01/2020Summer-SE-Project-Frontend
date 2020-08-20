@@ -567,7 +567,8 @@ export default {
           axios
             .post("http://localhost:8000/ajax/edit_team_name/", data)
             .then((res) => {
-              this.getTeamName();
+              this.getTeamList();
+              this.$router.go(0);
             });
         } else {
           alert("表格不能为空");
