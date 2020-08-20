@@ -103,7 +103,7 @@
                     type="primary"
                     plain
                     icon="el-icon-s-tools"
-                    @click="showSettings = true; showTeamates();"
+                    @click="showSettings = true; showTeamates(); getTeamName()"
                   >团队设置</el-button>
                 </div>
               </el-col>
