@@ -1,10 +1,13 @@
 <template>
-  <el-container class="home-container" :style="styleControl?'filter: invert(95%);':''">
+  <el-container
+    class="home-container"
+    :style="styleControl ? 'filter: invert(95%);' : ''"
+  >
     <!-- 头部区域 -->
     <el-header
       height="60px"
       direction="horizontal"
-      :style="styleControl?'margin-bottom: 0px;':'margin-bottom: 7px;'"
+      :style="styleControl ? 'margin-bottom: 0px;' : 'margin-bottom: 7px;'"
     >
       <el-row type="flex" class="row-bg">
         <el-col :span="4" :offset="0">
@@ -12,16 +15,24 @@
             <!-- 头像区域 -->
             <el-avatar
               icon="fa fa-diamond"
-              style="color: #409eff; background-color: #fff !important; cursor:pointer;"
+              style="
+                color: #409eff;
+                background-color: #fff !important;
+                cursor: pointer;
+              "
               :size="40"
               @click.native="backtoHome"
-              @click.middle.native="styleControl=!styleControl"
-            >logo</el-avatar>
+              @click.middle.native="styleControl = !styleControl"
+              >logo</el-avatar
+            >
             <span class="site-name">钻石文档</span>
           </div>
         </el-col>
         <el-col :span="8" :offset="0">
-          <span class="show-names" :style="styleControl?'color:#409eff;':'color:#fff'">
+          <span
+            class="show-names"
+            :style="styleControl ? 'color:#409eff;' : 'color:#fff'"
+          >
             {{ names }}
           </span>
         </el-col>
@@ -32,32 +43,39 @@
               prefix-icon="fa fa-search"
               placeholder="搜索文档"
               size="small"
-              @keyup.enter.native="searchFile();"
+              @keyup.enter.native="searchFile()"
               clearable
             />
           </div>
         </el-col>
-        <el-col :span="6" style="height:60px">
+        <el-col :span="6" style="height: 60px">
           <div class="grid-content head-box3 bg-purple">
             <!-- 通知图标 -->
             <el-dropdown
-              style="height:60px; display: flex; align-items: center;"
+              style="height: 60px; display: flex; align-items: center"
               @visible-change="getNoticeList"
             >
-              <el-badge is-dot class="item" :hidden="this.noticeList.length == 0">
+              <el-badge
+                is-dot
+                class="item"
+                :hidden="this.noticeList.length == 0"
+              >
                 <!-- 上面这里的hidden就是判断是否显示小红点的 -->
                 <span
                   class="el-dropdown-link"
-                  style="height:20px;  display: flex; align-items: center;"
+                  style="height: 20px; display: flex; align-items: center"
                 >
-                  <i class="el-icon-bell" style="height:20px;font-size:20px;" />
+                  <i
+                    class="el-icon-bell"
+                    style="height: 20px; font-size: 20px"
+                  />
                 </span>
               </el-badge>
               <!-- 通知图标下面的下拉栏 -->
               <el-dropdown-menu slot="dropdown">
                 <!-- 这里好像要用嵌套路由来写下面的内容 -->
                 <el-row>
-                  <el-col :span="12" style="text-align:center; width: 350px">
+                  <el-col :span="12" style="text-align: center; width: 350px">
                     <h5>全部消息</h5>
                   </el-col>
                   <!-- <el-col :span="12" style="float:center;position:relative;top:20px;right:-20px">
@@ -72,15 +90,24 @@
                     <div class="card-container">
                       <!-- 图标 -->
                       <div class="picture inline-div">
-                        <span class="fa fa-file-text-o" style="font-size:25px" />
+                        <span
+                          class="fa fa-file-text-o"
+                          style="font-size: 25px"
+                        />
                       </div>
                       <!-- 文字 -->
                       <div class="word inline-div">
-                        <div class="title">{{notice.actor_name + " 邀请我进入 " +notice.target_name}}</div>
+                        <div class="title">
+                          {{
+                            notice.actor_name +
+                            " 邀请我进入 " +
+                            notice.target_name
+                          }}
+                        </div>
                         <div class="details">{{ notice.sent_time }}</div>
                       </div>
                       <!-- 按钮 -->
-                      <div style="display: flex; align-items: center;">
+                      <div style="display: flex; align-items: center">
                         <el-button
                           size="mini"
                           type="success"
@@ -103,7 +130,7 @@
             </el-dropdown>
 
             <!-- 这里是右上角的头像 -->
-            <el-dropdown style="height:60px" @visible-change="get_user_info">
+            <el-dropdown style="height: 60px" @visible-change="get_user_info">
               <span class="el-dropdown-link">
                 <div>
                   <el-avatar :size="35" :src="imageUrl" />
@@ -117,8 +144,12 @@
                 <el-divider>
                   <i class="el-icon-mobile-phone" />
                 </el-divider>
-                <el-dropdown-item @click.native="changeInfo">修改信息</el-dropdown-item>
-                <el-dropdown-item style="color:red;" @click.native="logout">退出登录</el-dropdown-item>
+                <el-dropdown-item @click.native="changeInfo"
+                  >修改信息</el-dropdown-item
+                >
+                <el-dropdown-item style="color: red" @click.native="logout"
+                  >退出登录</el-dropdown-item
+                >
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -130,14 +161,21 @@
       <!-- 侧边栏 -->
       <el-aside width="200px">
         <!-- 侧边栏菜单区域  default-active="1"没写-->
-        <el-menu background-color="#fff" text-color="#535353" active-text-color="#409eff" router>
+        <el-menu
+          background-color="#fff"
+          text-color="#535353"
+          active-text-color="#409eff"
+          router
+        >
           <!-- 新建按钮 -->
           <!-- old-code -->
           <!-- <el-menu-item class="ceshi">
               <el-button size="midium" @click="newFile" type="primary" plain>新建文档</el-button>
           </el-menu-item>-->
           <div class="new-doc">
-            <el-button size="midium" type="primary" plain @click="canNewDoc();">新建文档</el-button>
+            <el-button size="midium" type="primary" plain @click="canNewDoc()"
+              >新建文档</el-button
+            >
           </div>
           <!-- 不分级菜单 -->
           <el-menu-item index="/workingTable">
@@ -150,7 +188,13 @@
             <span slot="title">收藏夹</span>
           </el-menu-item>
           <!-- 分割线 -->
-          <div style="margin: 8px 20px; height: 1.5px; background-color: rgb(230, 230, 230);" />
+          <div
+            style="
+              margin: 8px 20px;
+              height: 1.5px;
+              background-color: rgb(230, 230, 230);
+            "
+          />
           <!-- 不分级菜单 -->
           <el-menu-item index="/myDesktop">
             <i class="fa fa-id-card-o" style="padding: 0 10px 0 10px" />
@@ -167,7 +211,10 @@
               <span>团队空间</span>
               <!-- 新增团队按钮 -->
               <span>
-                <i class="add-team fa fa-plus-circle" @click.stop="dialogFormVisible = true" />
+                <i
+                  class="add-team fa fa-plus-circle"
+                  @click.stop="dialogFormVisible = true"
+                />
               </span>
             </template>
 
@@ -176,7 +223,7 @@
               v-for="(team, i) in teamList"
               :key="i"
               class="second-menu"
-              :index="'/teamSpace/'+team.team_id"
+              :index="'/teamSpace/' + team.team_id"
             >
               <template slot="title">
                 <!-- 图标 -->
@@ -200,16 +247,24 @@
         <el-dialog title="新建团队空间" :visible.sync="dialogFormVisible">
           <el-form ref="teamForm" :model="teamForm">
             <el-form-item prop="name">
-              <span style="float: left;">空间名称</span>
-              <el-input v-model="teamForm.name" placeholder="请输入" autocomplete="off" />
+              <span style="float: left">空间名称</span>
+              <el-input
+                v-model="teamForm.name"
+                placeholder="请输入"
+                autocomplete="off"
+              />
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
             <el-button
               type="primary"
-              @click="dialogFormVisible = false; createTeam('teamForm') "
-            >确 定</el-button>
+              @click="
+                dialogFormVisible = false;
+                createTeam('teamForm');
+              "
+              >确 定</el-button
+            >
           </div>
         </el-dialog>
 
@@ -222,9 +277,16 @@
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button style="text-align: left;" @click="newdocVisible=false;use_templates();">使用模板</el-button>
+            <el-button
+              style="text-align: left"
+              @click="
+                newdocVisible = false;
+                use_templates();
+              "
+              >使用模板</el-button
+            >
             <el-button @click="newdocVisible = false">取 消</el-button>
-            <el-button type="primary" @click="newFile();">确 定</el-button>
+            <el-button type="primary" @click="newFile()">确 定</el-button>
           </div>
         </el-dialog>
 
@@ -260,8 +322,8 @@ export default {
       },
       formLabelWidth: "120px",
       // 改：根据登陆人员的的信息改(可能是表单形式)
-      username: "",
-      mail_address: "",
+      username: "111111111111111111",
+      mail_address: "11111111111111111",
       imageUrl:
         "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
       // 消息列表
